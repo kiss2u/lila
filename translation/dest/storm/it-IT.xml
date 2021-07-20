@@ -15,8 +15,8 @@
     <item quantity="other">%s tentativi</item>
   </plurals>
   <plurals name="playedNbRunsOfPuzzleStorm">
-    <item quantity="one">Hai fatto un tentativo di %2$s</item>
-    <item quantity="other">Hai fatto %1$s tentativi di %2$s</item>
+    <item quantity="one">Ha fatto un tentativo di %2$s</item>
+    <item quantity="other">Ha fatto %1$s tentativi di %2$s</item>
   </plurals>
   <string name="highscoreX">Record: %s</string>
   <string name="score">Punteggio</string>
@@ -38,6 +38,7 @@
   <string name="raceComplete">Traguardo!</string>
   <string name="spectating">Spettatore</string>
   <string name="joinTheRace">Unisciti alla gara!</string>
+  <string name="startTheRace">Avvia la gara</string>
   <string name="yourRankX">Piazzamento finale: %s</string>
   <string name="waitForRematch">Attendi la nuova gara</string>
   <string name="nextRace">Prossima gara</string>

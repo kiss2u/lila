@@ -13,7 +13,7 @@ export function withdraw(ctrl: TournamentController): VNode {
     return h(
       'button.fbt.text',
       {
-        attrs: dataIcon(pause ? 'Z' : 'b'),
+        attrs: dataIcon(pause ? '' : ''),
         hook: bind('click', ctrl.withdraw, ctrl.redraw),
       },
       ctrl.trans.noarg(pause ? 'pause' : 'withdraw')
@@ -30,18 +30,9 @@ export function join(ctrl: TournamentController): VNode {
       {
         attrs: {
           disabled: !joinable,
-          'data-icon': 'G',
+          'data-icon': '',
         },
-        hook: bind(
-          'click',
-          _ => {
-            if (ctrl.data.private && !ctrl.data.me) {
-              const p = prompt(ctrl.trans.noarg('password'));
-              if (p !== null) ctrl.join(p);
-            } else ctrl.join();
-          },
-          ctrl.redraw
-        ),
+        hook: bind('click', _ => ctrl.join(), ctrl.redraw),
       },
       ctrl.trans.noarg('join')
     );
@@ -60,8 +51,8 @@ export function join(ctrl: TournamentController): VNode {
                     const el = vnode.elm as HTMLElement;
                     el.style.animation = `tour-delay ${delay}s linear`;
                     setTimeout(() => {
-                      if (delay === ctrl.data.me.pauseDelay) {
-                        ctrl.data.me.pauseDelay = 0;
+                      if (delay === ctrl.data.me!.pauseDelay) {
+                        ctrl.data.me!.pauseDelay = 0;
                         ctrl.redraw();
                       }
                     }, delay * 1000);
@@ -83,10 +74,11 @@ export function joinWithdraw(ctrl: TournamentController): VNode | undefined {
       {
         attrs: {
           href: '/login?referrer=' + window.location.pathname,
-          'data-icon': 'G',
+          'data-icon': '',
         },
       },
       ctrl.trans('signIn')
     );
   if (!ctrl.data.isFinished) return isIn(ctrl) ? withdraw(ctrl) : join(ctrl);
+  return undefined;
 }

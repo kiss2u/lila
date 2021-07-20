@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">আপনি সাদা গুটি নিয়ে খেলছেন</string>
   <string name="youPlayTheBlackPieces">আপনি কালো গুটি নিয়ে খেলছেন</string>
   <string name="itsYourTurn">এবার আপনার দান!</string>
+  <string name="cheatDetected">চিট শনাক্ত হয়েছে</string>
   <string name="kingInTheCenter">রাজাকে কেন্দ্রে আনুন</string>
   <string name="threeChecks">তিনটি কিস্তি</string>
   <string name="raceFinished">প্রতিযোগিতা শেষ</string>
@@ -78,7 +79,7 @@
   <string name="losing">হেরে যাওয়া</string>
   <string name="drawn">সমান</string>
   <string name="unknown">অজানা</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">ডেটাবেজ</string>
+  <string name="database">ডেটাবেজ</string>
   <string name="whiteDrawBlack">সাদা / সমান / কালো</string>
   <string name="averageRatingX">গড় নির্ধারণ:%s</string>
   <string name="recentGames">সম্প্রতি খেলা</string>
@@ -117,6 +118,18 @@
   <string name="blunder">গুরুতর ভুল</string>
   <string name="mistake">ভুল</string>
   <string name="inaccuracy">অশুদ্ধি</string>
+  <plurals name="nbBlunders">
+    <item quantity="one">%s টি ব্লান্ডার</item>
+    <item quantity="other">%s টি ব্লান্ডার</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="one">%sটি ভূল</item>
+    <item quantity="other">%sটি ভূল</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="one">%sটি অনিপুণতা</item>
+    <item quantity="other">%sটি অনিপুণতা</item>
+  </plurals>
   <string name="moveTimes">চালের সময়</string>
   <string name="flipBoard">বোর্ডকে ঘোরান</string>
   <string name="threefoldRepetition">তিনবার একই চাল</string>
@@ -247,7 +260,6 @@
   <string name="send">পাঠান</string>
   <string name="incrementInSeconds">প্রতি সেকেন্ডে পর্যায়ক্রমিক বৃদ্ধি</string>
   <string name="freeOnlineChess">ফ্রি অনলাইন দাবা</string>
-  <string name="spectators">দর্শক</string>
   <plurals name="nbRated">
     <item quantity="one">%s অনুপাত</item>
     <item quantity="other">%s অনুপাত</item>
@@ -275,7 +287,6 @@
     <item quantity="other">%s সেকেন্ড দিন</item>
   </plurals>
   <string name="thisAccountViolatedTos">এই অ্যাকাউন্টটি লিচেস্‌-এর পরিষেবার শর্তসমূহ লঙ্ঘন করেছে</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">এই খেলোয়াড় প্রযুক্তি ব্যবহার করে কৃত্তিম ভাবে নিজের rating বাড়ায়/কমায়</string>
   <string name="openingExplorerAndTablebase">বিস্লেষন খুলতেছে &amp; টেবিলবেস</string>
   <string name="takeback">চাল ফিরিয়ে নিন</string>
   <string name="proposeATakeback">চাল ফিরিয়ে নেবার সুযোগ দিন</string>
@@ -339,13 +350,7 @@
   <string name="pasteThePgnStringHere">এখানে PGN স্ট্রিংটি জোড়া লাগান</string>
   <string name="fromPosition">অবস্থা থেকে</string>
   <string name="continueFromHere">এখান থেকে আবার শুরু করুন</string>
-  <string name="toStudy">অধ্যয়ন
-
-এমনটি নেভিগেশন বারে ব্যবহৃত হয় না - স্টাডিমেনু থেকে আপনি অনুসন্ধান করে স্ট্রিংটি খুঁজে পেতে পারেন।
-
-এই স্ট্রিংটি সেই সময়টার জন্যই যখন আপনি কোনও গেম বিশ্লেষণ করেন এবং সেই বিশ্লেষণকে লাইচেসের স্টাডিতে রেখে দিতে চান। \'স্টাডি\' লেবেলযুক্ত একটি বাটন রয়েছে যেই বাটনটির কাজই এটি । বোতামটি ব্যাবহার করে লাইচেস স্টাডিতে যুক্ত করতে পারবেন। এই সম্পর্কে যদি আপনি না জেনে থাকেন তবে https://lichess. org/study দেখুন।
-
-সাধারণত আমরা অনুবাদ ক্রিয়াপদে করার পরামর্শ দিই, তবে এই ধরনের পরিস্থিতিতে ভাষায় নামপদ ব্যাবহারও গ্রহনযোগ্য।</string>
+  <string name="toStudy">অধ্যায়ন</string>
   <string name="importGame">খেলা আমদানী</string>
   <string name="importGameExplanation">যখন একটি খেলার PGN যোগ করবেন আপনি পাবেন একটি ব্রাউজাবেল উত্তর,
 একটি কম্পিউটার বিশ্লেষণ, একটি খেলা আলাপ এবং একটি ভাগাভাগি করার URL.</string>
@@ -357,12 +362,8 @@
   <string name="clickOnTheBoardToMakeYourMove">বোর্ডে ক্লিক করে চাল দিয়ে প্রমাণ করুন যে আপনি সত্যিই মানুষ, রোবট নন।</string>
   <string name="captcha.fail">দয়া করে দাবার ক্যাপচা সমাধান করুন.</string>
   <string name="notACheckmate">এটি কিস্তিমাত নয়</string>
-  <string name="whiteCheckmatesInOneMove">সাদা দলের একটি মুভে চেকমেট
-
-আপনি সাদা হয়ে খেলছেন এবং খুজে বের করতে হবে পরের মুভে কিভাবে চেকমেট যায়</string>
-  <string name="blackCheckmatesInOneMove">কালো দলের একটি মুভে চেকমেট
-
-আপনি কালো হয়ে খেলছেন এবং খুজে বের করতে হবে পরের মুভে কিভাবে চেকমেট যায়</string>
+  <string name="whiteCheckmatesInOneMove">সাদা দলের একটি মুভে চেকমেট</string>
+  <string name="blackCheckmatesInOneMove">কালো দলের একটি মুভে চেকমেট</string>
   <string name="retry">আবার চেষ্টা করুন</string>
   <string name="reconnecting">পুনঃসংযোগের চেষ্টা চলছে</string>
   <plurals name="nbFriendsOnline">
@@ -454,7 +455,7 @@
   <string name="firstName">প্রথম নাম</string>
   <string name="lastName">শেষ নাম</string>
   <string name="biography">জীবনবৃত্তান্ত</string>
-  <string name="country">দেশ</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">দেশ বা পতাকা</string>
   <string name="thankYou">ধন্যবাদ</string>
   <string name="socialMediaLinks">সোশ্যাল মিডিয়ার লিঙ্ক</string>
   <string name="inlineNotation">রেখা চিহ্ন</string>
@@ -498,6 +499,7 @@
   <string name="cheat">চিটিং করছে</string>
   <string name="insult">অপমান করেছে</string>
   <string name="troll">ব্যঙ্গ করছে</string>
+  <string name="ratingManipulation">রেটিং ইচ্ছাকৃতভাবে পরিবর্তন</string>
   <string name="other">অন্য কোনো কারণ</string>
   <string name="reportDescriptionHelp">এখানে সেই খেলাটির link দেন এবং বলুন ওই ব্যক্তি ব্যবহারে কি অসুবিধা ছিল ?</string>
   <string name="error.provideOneCheatedGameLink">অনুগ্রহ করে একটা চিটেড গেমের লিংক দিন।</string>
@@ -613,7 +615,7 @@
   <string name="really">সত্যিকার অর্থেই</string>
   <string name="contribute">অবদান</string>
   <string name="termsOfService">পরিষেবার শর্তাদি</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">উৎস সংকেতলিপি</string>
+  <string name="sourceCode">উৎস সংকেতলিপি</string>
   <string name="simultaneousExhibitions">সমকালবর্তী প্রদর্শন</string>
   <string name="host">স্বাগতিক</string>
   <string name="hostColorX">হোস্ট রং: %s</string>
@@ -676,6 +678,7 @@
   <string name="printFriendlyPDF">ছাপা-বন্ধুত্বপূর্ণ পিডিএফ</string>
   <string name="crosstable">ক্রোস্ট্যাবলে</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">খেলা সরাতে আপনি বোর্ডের উপর স্ক্রল ও করতে পারবেন.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">প্রিভিউ দেখার জন্য কম্পিউটার ভ্যারিয়েশনের উপর স্ক্রল করুন।</string>
   <string name="analysisShapesHowTo">সিফ্ট+ক্লিক চাপুন অথবা ডান-ক্লিক করুন বোর্ডের উপর বৃত্ত এবং তীর আঁকার জন্য.</string>
   <string name="letOtherPlayersMessageYou">অন্যান্য খেলোয়ারদের আপনাকে বার্তা করতে দিন</string>
   <string name="shareYourInsightsData">আপনার দাবার অর্ন্তদৃষ্টি তথ্য শেয়ার করুন</string>
@@ -690,8 +693,6 @@
   <string name="enableKidMode">বাচ্চা ধরন সক্রিয় করুন</string>
   <string name="disableKidMode">বাচ্চা ধরন নিষ্ক্রিয় করুন</string>
   <string name="security">নিরাপত্তা</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">এটা হয় ডিভাইসগুলির একটি তালিকা যা আপনার একাউন্টের সাথে লগইন আছে. বাতিল করুন সেই সেশন গুলো যা আপনি চেনেন না.</string>
-  <string name="alternativelyYouCanX">অন্যভাবে আপনি পারেন %s.</string>
   <string name="revokeAllSessions">সকল সেশন বাতিল করুন</string>
   <string name="playChessEverywhere">দাবা খেলুন সব জায়গায়</string>
   <string name="asFreeAsLichess">যেমন লিচাস মুক্ত হিসাবে</string>
@@ -802,10 +803,7 @@
     <item quantity="one">এবং সংরক্ষন %s পুনারয়চাল রেখা</item>
     <item quantity="other">এবং সংরক্ষন %s পুনারয়চাল রেখা</item>
   </plurals>
-  <string name="sorry">দুঃখিত :(
-
-দুঃখিত
-খেলা হতে বহিস্কৃত (এইধরনের সতর্কবার্তা প্রদানের কারন অতিরিক্ত গেম পরিত্যাগ করা, খেলার সময় শেষ না হওয়ার আগেই গেম পরিত্যাগ করা..... )</string>
+  <string name="sorry">দুঃখিত :(</string>
   <string name="weHadToTimeYouOutForAWhile">আমাদের কিছুক্ষণের জন্য আপনাকে বিরতি হল।</string>
   <string name="timeoutExpires">সময় লাগবে %s.</string>
   <string name="why">কেন</string>
@@ -849,7 +847,24 @@
   <string name="youCannotPostYetPlaySomeGames">আপনি এখন ফোরামে পোষ্ট করতে পারবেন না. আগে কিছু গেম খেলুন!</string>
   <string name="subscribe">সাবস্ক্রাইব</string>
   <string name="unsubscribe">আনসাবস্ক্রাইব</string>
+  <string name="mentionedYouInX">\"%1$s\" এ আপনাকে উল্লেখ করেছেন।</string>
+  <string name="xMentionedYouInY">%1$s , \"%2$s\" এ আপনার নাম উল্লেখ করেছেন।</string>
+  <string name="invitedYouToX">\"%1$s\" এ আপনাকে আমন্ত্রণ জানিয়েছেন।</string>
+  <string name="xInvitedYouToY">%1$s, আপনাকে \"%2$s\" এ আমন্ত্রণ জানিয়েছেন।</string>
+  <string name="youAreNowPartOfTeam">আপনি এখন দলের একটি অংশ।</string>
+  <string name="youHaveJoinedTeamX">আপনি \"%1$s\" এ যোগদান করেছেন।</string>
+  <string name="someoneYouReportedWasBanned">আপনি অভিযুক্ত একজনকে ব্যান করা হয়েছে</string>
   <string name="congratsYouWon">অভিনন্দন, আপনি জিতেছেন!</string>
-  <string name="youJustBecamePatron">আপনি এইমাত্র লিচেসের পৃষ্ঠপোষক হলেন।</string>
+  <string name="gameVsX">খেলা বনাম %1$s</string>
+  <string name="resVsX">%1$s বনাম %2$s</string>
+  <string name="someoneReviewedYourCoachProfile">কেউ আপনার কোচ প্রোফাইল রিভিউ করেছেন।</string>
+  <string name="newPendingReview">নতুন অনিষ্পন্ন রিভিউ</string>
+  <string name="lostAgainstTOSViolator">আপনি এমন কারোর সাথে হেরেছেন যে Liches TOS ভঙ্গ করেছে</string>
+  <string name="refundXpointsTimeControlY">ফেরত: %1$s %2$s রেটিং পয়েন্ট।</string>
   <string name="timeAlmostUp">সময় প্রায় শেষ!</string>
+  <string name="clickToRevealEmailAddress">[ইমেইল অ্যাড্রেস দেখতে ক্লিক করুন]</string>
+  <string name="download">ডাউনলোড করুন</string>
+  <string name="welcome">স্বাগতম!</string>
+  <string name="lichessPatronInfo">লিচেস একটি অলাভজনক এবং সম্পূর্ণ বিনামূল্য/লিব্রা ওপেন সোর্স সফটওয়্যার।
+সকল পরিচালনা খরচ, উন্নয়ন, এবং বিষয়বস্তু ব্যবহারকারীদের দানের মাধ্যমে সংগৃহীত হয়।</string>
 </resources>

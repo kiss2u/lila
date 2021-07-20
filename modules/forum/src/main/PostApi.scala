@@ -7,9 +7,7 @@ import reactivemongo.api.ReadPreference
 import scala.util.chaining._
 
 import lila.common.Bus
-import lila.common.paginator._
 import lila.db.dsl._
-import lila.db.paginator._
 import lila.hub.actorApi.timeline.{ ForumPost, Propagate }
 import lila.hub.LightTeam.TeamID
 import lila.mod.ModlogApi
@@ -19,7 +17,7 @@ import lila.user.User
 final class PostApi(
     env: Env,
     indexer: lila.hub.actors.ForumSearch,
-    maxPerPage: lila.common.config.MaxPerPage,
+    config: ForumConfig,
     modLog: ModlogApi,
     spam: lila.security.Spam,
     promotion: lila.security.PromotionApi,
@@ -36,44 +34,42 @@ final class PostApi(
       data: ForumForm.PostData,
       me: User
   ): Fu[Post] =
-    lastNumberOf(topic) flatMap { number =>
-      detectLanguage(data.text) zip recentUserIds(topic, number) flatMap { case (lang, topicUserIds) =>
-        val post = Post.make(
-          topicId = topic.id,
-          author = none,
-          userId = me.id,
-          text = spam.replace(data.text),
-          number = number + 1,
-          lang = lang.map(_.language),
-          troll = me.marks.troll,
-          hidden = topic.hidden,
-          categId = categ.id,
-          modIcon = (~data.modIcon && MasterGranter(_.PublicMod)(me)).option(true)
-        )
-        env.postRepo findDuplicate post flatMap {
-          case Some(dup) if !post.modIcon.getOrElse(false) => fuccess(dup)
-          case _ =>
-            env.postRepo.coll.insert.one(post) >>
-              env.topicRepo.coll.update.one($id(topic.id), topic withPost post) >> {
-                shouldHideOnPost(topic) ?? env.topicRepo.hide(topic.id, value = true)
-              } >>
-              env.categRepo.coll.update.one($id(categ.id), categ.withPost(topic, post)) >>- {
-                !categ.quiet ?? (indexer ! InsertPost(post))
-                !categ.quiet ?? env.recent.invalidate()
-                promotion.save(me, post.text)
-                shutup ! {
-                  if (post.isTeam) lila.hub.actorApi.shutup.RecordTeamForumMessage(me.id, post.text)
-                  else lila.hub.actorApi.shutup.RecordPublicForumMessage(me.id, post.text)
+    detectLanguage(data.text) zip recentUserIds(topic, topic.nbPosts) flatMap { case (lang, topicUserIds) =>
+      val post = Post.make(
+        topicId = topic.id,
+        author = none,
+        userId = me.id,
+        text = spam.replace(data.text),
+        number = topic.nbPosts + 1,
+        lang = lang.map(_.language),
+        troll = me.marks.troll,
+        hidden = topic.hidden,
+        categId = categ.id,
+        modIcon = (~data.modIcon && MasterGranter(_.PublicMod)(me)).option(true)
+      )
+      env.postRepo findDuplicate post flatMap {
+        case Some(dup) if !post.modIcon.getOrElse(false) => fuccess(dup)
+        case _ =>
+          env.postRepo.coll.insert.one(post) >>
+            env.topicRepo.coll.update.one($id(topic.id), topic withPost post) >> {
+              shouldHideOnPost(topic) ?? env.topicRepo.hide(topic.id, value = true)
+            } >>
+            env.categRepo.coll.update.one($id(categ.id), categ.withPost(topic, post)) >>- {
+              !categ.quiet ?? (indexer ! InsertPost(post))
+              !categ.quiet ?? env.recent.invalidate()
+              promotion.save(me, post.text)
+              shutup ! {
+                if (post.isTeam) lila.hub.actorApi.shutup.RecordTeamForumMessage(me.id, post.text)
+                else lila.hub.actorApi.shutup.RecordPublicForumMessage(me.id, post.text)
+              }
+              if (!post.troll && !categ.quiet && !topic.isTooBig)
+                timeline ! Propagate(ForumPost(me.id, topic.id.some, topic.name, post.id)).pipe {
+                  _ toFollowersOf me.id toUsers topicUserIds exceptUser me.id
                 }
-                if (!post.troll && !categ.quiet && !topic.isTooBig)
-                  timeline ! Propagate(ForumPost(me.id, topic.id.some, topic.name, post.id)).pipe {
-                    _ toFollowersOf me.id toUsers topicUserIds exceptUser me.id
-                  }
-                lila.mon.forum.post.create.increment()
-                env.mentionNotifier.notifyMentionedUsers(post, topic)
-                Bus.publish(actorApi.CreatePost(post), "forumPost")
-              } inject post
-        }
+              lila.mon.forum.post.create.increment()
+              env.mentionNotifier.notifyMentionedUsers(post, topic)
+              Bus.publish(actorApi.CreatePost(post), "forumPost")
+            } inject post
       }
     }
 
@@ -97,7 +93,7 @@ final class PostApi(
   private def shouldHideOnPost(topic: Topic) =
     topic.visibleOnHome && {
       (quickHideCategs(topic.categId) && topic.nbPosts == 1) || {
-        topic.nbPosts == maxPerPage.value ||
+        topic.nbPosts == config.postMaxPerPage.value ||
         (!topic.looksLikeTeamForum && topic.createdAt.isBefore(DateTime.now minusDays 5))
       }
     }
@@ -107,7 +103,7 @@ final class PostApi(
       case Some((_, post)) if !post.visibleBy(forUser) => fuccess(none[PostUrlData])
       case Some((topic, post)) =>
         env.postRepo.forUser(forUser).countBeforeNumber(topic.id, post.number) dmap { nb =>
-          val page = nb / maxPerPage.value + 1
+          val page = nb / config.postMaxPerPage.value + 1
           PostUrlData(topic.categId, topic.slug, page, post.number).some
         }
       case _ => fuccess(none)
@@ -145,7 +141,7 @@ final class PostApi(
       for {
         topic <- topics find (_.id == post.topicId)
         categ <- categs find (_.slug == topic.categId)
-      } yield PostView(post, topic, categ, lastPageOf(topic))
+      } yield PostView(post, topic, categ, topic lastPage config.postMaxPerPage)
     }
 
   def viewsFromIds(postIds: Seq[Post.ID]): Fu[List[PostView]] =
@@ -181,24 +177,6 @@ final class PostApi(
         }
       }
     }
-
-  def lastNumberOf(topic: Topic): Fu[Int] =
-    env.postRepo lastByTopic topic dmap { _ ?? (_.number) }
-
-  def lastPageOf(topic: Topic): Int =
-    (topic.nbPosts + maxPerPage.value - 1) / maxPerPage.value
-
-  def paginator(topic: Topic, page: Int, me: Option[User]): Fu[Paginator[Post]] =
-    Paginator(
-      new Adapter(
-        collection = env.postRepo.coll,
-        selector = env.postRepo.forUser(me) selectTopic topic.id,
-        projection = none,
-        sort = env.postRepo.sortQuery
-      ),
-      currentPage = page,
-      maxPerPage = maxPerPage
-    )
 
   def delete(categSlug: String, postId: String, mod: User): Funit =
     env.postRepo.unsafe.byCategAndId(categSlug, postId) flatMap {

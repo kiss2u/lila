@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Du spelar med dei kvite brikkene</string>
   <string name="youPlayTheBlackPieces">Du spelar med dei svarte brikkene</string>
   <string name="itsYourTurn">Det er ditt trekk!</string>
+  <string name="cheatDetected">Juks oppdaga</string>
   <string name="kingInTheCenter">Kongen i sentrum</string>
   <string name="threeChecks">Sjakk tre gonger</string>
   <string name="raceFinished">Målgang</string>
@@ -78,7 +79,7 @@
   <string name="losing">Tapar</string>
   <string name="drawn">Remis</string>
   <string name="unknown">Ukjend</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Database</string>
+  <string name="database">Database</string>
   <string name="whiteDrawBlack">Kvit / Remis / Svart</string>
   <string name="averageRatingX">Gjennomsnittleg rating: %s</string>
   <string name="recentGames">Nylege parti</string>
@@ -95,6 +96,7 @@
   <string name="noGameFound">Fann ikkje noko parti</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Gå til innstillingsmenyen om du vil søkje blant fleire parti.</string>
   <string name="openingExplorer">Opningsbok</string>
+  <string name="openingEndgameExplorer">Opnings-/sluttspelbok</string>
   <string name="xOpeningExplorer">%s opningsutforskar</string>
   <string name="winPreventedBy50MoveRule">Vinst forhindra av 50-trekkregelen</string>
   <string name="lossSavedBy50MoveRule">Tap forhindra av 50-trekkregelen</string>
@@ -259,7 +261,6 @@
   <string name="send">Send</string>
   <string name="incrementInSeconds">Tilleggstid i sekund</string>
   <string name="freeOnlineChess">Fritt tilgjengeleg nettsjakk</string>
-  <string name="spectators">Tilskodarar:</string>
   <plurals name="nbRated">
     <item quantity="one">%s rata</item>
     <item quantity="other">%s rata</item>
@@ -287,7 +288,6 @@
     <item quantity="other">Gje %s sekund</item>
   </plurals>
   <string name="thisAccountViolatedTos">Brukaren bak denne kontoen braut med Lichess sine brukarvilkår</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Denne spelaren manipulerar ratinga si</string>
   <string name="openingExplorerAndTablebase">Opningsutforskar &amp; tabellbase</string>
   <string name="takeback">Gjer om trekket</string>
   <string name="proposeATakeback">Framlegg om å gjera om trekket</string>
@@ -441,6 +441,8 @@ få en computeranalyse, chatte eller dele ein URL.</string>
   <string name="boardEditor">Brettskipar</string>
   <string name="setTheBoard">Still opp brett</string>
   <string name="popularOpenings">Omtykte opningar</string>
+  <string name="endgamePositions">Sluttspelstillingar</string>
+  <string name="chess960StartPosition">Fishersjakk, startoppstilling %s</string>
   <string name="startPosition">Startposisjon</string>
   <string name="clearBoard">Tøm brettet</string>
   <string name="savePosition">Lagre stilling</string>
@@ -456,7 +458,7 @@ få en computeranalyse, chatte eller dele ein URL.</string>
   <string name="firstName">Førenamn</string>
   <string name="lastName">Etternamn</string>
   <string name="biography">Biografi</string>
-  <string name="country">Land</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Land eller flagg</string>
   <string name="thankYou">Takk!</string>
   <string name="socialMediaLinks">Lenker til sosiale media</string>
   <string name="inlineNotation">Innbygd notasjon</string>
@@ -546,12 +548,9 @@ få en computeranalyse, chatte eller dele ein URL.</string>
   <string name="xCommentedY">%1$s kommenterte %2$s</string>
   <string name="victory">Siger</string>
   <string name="defeat">Tap</string>
-  <string name="victoryVsYInZ">%1$s mot %2$s 
-i %3$s</string>
-  <string name="defeatVsYInZ">%1$s mot %2$s 
-i %3$s</string>
-  <string name="drawVsYInZ">%1$s mot %2$s 
-i %3$s</string>
+  <string name="victoryVsYInZ">%1$s mot %2$s i %3$s</string>
+  <string name="defeatVsYInZ">%1$s mot %2$s i %3$s</string>
+  <string name="drawVsYInZ">%1$s mot %2$s i %3$s</string>
   <string name="timeline">Tidslinje</string>
   <string name="starting">Startar:</string>
   <string name="allInformationIsPublicAndOptional">All informasjon er offentleg og valfri.</string>
@@ -619,7 +618,7 @@ i %3$s</string>
   <string name="really">verkeleg</string>
   <string name="contribute">Bidra</string>
   <string name="termsOfService">Brukarvilkår</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Kjeldekode</string>
+  <string name="sourceCode">Kjeldekode</string>
   <string name="simultaneousExhibitions">Simultanframsyningar</string>
   <string name="host">Vert</string>
   <string name="hostColorX">Vertsfarge: %s</string>
@@ -682,8 +681,10 @@ i %3$s</string>
   <string name="printFriendlyPDF">Utskriftsvenleg PDF</string>
   <string name="crosstable">Tabell</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Du kan også scrolle over brettet for å flytte.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Scroll over datamaskin-variasjonane for å førehandsvisa dei.</string>
   <string name="analysisShapesHowTo">Trykk shift-klikk eller høyreklikk for å tegne sirklar og piler på brettet.</string>
   <string name="letOtherPlayersMessageYou">Lat andre spelarar ta kontakt med deg</string>
+  <string name="receiveForumNotifications">Bli varsla når du vert nemd i forumet</string>
   <string name="shareYourInsightsData">Del den personlege spelarstatistikken din</string>
   <string name="withNobody">Med ingen</string>
   <string name="withFriends">Med vener</string>
@@ -695,9 +696,8 @@ i %3$s</string>
   <string name="enableKidMode">Skru på barnemodus</string>
   <string name="disableKidMode">Skru av barnemodus</string>
   <string name="security">Tryggleik</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Dette er ei liste over einingar du har logga inn på med din konto. Lukk dei sesjonane du ikkje dreg kjensel på.</string>
-  <string name="alternativelyYouCanX">Alternativt kan du %s.</string>
-  <string name="revokeAllSessions">avbryte alle sesjonane</string>
+  <string name="sessions">Økter</string>
+  <string name="revokeAllSessions">lukke alle økter</string>
   <string name="playChessEverywhere">Spel sjakk overalt</string>
   <string name="asFreeAsLichess">Så fri som lichess</string>
   <string name="builtForTheLoveOfChessNotMoney">Bygd for kjærleik til sjakk, ikkje pengar</string>
@@ -851,9 +851,9 @@ i %3$s</string>
   <string name="youCannotPostYetPlaySomeGames">Du kan så langt ikkje skrive oppslag i foraane. Spel nokre parti fyrst!</string>
   <string name="subscribe">Abonner</string>
   <string name="unsubscribe">Avslutt abonnement</string>
-  <string name="mentionedYouInX"> nemnde deg i \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s nemnde deg i \"%2$s\".</string>
-  <string name="invitedYouToX"> inviterte deg til \"%1$s\".</string>
+  <string name="mentionedYouInX">nemnde deg i \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s nemnde deg i \"%2$s\".</string>
+  <string name="invitedYouToX">inviterte deg til \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s inviterte deg til \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Du er no med i laget.</string>
   <string name="youHaveJoinedTeamX">Du har blitt med i \"%1$s\".</string>
@@ -861,12 +861,59 @@ i %3$s</string>
   <string name="congratsYouWon">Gratulerer, du vann!</string>
   <string name="gameVsX">Spel mot %1$s</string>
   <string name="resVsX">%1$s mot %2$s</string>
-  <string name="youJustBecamePatron">Du vart nett ein lichess bidragsytar.</string>
-  <string name="patronAccountExpired">Bidragsytar-kontoen har gått ut</string>
-  <string name="pleaseReconsiderRenewIt">Ver venleg å vurdere fornying av den!</string>
   <string name="someoneReviewedYourCoachProfile">Nokon har sett på trenarprofilen din.</string>
   <string name="newPendingReview">Ventar på ny gjennomgang</string>
   <string name="lostAgainstTOSViolator">Du tapte mot nokon som braut med Lichess TOS</string>
   <string name="refundXpointsTimeControlY">Refundering: %1$s %2$s ratingpoeng.</string>
   <string name="timeAlmostUp">Tida er nesten ute!</string>
+  <string name="clickToRevealEmailAddress">[Klikk for å visa epost-adresse]</string>
+  <string name="download">Last ned</string>
+  <string name="welcome">Velkomen!</string>
+  <string name="lichessPatronInfo">Lichess er ein velgjerdsorganisasjon basert på fritt tilgjengeleg open-kjeldekode-programvare.
+Alle kostnader for drift, utvikling og innhald vert finansiert eine og åleine av brukardonasjonar.</string>
+  <string name="coachManager">Trenarleiar</string>
+  <string name="streamerManager">Strøymingsleiar</string>
+  <string name="cancelTournament">Avlys turneringa</string>
+  <string name="tournDescription">Beskriving av turneringa</string>
+  <string name="tournDescriptionHelp">Noko du vil seie til deltakarane? Ver kortfatta. Du kan gje URL\'en eit namn: [name](https://url)</string>
+  <string name="ratedFormHelp">Partia er rata
+og påverkar ratinga til spelarane</string>
+  <string name="onlyMembersOfTeam">Berre medlemar av laget</string>
+  <string name="noRestriction">Inga avgrensingar</string>
+  <string name="minimumRatedGames">Minste antal rata parti</string>
+  <string name="minimumRating">Lågaste rating</string>
+  <string name="maximumWeeklyRating">Høgste rating siste veke</string>
+  <string name="onlyTitled">Berre spelarar med sjakktittel</string>
+  <string name="onlyTitledHelp">Krev ein offisiell sjakktittel for å delta med i turneringa</string>
+  <string name="positionInputHelp">Sett inn ein gyldig FEN for å starte kvart parti frå gjeven stilling.
+Det fungerar berre for standardparti, ikke for variantar.
+Du kan bruke %s for å generere en FEN-stilling, som du limar inn her.
+La feltet stå tomt for å starte partia frå den normale utgangsstillinga.</string>
+  <string name="cancelSimul">Avbryt simultantilskipinga</string>
+  <string name="simulHostcolor">Vertsfarge for kvart parti</string>
+  <string name="estimatedStart">Forventa starttidspunkt</string>
+  <string name="simulFeatured">Vis på %s</string>
+  <string name="simulFeaturedHelp">Vis simultantilskipinga til alle på %s. Deaktivér for private simultantilskipingar.</string>
+  <string name="simulDescription">Beskriving av simultantilskipinga</string>
+  <string name="simulDescriptionHelp">Noko du vil fortelja deltakarane?</string>
+  <string name="markdownAvailable">%s er tilgjengeleg for meir avansert syntaks.</string>
+  <string name="inYourLocalTimezone">I di tidssone</string>
+  <string name="tournChat">Turneringschat</string>
+  <string name="noChat">Ikkje chat</string>
+  <string name="onlyTeamLeaders">Berre lagleiarar</string>
+  <string name="onlyTeamMembers">Berre lagsmedlemer</string>
+  <string name="navigateMoveTree">Naviger i trekk-treet</string>
+  <string name="mouseTricks">Musekunstar</string>
+  <string name="toggleLocalAnalysis">Aktiver/deaktiver lokal maskinanalyse</string>
+  <string name="toggleAllAnalysis">Aktiver/deaktiver all maskinanalyse</string>
+  <string name="playComputerMove">Spel det beste maskintrekket</string>
+  <string name="analysisOptions">Analyseval</string>
+  <string name="focusChat">Fokusér prateromet</string>
+  <string name="showHelpDialog">Vis denne hjelpedialogen</string>
+  <string name="reopenYourAccount">Opne kontoen din på ny</string>
+  <string name="closedAccountChangedMind">Om du har stengd kontoen din, men ynskjer å ta den attende, får du eitt høve til å opna den på ny.</string>
+  <string name="onlyWorksOnce" comment="onlyWorksOnce&#10;&#10;In relation to reopening a closed account - reopening is only allowed once if you choose to close your account.">Dette kan du berre gjera ein einaste gong.</string>
+  <string name="cantDoThisTwice">Om du stengde kontoen ein andre gong, er det ikkje lengre mogleg å opna den att.</string>
+  <string name="emailAssociatedToaccount">E-postadressa som er tilknytt kontoen</string>
+  <string name="sentEmailWithLink">Vi har sendt deg ein e-post med ei lenke.</string>
 </resources>

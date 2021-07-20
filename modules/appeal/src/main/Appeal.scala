@@ -83,6 +83,8 @@ object Appeal {
     Form[String](
       single("text" -> lila.common.Form.cleanNonEmptyText)
     )
+
+  private[appeal] case class SnoozeKey(snoozerId: User.ID, appealId: User.ID) extends lila.memo.Snooze.Key
 }
 
 case class AppealMsg(

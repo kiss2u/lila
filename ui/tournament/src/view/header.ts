@@ -1,8 +1,10 @@
-import { h, VNode } from 'snabbdom';
+import { h, Hooks, VNode } from 'snabbdom';
 import TournamentController from '../ctrl';
 import { dataIcon } from './util';
+import perfIcons from 'common/perfIcons';
+import { TournamentData } from '../interfaces';
 
-function startClock(time) {
+function startClock(time: number): Hooks {
   return {
     insert: vnode => $(vnode.elm as HTMLElement).clock({ time }),
   };
@@ -10,11 +12,11 @@ function startClock(time) {
 
 const oneDayInSeconds = 60 * 60 * 24;
 
-function hasFreq(freq, d) {
-  return d.schedule && d.schedule.freq === freq;
+function hasFreq(freq: 'shield' | 'marathon', d: TournamentData) {
+  return d.schedule?.freq === freq;
 }
 
-function clock(d): VNode | undefined {
+function clock(d: TournamentData): VNode | undefined {
   if (d.isFinished) return;
   if (d.secondsToFinish)
     return h('div.clock', [
@@ -32,7 +34,7 @@ function clock(d): VNode | undefined {
           },
           hook: {
             insert(vnode) {
-              (vnode.elm as HTMLElement).setAttribute('datetime', '' + (Date.now() + d.secondsToStart * 1000));
+              (vnode.elm as HTMLElement).setAttribute('datetime', '' + (Date.now() + d.secondsToStart! * 1000));
             },
           },
         }),
@@ -44,9 +46,10 @@ function clock(d): VNode | undefined {
       }),
     ]);
   }
+  return undefined;
 }
 
-function image(d): VNode | undefined {
+function image(d: TournamentData): VNode | undefined {
   if (d.isFinished) return;
   if (hasFreq('shield', d) || hasFreq('marathon', d)) return;
   const s = d.spotlight;
@@ -55,13 +58,13 @@ function image(d): VNode | undefined {
       attrs: { src: lichess.assetUrl('images/' + s.iconImg) },
     });
   return h('i.img', {
-    attrs: dataIcon((s && s.iconFont) || 'g'),
+    attrs: dataIcon(s?.iconFont || ''),
   });
 }
 
 function title(ctrl: TournamentController) {
   const d = ctrl.data;
-  if (hasFreq('marathon', d)) return h('h1', [h('i.fire-trophy', '\\'), d.fullName]);
+  if (hasFreq('marathon', d)) return h('h1', [h('i.fire-trophy', ''), d.fullName]);
   if (hasFreq('shield', d))
     return h('h1', [
       h(
@@ -69,7 +72,7 @@ function title(ctrl: TournamentController) {
         {
           attrs: { href: '/tournament/shields' },
         },
-        d.perf.icon
+        perfIcons[d.perf.key]
       ),
       d.fullName,
     ]);
@@ -91,7 +94,7 @@ function title(ctrl: TournamentController) {
           ' Arena',
         ]
       : [d.fullName]
-    ).concat(d.private ? [' ', h('span', { attrs: dataIcon('a') })] : [])
+    ).concat(d.private ? [' ', h('span', { attrs: dataIcon('') })] : [])
   );
 }
 

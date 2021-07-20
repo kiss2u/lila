@@ -1,5 +1,4 @@
 import { h, VNode } from 'snabbdom';
-import { sanWriter, SanToUci } from './sanWriter';
 import RoundController from '../ctrl';
 import { renderClock } from '../clock/clockView';
 import { renderTableWatch, renderTablePlay, renderTableEnd } from '../view/table';
@@ -9,7 +8,7 @@ import renderCorresClock from '../corresClock/corresClockView';
 import { renderResult } from '../view/replay';
 import { plyStep } from '../round';
 import { onInsert } from '../util';
-import { Step, Dests, Position, Redraw } from '../interfaces';
+import { Step, Position, Redraw } from '../interfaces';
 import * as game from 'game';
 import {
   renderSan,
@@ -30,6 +29,7 @@ import {
   castlingFlavours,
   supportedVariant,
   Style,
+  inputToLegalUci,
 } from 'nvui/chess';
 import { renderSetting } from 'nvui/setting';
 import { Notify } from 'nvui/notify';
@@ -59,7 +59,9 @@ lichess.RoundNVUI = function (redraw: Redraw) {
       const d = ctrl.data,
         step = plyStep(d, ctrl.ply),
         style = moveStyle.get(),
-        variantNope = !supportedVariant(d.game.variant.key) && 'Sorry, this variant is not supported in blind mode.';
+        variantNope =
+          !supportedVariant(d.game.variant.key) &&
+          'Sorry, the variant ' + d.game.variant.key + ' is not supported in blind mode.';
       if (!ctrl.chessground) {
         ctrl.setChessground(
           Chessground(document.createElement('div'), {
@@ -104,7 +106,7 @@ lichess.RoundNVUI = function (redraw: Redraw) {
               attrs: {
                 role: 'status',
                 'aria-live': 'assertive',
-                'aria-atomic': true,
+                'aria-atomic': 'true',
               },
             },
             [ctrl.data.game.status.name === 'started' ? 'Playing' : renderResult(ctrl)]
@@ -115,10 +117,11 @@ lichess.RoundNVUI = function (redraw: Redraw) {
             {
               attrs: {
                 'aria-live': 'assertive',
-                'aria-atomic': true,
+                'aria-atomic': 'true',
               },
             },
-            renderSan(step.san, step.uci, style)
+            // make sure consecutive moves are different so that they get re-read
+            renderSan(step.san, step.uci, style) + (ctrl.ply % 2 === 0 ? '' : ' ')
           ),
           ...(ctrl.isPlaying()
             ? [
@@ -168,10 +171,16 @@ lichess.RoundNVUI = function (redraw: Redraw) {
             {
               hook: onInsert(el => {
                 const $board = $(el as HTMLElement);
-                $board.on('keypress', boardCommandsHandler());
                 $board.on('keypress', () => console.log(ctrl));
                 // NOTE: This is the only line different from analysis board listener setup
-                $board.on(
+                const $buttons = $board.find('button');
+                $buttons.on(
+                  'click',
+                  selectionHandler(() => ctrl.data.opponent.color, selectSound)
+                );
+                $buttons.on('keydown', arrowKeyHandler(ctrl.data.player.color, borderSound));
+                $buttons.on('keypress', boardCommandsHandler());
+                $buttons.on(
                   'keypress',
                   lastCapturedCommandHandler(
                     () => ctrl.data.steps.map(step => step.fen),
@@ -179,15 +188,16 @@ lichess.RoundNVUI = function (redraw: Redraw) {
                     prefixStyle.get()
                   )
                 );
-                const $buttons = $board.find('button');
-                $buttons.on('click', selectionHandler(ctrl.data.opponent.color, selectSound));
-                $buttons.on('keydown', arrowKeyHandler(ctrl.data.player.color, borderSound));
                 $buttons.on(
                   'keypress',
                   possibleMovesHandler(
                     ctrl.data.player.color,
+                    () => ctrl.chessground.state.turnColor,
                     ctrl.chessground.getFen,
-                    () => ctrl.chessground.state.pieces
+                    () => ctrl.chessground.state.pieces,
+                    ctrl.data.game.variant.key,
+                    () => ctrl.chessground.state.movable.dests,
+                    () => ctrl.data.steps
                   )
                 );
                 $buttons.on('keypress', positionJumpHandler());
@@ -208,7 +218,7 @@ lichess.RoundNVUI = function (redraw: Redraw) {
             {
               attrs: {
                 'aria-live': 'polite',
-                'aria-atomic': true,
+                'aria-atomic': 'true',
               },
             },
             ''
@@ -281,9 +291,6 @@ lichess.RoundNVUI = function (redraw: Redraw) {
   };
 };
 
-const promotionRegex = /^([a-h]x?)?[a-h](1|8)=\w$/;
-const uciPromotionRegex = /^([a-h][1-8])([a-h](1|8))[qrbn]$/;
-
 function onSubmit(ctrl: RoundController, notify: (txt: string) => void, style: () => Style, $input: Cash) {
   return () => {
     let input = castlingFlavours(($input.val() as string).trim());
@@ -291,31 +298,8 @@ function onSubmit(ctrl: RoundController, notify: (txt: string) => void, style: (
     if (input[0] === '/') onCommand(ctrl, notify, input.slice(1), style());
     else {
       const d = ctrl.data,
-        legalUcis = destsToUcis(ctrl.chessground.state.movable.dests!),
-        legalSans: SanToUci = sanWriter(plyStep(d, ctrl.ply).fen, legalUcis) as SanToUci;
-      let uci = sanToUci(input, legalSans) || input,
-        promotion = '';
-
-      if (input.match(promotionRegex)) {
-        uci = sanToUci(input.slice(0, -2), legalSans) || input;
-        promotion = input.slice(-1).toLowerCase();
-      } else if (input.match(uciPromotionRegex)) {
-        uci = input.slice(0, -1);
-        promotion = input.slice(-1).toLowerCase();
-      }
-      console.log(uci);
-      console.log(uci.slice(0, -1));
-      console.log(promotion);
-      console.log(legalSans);
-
-      if (legalUcis.includes(uci.toLowerCase()))
-        ctrl.socket.send(
-          'move',
-          {
-            u: uci + promotion,
-          },
-          { ackable: true }
-        );
+        uci = inputToLegalUci(input, plyStep(d, ctrl.ply).fen, ctrl.chessground);
+      if (uci) ctrl.socket.send('move', { u: uci }, { ackable: true });
       else notify(d.player.color === d.game.player ? `Invalid move: ${input}` : 'Not your turn');
     }
     $input.val('');
@@ -352,24 +336,6 @@ function anyClock(ctrl: RoundController, position: Position) {
     (d.correspondence && renderCorresClock(ctrl.corresClock!, ctrl.trans, player.color, position, d.game.player)) ||
     undefined
   );
-}
-
-function destsToUcis(dests: Dests) {
-  const ucis: string[] = [];
-  for (const [orig, d] of dests) {
-    if (d)
-      d.forEach(function (dest) {
-        ucis.push(orig + dest);
-      });
-  }
-  return ucis;
-}
-
-function sanToUci(san: string, legalSans: SanToUci): Uci | undefined {
-  if (san in legalSans) return legalSans[san];
-  const lowered = san.toLowerCase();
-  for (const i in legalSans) if (i.toLowerCase() === lowered) return legalSans[i];
-  return;
 }
 
 function renderMoves(steps: Step[], style: Style) {

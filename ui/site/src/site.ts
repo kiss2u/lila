@@ -17,6 +17,7 @@ import watchers from './component/watchers';
 import { reload } from './component/reload';
 import { requestIdleCallback } from './component/functions';
 import { userComplete } from './component/assets';
+import { trapFocus } from 'common/modal';
 
 exportLichessGlobals();
 lichess.info = info;
@@ -51,7 +52,7 @@ lichess.load.then(() => {
           this.select();
         });
         document.execCommand('copy');
-        $(this).attr('data-icon', 'E');
+        $(this).attr('data-icon', '');
       });
 
     $('body').on('click', 'a.relation-button', function (this: HTMLAnchorElement) {
@@ -103,7 +104,6 @@ lichess.load.then(() => {
 
     if (window.InfiniteScroll) window.InfiniteScroll('.infinite-scroll');
 
-    $('a.delete, input.delete').on('click', () => confirm('Delete?'));
     $('input.confirm, button.confirm').on('click', function (this: HTMLElement) {
       return confirm(this.title || 'Confirm this action?');
     });
@@ -115,6 +115,8 @@ lichess.load.then(() => {
       t.find('span').html('' + (count > 0 ? count : ''));
       return false;
     });
+
+    $('body').on('focusin', trapFocus);
 
     window.Mousetrap.bind('esc', () => {
       const $oc = $('#modal-wrap .close');
@@ -174,10 +176,10 @@ lichess.load.then(() => {
       $('body')
         .append(
           '<div id="announce">' +
-            `<a data-icon="g" class="text" href="${url}">${data.name}</a>` +
+            `<a data-icon="" class="text" href="${url}">${data.name}</a>` +
             '<div class="actions">' +
-            `<a class="withdraw text" href="${url}/withdraw" data-icon="Z">Pause</a>` +
-            `<a class="text" href="${url}" data-icon="G">Resume</a>` +
+            `<a class="withdraw text" href="${url}/withdraw" data-icon="">Pause</a>` +
+            `<a class="text" href="${url}" data-icon="">Resume</a>` +
             '</div></div>'
         )
         .find('#announce .withdraw')

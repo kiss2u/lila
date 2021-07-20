@@ -3,6 +3,7 @@ package controllers
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import play.api.mvc._
+import scala.util.chaining._
 
 import lila.api.GameApiV2
 import lila.app._
@@ -52,9 +53,7 @@ final class Game(
         env.api.gameApiV2.exportOne(game, config) flatMap { content =>
           env.api.gameApiV2.filename(game, config.format) map { filename =>
             Ok(content)
-              .withHeaders(
-                CONTENT_DISPOSITION -> s"attachment; filename=$filename"
-              )
+              .pipe(asAttachment(filename))
               .withHeaders(
                 lila.app.http.ResponseHeaders.headersForApiOrApp(req): _*
               ) as gameContentType(config)
@@ -90,7 +89,6 @@ final class Game(
             perfType = (~get("perfType", req) split "," flatMap { lila.rating.PerfType(_) }).toSet,
             color = get("color", req) flatMap chess.Color.fromName,
             analysed = getBoolOpt("analysed", req),
-            ongoing = getBool("ongoing", req),
             flags = requestPgnFlags(req, extended = false).copy(literate = false),
             perSecond = MaxPerSecond(me match {
               case Some(m) if m is user.id => 60
@@ -104,10 +102,7 @@ final class Game(
             .GlobalConcurrencyLimitPerIpAndUserOption(req, me)(env.api.gameApiV2.exportByUser(config)) {
               source =>
                 Ok.chunked(source)
-                  .withHeaders(
-                    noProxyBufferHeader,
-                    CONTENT_DISPOSITION -> s"attachment; filename=lichess_${user.username}_$date.${format.toString.toLowerCase}"
-                  )
+                  .pipe(asAttachmentStream(s"lichess_${user.username}_$date.${format.toString.toLowerCase}"))
                   .as(gameContentType(config))
             }
             .fuccess
@@ -128,11 +123,7 @@ final class Game(
         .GlobalConcurrencyLimitPerIP(HTTPRequest ipAddress req)(
           env.api.gameApiV2.exportByIds(config)
         ) { source =>
-          Ok.chunked(source)
-            .withHeaders(
-              noProxyBufferHeader
-            )
-            .as(gameContentType(config))
+          noProxyBuffer(Ok.chunked(source)).as(gameContentType(config))
         }
         .fuccess
     }

@@ -7,6 +7,7 @@ var ground = require('./ground');
 var scoring = require('./score');
 var sound = require('./sound');
 var promotion = require('./promotion');
+const timeouts = require('./timeouts');
 
 module.exports = function (blueprint, opts) {
   var items = makeItems({
@@ -24,15 +25,16 @@ module.exports = function (blueprint, opts) {
 
   var complete = function () {
     vm.willComplete = true;
-    setTimeout(
+    vm.score += scoring.getLevelBonus(blueprint, vm.nbMoves);
+    opts.onCompleteImmediate();
+    timeouts.setTimeout(
       function () {
         vm.lastStep = false;
         vm.completed = true;
         sound.levelEnd();
-        vm.score += scoring.getLevelBonus(blueprint, vm.nbMoves);
         ground.stop();
         m.redraw();
-        if (!blueprint.nextButton) setTimeout(opts.onComplete, 1200);
+        if (!blueprint.nextButton) timeouts.setTimeout(opts.onComplete, 1200);
       },
       ground.data().stats.dragged ? 1 : 250
     );
@@ -113,7 +115,7 @@ module.exports = function (blueprint, opts) {
     else sound.move();
     if (vm.failed) {
       if (blueprint.showFailureFollowUp && !captured)
-        setTimeout(function () {
+        timeouts.setTimeout(function () {
           var rm = chess.playRandomMove();
           ground.fen(chess.fen(), blueprint.color, {}, [rm.orig, rm.dest]);
         }, 600);
@@ -169,7 +171,7 @@ module.exports = function (blueprint, opts) {
     scenario: scenario,
     start: function () {
       sound.levelStart();
-      if (chess.color() !== blueprint.color) setTimeout(scenario.opponent, 1000);
+      if (chess.color() !== blueprint.color) timeouts.setTimeout(scenario.opponent, 1000);
     },
     onComplete: opts.onComplete,
   };

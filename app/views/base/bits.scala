@@ -44,7 +44,7 @@ z-index: 99;
   val connectLinks =
     div(cls := "connect-links")(
       a(href := "https://twitter.com/lichess", targetBlank, noFollow)("Twitter"),
-      a(href := "https://discord.gg/hy5jqSs", targetBlank, noFollow)("Discord"),
+      a(href := "https://discord.gg/lichess", targetBlank, noFollow)("Discord"),
       a(href := "https://www.youtube.com/channel/UCr6RfQga70yMM9-nuzAYTsA", targetBlank, noFollow)("YouTube"),
       a(href := "https://www.twitch.tv/lichessdotorg", targetBlank, noFollow)("Twitch")
     )
@@ -60,15 +60,15 @@ z-index: 99;
 
   def pagination(url: Int => String, page: Int, nbPages: Int, showPost: Boolean): Tag =
     st.nav(cls := "pagination")(
-      if (page > 1) a(href := url(page - 1), dataIcon := "I")
-      else span(cls := "disabled", dataIcon := "I"),
+      if (page > 1) a(href := url(page - 1), dataIcon := "")
+      else span(cls := "disabled", dataIcon := ""),
       sliding(page, nbPages, 3, showPost = showPost).map {
         case None                 => raw(" &hellip; ")
         case Some(p) if p == page => span(cls := "current")(p)
         case Some(p)              => a(href := url(p))(p)
       },
-      if (page < nbPages) a(rel := "next", href := url(page + 1), dataIcon := "H")
-      else span(cls := "disabled", dataIcon := "H")
+      if (page < nbPages) a(rel := "next", href := url(page + 1), dataIcon := "")
+      else span(cls := "disabled", dataIcon := "")
     )
 
   private def sliding(pager: Paginator[_], length: Int, showPost: Boolean): List[Option[Int]] =

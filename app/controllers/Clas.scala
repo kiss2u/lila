@@ -10,30 +10,29 @@ import lila.api.Context
 import lila.app._
 import lila.user.Holder
 
-final class Clas(
-    env: Env,
-    authC: Auth
-) extends LilaController(env) {
+final class Clas(env: Env, authC: Auth) extends LilaController(env) {
 
   def index =
     Open { implicit ctx =>
-      ctx.me match {
-        case _ if getBool("home") => renderHome
-        case None                 => renderHome
-        case Some(me) if isGranted(_.Teacher) && !me.lameOrTroll =>
-          env.clas.api.clas.of(me) map { classes =>
-            Ok(views.html.clas.clas.teacherIndex(classes))
-          }
-        case Some(me) =>
-          (fuccess(env.clas.studentCache.isStudent(me.id)) >>| !couldBeTeacher) flatMap {
-            case true =>
-              env.clas.api.student.clasIdsOfUser(me.id) flatMap
-                env.clas.api.clas.byIds map {
-                  case List(single) => Redirect(routes.Clas.show(single.id.value))
-                  case many         => Ok(views.html.clas.clas.studentIndex(many))
-                }
-            case _ => renderHome
-          }
+      NoBot {
+        ctx.me match {
+          case _ if getBool("home") => renderHome
+          case None                 => renderHome
+          case Some(me) if isGranted(_.Teacher) && !me.lameOrTroll =>
+            env.clas.api.clas.of(me) map { classes =>
+              Ok(views.html.clas.clas.teacherIndex(classes))
+            }
+          case Some(me) =>
+            (fuccess(env.clas.studentCache.isStudent(me.id)) >>| !couldBeTeacher) flatMap {
+              case true =>
+                env.clas.api.student.clasIdsOfUser(me.id) flatMap
+                  env.clas.api.clas.byIds map {
+                    case List(single) => Redirect(routes.Clas.show(single.id.value))
+                    case many         => Ok(views.html.clas.clas.studentIndex(many))
+                  }
+              case _ => renderHome
+            }
+        }
       }
     }
 
@@ -70,10 +69,11 @@ final class Clas(
     Auth { implicit ctx => me =>
       WithClassAny(id, me)(
         forTeacher = WithClass(Holder(me), id) { clas =>
-          env.clas.api.student.activeWithUsers(clas) map { students =>
-            preloadStudentUsers(students)
-            views.html.clas.teacherDashboard.overview(clas, students)
-          }
+          env.msg.twoFactorReminder(me.id) >>
+            env.clas.api.student.activeWithUsers(clas) map { students =>
+              preloadStudentUsers(students)
+              views.html.clas.teacherDashboard.overview(clas, students)
+            }
         },
         forStudent = (clas, students) =>
           env.clas.api.clas.teachers(clas) map { teachers =>
@@ -413,7 +413,7 @@ final class Clas(
                 )
               },
             data =>
-              env.user.repo named data.username flatMap {
+              env.user.repo enabledNamed data.username flatMap {
                 _ ?? { user =>
                   import lila.clas.ClasInvite.{ Feedback => F }
                   env.clas.api.invite.create(clas, user, data.realName, me) map { feedback =>
@@ -533,6 +533,30 @@ final class Clas(
       }
     }
 
+  def studentClose(id: String, username: String) =
+    Secure(_.Teacher) { implicit ctx => me =>
+      WithClassAndStudents(me, id) { (clas, students) =>
+        WithStudent(clas, username) { s =>
+          if (s.student.managed)
+            Ok(views.html.clas.student.close(clas, students, s)).fuccess
+          else
+            Redirect(routes.Clas.studentShow(clas.id.value, s.user.username)).fuccess
+        }
+      }
+    }
+
+  def studentClosePost(id: String, username: String) =
+    SecureBody(_.Teacher) { implicit ctx => me =>
+      WithClassAndStudents(me, id) { (clas, students) =>
+        WithStudent(clas, username) { s =>
+          if (s.student.managed)
+            env.clas.api.student.closeAccount(s) >>
+              env.closeAccount(s.user, me) inject Redirect(routes.Clas show id).flashSuccess
+          else Redirect(routes.Clas.show(clas.id.value)).fuccess
+        }
+      }
+    }
+
   def becomeTeacher =
     AuthBody { implicit ctx => me =>
       couldBeTeacher flatMap {
@@ -546,9 +570,10 @@ final class Clas(
 
   private def couldBeTeacher(implicit ctx: Context) =
     ctx.me match {
-      case None             => fuTrue
-      case _ if ctx.hasClas => fuTrue
-      case Some(me)         => !env.mod.logApi.wasUnteachered(me.id)
+      case None                 => fuTrue
+      case Some(me) if me.isBot => fuFalse
+      case _ if ctx.hasClas     => fuTrue
+      case Some(me)             => !env.mod.logApi.wasUnteachered(me.id)
     }
 
   def invitation(id: String) =

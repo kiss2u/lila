@@ -45,10 +45,12 @@ abstract private[controllers] class LilaController(val env: Env)
 
   implicit protected lazy val formBinding: FormBinding = parse.formBinding(parse.DefaultMaxTextLength)
 
-  protected val keyPages       = new KeyPages(env)
-  protected val renderNotFound = keyPages.notFound _
-  protected val rateLimited    = Results.TooManyRequests("Too many requests. Please retry in a moment.")
-  protected val rateLimitedFu  = rateLimited.fuccess
+  protected val keyPages        = new KeyPages(env)
+  protected val renderNotFound  = keyPages.notFound _
+  protected val rateLimitedMsg  = "Too many requests. Try again later."
+  protected val rateLimited     = Results.TooManyRequests(rateLimitedMsg)
+  protected val rateLimitedJson = Results.TooManyRequests(jsonError(rateLimitedMsg))
+  protected val rateLimitedFu   = rateLimited.fuccess
 
   implicit protected def LilaFunitToResult(
       @nowarn("cat=unused") funit: Funit
@@ -312,6 +314,11 @@ abstract private[controllers] class LilaController(val env: Env)
 
   protected def NoLameOrBot[A <: Result](a: => Fu[A])(implicit ctx: Context): Fu[Result] =
     NoLame(NoBot(a))
+
+  protected def NoLameOrBot[A <: Result](me: UserModel)(a: => Fu[A]): Fu[Result] =
+    if (me.isBot) notForBotAccounts.fuccess
+    else if (me.lame) Results.Forbidden.fuccess
+    else a
 
   protected def NoShadowban[A <: Result](a: => Fu[A])(implicit ctx: Context): Fu[Result] =
     if (ctx.me.exists(_.marks.troll)) notFound else a
@@ -604,12 +611,8 @@ abstract private[controllers] class LilaController(val env: Env)
   protected def NotForKids(f: => Fu[Result])(implicit ctx: Context) =
     if (ctx.kid) notFound else f
 
-  protected def NotForBots(res: => Fu[Result])(implicit ctx: Context) =
-    if (HTTPRequest isCrawler ctx.req) notFound else res
-
   protected def OnlyHumans(result: => Fu[Result])(implicit ctx: lila.api.Context) =
-    if (HTTPRequest isCrawler ctx.req) fuccess(NotFound)
-    else result
+    if (HTTPRequest isCrawler ctx.req) notFound else result
 
   protected def OnlyHumansAndFacebookOrTwitter(result: => Fu[Result])(implicit ctx: lila.api.Context) =
     if (HTTPRequest isFacebookOrTwitterBot ctx.req) result
@@ -664,8 +667,6 @@ abstract private[controllers] class LilaController(val env: Env)
   protected def pageHit(req: RequestHeader): Unit =
     if (HTTPRequest isHuman req) lila.mon.http.path(req.path).increment().unit
 
-  protected def BadRequestWithReason(reason: String) = makeCustomResult(BAD_REQUEST, reason).pp
-
   protected def makeCustomResult(status: Int, reasonPhrase: String) =
     Result(
       header = new ResponseHeader(status, reasonPhrase = reasonPhrase.some).pp,
@@ -676,7 +677,11 @@ abstract private[controllers] class LilaController(val env: Env)
 
   protected val noProxyBufferHeader = "X-Accel-Buffering" -> "no"
   protected val noProxyBuffer       = (res: Result) => res.withHeaders(noProxyBufferHeader)
+  protected def asAttachment(name: String) = (res: Result) =>
+    res.withHeaders(CONTENT_DISPOSITION -> s"attachment; filename=$name")
+  protected def asAttachmentStream(name: String) = (res: Result) => noProxyBuffer(asAttachment(name)(res))
 
   protected val pgnContentType    = "application/x-chess-pgn"
   protected val ndJsonContentType = "application/x-ndjson"
+  protected val csvContentType    = "text/csv"
 }

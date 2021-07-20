@@ -25,8 +25,9 @@
   <string name="youPlayTheWhitePieces">您執白棋</string>
   <string name="youPlayTheBlackPieces">您執黑棋</string>
   <string name="itsYourTurn">輪到你了！</string>
-  <string name="kingInTheCenter">王居中勝</string>
-  <string name="threeChecks">三次將軍勝</string>
+  <string name="cheatDetected">偵測到作弊行為</string>
+  <string name="kingInTheCenter">王居中</string>
+  <string name="threeChecks">三次將軍</string>
   <string name="raceFinished">競王結束</string>
   <string name="variantEnding">變體終局</string>
   <string name="newOpponent">換個對手</string>
@@ -35,7 +36,7 @@
   <string name="whitePlays">白方走棋</string>
   <string name="blackPlays">黑方走棋</string>
   <plurals name="opponentLeftCounter">
-    <item quantity="other">你的對手已經離開了遊戲。你將在 %s 秒後獲勝。</item>
+    <item quantity="other">您的對手已經離開了遊戲。您將在 %s 秒後獲勝。</item>
   </plurals>
   <string name="opponentLeftChoices">對方可能已經離開遊戲。您可以選擇：取勝、和棋或等待對方走棋。</string>
   <string name="makeYourOpponentResign">取勝</string>
@@ -77,7 +78,7 @@
   <string name="losing">輸棋</string>
   <string name="drawn">平手</string>
   <string name="unknown">未知</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">資料庫</string>
+  <string name="database">資料庫</string>
   <string name="whiteDrawBlack">白棋獲勝 / 平局 / 黑棋獲勝</string>
   <string name="averageRatingX">平均評分: %s</string>
   <string name="recentGames">最近的棋局</string>
@@ -96,18 +97,18 @@
   <string name="winPreventedBy50MoveRule">在不違反50步和局規則下贏得這局棋</string>
   <string name="lossSavedBy50MoveRule">藉由50步和局規則來避免輸掉棋局</string>
   <string name="allSet">一切就緒！</string>
-  <string name="importPgn">匯入PGN</string>
+  <string name="importPgn">匯入 PGN</string>
   <string name="delete">刪除</string>
-  <string name="deleteThisImportedGame">刪除這局匯入的棋局?</string>
+  <string name="deleteThisImportedGame">刪除此匯入的棋局？</string>
   <string name="replayMode">重播模式</string>
-  <string name="realtimeReplay">根據真實時間重播</string>
-  <string name="byCPL">以CPL重播</string>
+  <string name="realtimeReplay">實時</string>
+  <string name="byCPL">CPL</string>
   <string name="openStudy">打開研究視窗</string>
   <string name="enable">開啟</string>
   <string name="bestMoveArrow">最佳移動的箭頭</string>
   <string name="evaluationGauge">棋力估計表</string>
   <string name="multipleLines">路線分析線</string>
-  <string name="cpus">CPU數</string>
+  <string name="cpus">CPU</string>
   <string name="memory">記憶體</string>
   <string name="infiniteAnalysis">無限分析</string>
   <string name="removesTheDepthLimit">取消深度限制，使您的電腦發熱。</string>
@@ -245,7 +246,6 @@
   <string name="send">發送</string>
   <string name="incrementInSeconds">增加秒數</string>
   <string name="freeOnlineChess">免費線上國際象棋</string>
-  <string name="spectators">旁觀者：</string>
   <plurals name="nbRated">
     <item quantity="other">%s 場排位賽</item>
   </plurals>
@@ -267,7 +267,6 @@
     <item quantity="other">給對方加%s秒</item>
   </plurals>
   <string name="thisAccountViolatedTos">此帳號違反了Lichess的使用規定</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">該棋手操縱評級</string>
   <string name="openingExplorerAndTablebase">開局瀏覽器 &amp; 總局資料庫</string>
   <string name="takeback">悔棋</string>
   <string name="proposeATakeback">請求悔棋</string>
@@ -424,7 +423,7 @@
   <string name="firstName">名</string>
   <string name="lastName">姓</string>
   <string name="biography">個人簡介</string>
-  <string name="country">國家</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">國家或旗幟</string>
   <string name="thankYou">謝謝！</string>
   <string name="socialMediaLinks">官方社群連結</string>
   <string name="inlineNotation">棋譜集中顯示</string>
@@ -578,7 +577,7 @@
   <string name="really">真的</string>
   <string name="contribute">協助</string>
   <string name="termsOfService">服務條款</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">原始碼</string>
+  <string name="sourceCode">原始碼</string>
   <string name="simultaneousExhibitions">車輪戰</string>
   <string name="host">主持</string>
   <string name="hostColorX">主持者使用旗子顏色:%s</string>
@@ -653,8 +652,6 @@
   <string name="enableKidMode">啟用兒童模式</string>
   <string name="disableKidMode">停用兒童模式</string>
   <string name="security">資訊安全相關設定</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">這是已登入到您帳戶的裝置列表，您可以登出任何您無法識別的裝置。</string>
-  <string name="alternativelyYouCanX">或者，您可以%s</string>
   <string name="revokeAllSessions">登出所有裝置</string>
   <string name="playChessEverywhere">随处下棋！</string>
   <string name="asFreeAsLichess">完全又永遠的免費。</string>
@@ -805,14 +802,17 @@
   <string name="youCannotPostYetPlaySomeGames">您目前不能發表文章在論壇裡，先下幾盤棋吧!</string>
   <string name="subscribe">訂閱</string>
   <string name="unsubscribe">取消訂閱</string>
-  <string name="mentionedYouInX"> 在 \"%1$s\" 中提到了您。</string>
-  <string name="xMentionedYouInY"> %1$s 在 \"%2$s\" 中提到了您。</string>
-  <string name="invitedYouToX"> 邀請您至\"%1$s\"。</string>
+  <string name="mentionedYouInX">在 \"%1$s\" 中提到了您。</string>
+  <string name="xMentionedYouInY">%1$s 在 \"%2$s\" 中提到了您。</string>
+  <string name="invitedYouToX">邀請您至\"%1$s\"。</string>
   <string name="xInvitedYouToY">%1$s 邀請您至\"%2$s\"。</string>
+  <string name="youAreNowPartOfTeam">您現在是團隊的成員了。</string>
   <string name="youHaveJoinedTeamX">您已加入 \"%1$s\"。</string>
+  <string name="someoneYouReportedWasBanned">您檢舉的玩家已被封鎖帳號</string>
   <string name="congratsYouWon">恭喜，您贏了！</string>
   <string name="resVsX">%1$s vs %2$s</string>
-  <string name="youJustBecamePatron">您成為了 Lichess 贊助者。</string>
   <string name="refundXpointsTimeControlY">退回 %1$s %2$s 等級分。</string>
   <string name="timeAlmostUp">時間快到了！</string>
+  <string name="download">下載</string>
+  <string name="welcome">歡迎！</string>
 </resources>

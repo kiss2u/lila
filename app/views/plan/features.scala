@@ -43,7 +43,7 @@ object features {
               a(href := routes.Page.variantHome)("8 chess variants (Crazyhouse, Chess960, Horde, ...)")
             ),
             tr(custom("35 per day"))(
-              "Deep Stockfish 13+ server analysis"
+              "Deep Stockfish 14+ server analysis"
             ),
             tr(unlimited)(
               "Instant local Stockfish 13+ analysis"
@@ -134,7 +134,7 @@ object features {
               a(href := routes.Tournament.home)("Arena tournaments")
             ),
             tr(check)(
-              "Board editor and analysis board with Stockfish 12+"
+              "Board editor and analysis board with Stockfish 13+"
             ),
             tr(unlimited)(
               a(href := routes.Puzzle.home)("Tactics puzzles")
@@ -194,11 +194,11 @@ object features {
       st.tr(th(name), th(trans.patron.freeAccount()), th(trans.patron.lichessPatron()))
     )
 
-  private val unlimited = span(dataIcon := "E", cls := "is is-green text unlimited")("Unlimited")
+  private val unlimited = span(dataIcon := "", cls := "is is-green text unlimited")("Unlimited")
 
-  private val check = span(dataIcon := "E", cls := "is is-green text check")("Yes")
+  private val check = span(dataIcon := "", cls := "is is-green text check")("Yes")
 
-  private def custom(str: String) = span(dataIcon := "E", cls := "is is-green text check")(str)
+  private def custom(str: String) = span(dataIcon := "", cls := "is is-green text check")(str)
 
   private def all(content: Frag) = frag(td(content), td(content))
 

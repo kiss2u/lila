@@ -4,28 +4,50 @@ import play.api.mvc._
 import views._
 
 import lila.api.Context
+import play.api.libs.json._
 import lila.app._
 import lila.streamer.{ Streamer => StreamerModel, StreamerForm }
 
-final class Streamer(
-    env: Env,
-    apiC: => Api
-) extends LilaController(env) {
+final class Streamer(env: Env, apiC: => Api) extends LilaController(env) {
 
   private def api = env.streamer.api
 
   def index(page: Int) =
     Open { implicit ctx =>
-      ctx.noKid ?? {
-        pageHit
-        val requests = getBool("requests") && isGranted(_.Streamers)
-        for {
-          liveStreams <- env.streamer.liveStreamApi.all
-          live        <- api withUsers liveStreams
-          pager       <- env.streamer.pager.notLive(page, liveStreams, requests)
-        } yield Ok(html.streamer.index(live, pager, requests))
+      NoBot {
+        ctx.noKid ?? {
+          pageHit
+          val requests = getBool("requests") && isGranted(_.Streamers)
+          for {
+            liveStreams <- env.streamer.liveStreamApi.all
+            live        <- api withUsers liveStreams
+            pager       <- env.streamer.pager.notLive(page, liveStreams, requests)
+          } yield Ok(html.streamer.index(live, pager, requests))
+        }
       }
     }
+
+  def featured = Action.async { implicit req =>
+    env.streamer.liveStreamApi.all
+      .map { streams =>
+        val max      = env.streamer.homepageMaxSetting.get()
+        val featured = streams.homepage(max, req, none) withTitles env.user.lightUserApi
+        JsonOk {
+          featured.live.streams.map { s =>
+            Json.obj(
+              "url"    -> routes.Streamer.redirect(s.streamer.id.value).absoluteURL(),
+              "status" -> s.status,
+              "user" -> Json
+                .obj(
+                  "id"   -> s.streamer.userId,
+                  "name" -> s.streamer.name.value
+                )
+                .add("title" -> featured.titles.get(s.streamer.userId))
+            )
+          }
+        }
+      }
+  }
 
   def live =
     apiC.ApiRequest { _ =>
@@ -65,7 +87,7 @@ final class Streamer(
   def create =
     AuthBody { implicit ctx => me =>
       ctx.noKid ?? {
-        NoLame {
+        NoLameOrBot {
           NoShadowban {
             api find me flatMap {
               case None => api.create(me) inject Redirect(routes.Streamer.edit)
@@ -79,18 +101,19 @@ final class Streamer(
   private def modData(streamer: StreamerModel)(implicit ctx: Context) =
     isGranted(_.ModLog) ?? {
       env.mod.logApi.userHistory(streamer.userId) zip
-        env.user.noteApi.forMod(streamer.userId) zip
+        env.user.noteApi.byUserForMod(streamer.userId) zip
         env.streamer.api.sameChannels(streamer) map some
     }
 
   def edit =
     Auth { implicit ctx => _ =>
       AsStreamer { s =>
-        env.streamer.liveStreamApi of s flatMap { sws =>
-          modData(s.streamer) map { forMod =>
-            NoCache(Ok(html.streamer.edit(sws, StreamerForm userForm sws.streamer, forMod)))
+        env.msg.twoFactorReminder(s.user.id) >>
+          env.streamer.liveStreamApi.of(s).flatMap { sws =>
+            modData(s.streamer) map { forMod =>
+              NoCache(Ok(html.streamer.edit(sws, StreamerForm userForm sws.streamer, forMod)))
+            }
           }
-        }
       }
     }
 
@@ -131,8 +154,10 @@ final class Streamer(
     }
 
   def approvalRequest =
-    AuthBody { _ => me =>
-      api.approval.request(me) inject Redirect(routes.Streamer.edit)
+    AuthBody { implicit ctx => me =>
+      NoBot {
+        api.approval.request(me) inject Redirect(routes.Streamer.edit)
+      }
     }
 
   def picture =

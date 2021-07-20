@@ -26,12 +26,14 @@ object coordinate {
             "Knowing the chessboard coordinates is a very important chess skill. A square name appears on the board and you must click on the correct square."
         )
         .some,
-      zoomable = true
+      zoomable = true,
+      playing = true
     )(
       main(
         id := "trainer",
         cls := "coord-trainer training init",
         attr("data-color-pref") := ctx.pref.coordColorName,
+        attr("data-resize-pref") := ctx.pref.resizeHandle,
         attr("data-score-url") := ctx.isAuth.option(routes.Coordinate.score.url)
       )(
         div(cls := "coord-trainer__side")(
@@ -41,7 +43,12 @@ object coordinate {
               div(cls := "scores")(scoreCharts(score))
             }
           ),
-          form(cls := "color buttons", action := routes.Coordinate.color, method := "post")(
+          form(
+            cls := "color buttons",
+            action := routes.Coordinate.color,
+            method := "post",
+            autocomplete := "off"
+          )(
             st.group(cls := "radio")(
               List(Color.BLACK, Color.RANDOM, Color.WHITE).map { id =>
                 div(
@@ -67,8 +74,12 @@ object coordinate {
           )
         ),
         div(cls := "coord-trainer__board main-board")(
-          div(cls := "next_coord", id := "next_coord0"),
-          div(cls := "next_coord", id := "next_coord1"),
+          svgTag(cls := "coords-svg", viewBoxAttr := "0 0 100 100")(
+            svgGroupTag(cls := "coord coord--resolved")(svgTextTag),
+            svgGroupTag(cls := "coord coord--current")(svgTextTag),
+            svgGroupTag(cls := "coord coord--next")(svgTextTag),
+            svgGroupTag(cls := "coord coord--new")(svgTextTag)
+          ),
           chessgroundBoard
         ),
         div(cls := "coord-trainer__table")(

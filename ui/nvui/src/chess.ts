@@ -1,17 +1,24 @@
-import { h, VNode } from 'snabbdom';
-import { Pieces, Rank, File, files } from 'chessground/types';
+import { h, VNode, VNodeChildren } from 'snabbdom';
+import { Dests, Pieces, Rank, File, files } from 'chessground/types';
 import { invRanks, allKeys } from 'chessground/util';
+import { Api } from 'chessground/api';
 import { Setting, makeSetting } from './setting';
 import { parseFen } from 'chessops/fen';
-import { Chess } from 'chessops/chess';
 import { chessgroundDests } from 'chessops/compat';
-import { SquareName } from 'chessops/types';
+import { SquareName, RULES, Rules } from 'chessops/types';
+import { setupPosition } from 'chessops/variant';
+import { parseUci } from 'chessops/util';
+import { SanToUci, sanWriter } from 'chess';
 
 export type Style = 'uci' | 'san' | 'literate' | 'nato' | 'anna';
 export type PieceStyle = 'letter' | 'white uppercase letter' | 'name' | 'white uppercase name';
 export type PrefixStyle = 'letter' | 'name' | 'none';
 export type PositionStyle = 'before' | 'after' | 'none';
 export type BoardStyle = 'plain' | 'table';
+
+interface RoundStep {
+  uci: Uci;
+}
 
 const nato: { [letter: string]: string } = {
   a: 'alpha',
@@ -64,7 +71,7 @@ const whiteUpperLetterPiece: { [letter: string]: string } = {
   Q: 'Q',
   K: 'K',
 };
-const namePiece: { [letter: string]: string } = {
+export const namePiece: { [letter: string]: string } = {
   p: 'pawn',
   r: 'rook',
   n: 'knight',
@@ -108,7 +115,7 @@ export function symbolToFile(char: string) {
 }
 
 export function supportedVariant(key: string) {
-  return ['standard', 'chess960', 'kingOfTheHill', 'threeCheck', 'fromPosition'].includes(key);
+  return ['standard', 'chess960', 'kingOfTheHill', 'threeCheck', 'fromPosition', 'atomic', 'horde'].includes(key);
 }
 
 export function boardSetting(): Setting<BoardStyle> {
@@ -481,8 +488,9 @@ export function arrowKeyHandler(pov: Color, borderSound: () => void) {
   };
 }
 
-export function selectionHandler(opponentColor: Color, selectSound: () => void) {
+export function selectionHandler(getOpponentColor: () => Color, selectSound: () => void) {
   return (ev: MouseEvent) => {
+    const opponentColor = getOpponentColor();
     // this depends on the current document structure. This may not be advisable in case the structure wil change.
     const $evBtn = $(ev.target as HTMLElement);
     const $rank = $evBtn.attr('rank');
@@ -561,27 +569,61 @@ export function lastCapturedCommandHandler(steps: () => string[], pieceStyle: Pi
   };
 }
 
-export function possibleMovesHandler(color: Color, fen: () => string, pieces: () => Pieces) {
+export function possibleMovesHandler(
+  yourColor: Color,
+  turnColor: () => Color,
+  startingFen: () => string,
+  piecesFunc: () => Pieces,
+  variant: string,
+  moveable: () => Map<string, Array<string>> | undefined,
+  steps: () => RoundStep[]
+) {
   return (ev: KeyboardEvent) => {
     if (ev.key !== 'm' && ev.key !== 'M') return true;
     const $boardLive = $('.boardstatus');
-    const $pieces = pieces();
-    const myTurnFen = color === 'white' ? 'w' : 'b';
-    const opponentTurnFen = color === 'white' ? 'b' : 'w';
+    const pieces: Pieces = piecesFunc();
 
     const $btn = $(ev.target as HTMLElement);
-    const $pos = (($btn.attr('file') ?? '') + $btn.attr('rank')) as SquareName;
+    const pos = (($btn.attr('file') ?? '') + $btn.attr('rank')) as SquareName;
+    const ruleTranslation: { [vari: string]: number } = {
+      standard: 0,
+      antichess: 1,
+      kingOfTheHill: 2,
+      threeCheck: 3,
+      atomic: 4,
+      horde: 5,
+      racingKings: 6,
+      crazyhouse: 7,
+    };
+    const rules: Rules = RULES[ruleTranslation[variant]];
 
-    // possible ineffecient to reparse fen; but seems to work when it is AND when it is not the users' turn.
-    const possibleMoves = chessgroundDests(
-      Chess.fromSetup(parseFen(fen().replace(' ' + opponentTurnFen + ' ', ' ' + myTurnFen + ' ')).unwrap()).unwrap()
-    )
-      .get($pos)
+    let rawMoves;
+
+    // possible ineffecient to reparse fen; but seems to work when it is AND when it is not the users' turn. Also note that this FEN is incomplete as it only contains the piece information.
+    // if it is your turn
+    if (turnColor() === yourColor) {
+      rawMoves = moveable();
+    } else {
+      const fromSetup = setupPosition(rules, parseFen(startingFen()).unwrap()).unwrap();
+      steps().forEach(s => {
+        if (s.uci) {
+          const move = parseUci(s.uci);
+          if (move) fromSetup.play(move);
+        }
+      });
+      // important to override whoes turn it is so only the users' own turns will show up
+      fromSetup.turn = yourColor;
+      rawMoves = chessgroundDests(fromSetup);
+    }
+
+    const possibleMoves = rawMoves
+      ?.get(pos)
       ?.map(i => {
-        const p = $pieces.get(i);
-        return p ? i + ' captures ' + p.role : i;
+        const p = pieces.get(i as Key);
+        // logic to prevent 'capture rook' on own piece in chess960
+        return p && p.color !== yourColor ? `${i} captures ${p.role}` : i;
       })
-      .filter(i => ev.key === 'm' || i.includes('captures'));
+      ?.filter(i => ev.key === 'm' || i.includes('captures'));
     if (!possibleMoves) {
       $boardLive.text('None');
       // if filters out non-capturing moves
@@ -592,4 +634,83 @@ export function possibleMovesHandler(color: Color, fen: () => string, pieces: ()
     }
     return false;
   };
+}
+
+const promotionRegex = /^([a-h]x?)?[a-h](1|8)=\w$/;
+const uciPromotionRegex = /^([a-h][1-8])([a-h](1|8))[qrbn]$/;
+
+function destsToUcis(dests: Dests) {
+  const ucis: string[] = [];
+  for (const [orig, d] of dests) {
+    if (d)
+      d.forEach(function (dest) {
+        ucis.push(orig + dest);
+      });
+  }
+  return ucis;
+}
+
+function sanToUci(san: string, legalSans: SanToUci): Uci | undefined {
+  if (san in legalSans) return legalSans[san];
+  const lowered = san.toLowerCase();
+  for (const i in legalSans) if (i.toLowerCase() === lowered) return legalSans[i];
+  return;
+}
+
+export function inputToLegalUci(input: string, fen: string, chessground: Api): string | undefined {
+  const legalUcis = destsToUcis(chessground.state.movable.dests!),
+    legalSans = sanWriter(fen, legalUcis);
+  let uci = sanToUci(input, legalSans) || input,
+    promotion = '';
+
+  if (input.match(promotionRegex)) {
+    uci = sanToUci(input.slice(0, -2), legalSans) || input;
+    promotion = input.slice(-1).toLowerCase();
+  } else if (input.match(uciPromotionRegex)) {
+    uci = input.slice(0, -1);
+    promotion = input.slice(-1).toLowerCase();
+  }
+
+  if (legalUcis.includes(uci.toLowerCase())) return uci + promotion;
+  else return;
+}
+
+export function renderMainline(nodes: Tree.Node[], currentPath: Tree.Path, style: Style) {
+  const res: Array<string | VNode> = [];
+  let path: Tree.Path = '';
+  nodes.forEach(node => {
+    if (!node.san || !node.uci) return;
+    path += node.id;
+    const content: VNodeChildren = [
+      node.ply & 1 ? plyToTurn(node.ply) + ' ' : null,
+      renderSan(node.san, node.uci, style),
+    ];
+    res.push(
+      h(
+        'move',
+        {
+          attrs: { p: path },
+          class: { active: path === currentPath },
+        },
+        content
+      )
+    );
+    res.push(renderComments(node, style));
+    res.push(', ');
+    if (node.ply % 2 === 0) res.push(h('br'));
+  });
+  return res;
+}
+
+const plyToTurn = (ply: Ply): number => Math.floor((ply - 1) / 2) + 1;
+
+export function renderComments(node: Tree.Node, style: Style): string {
+  if (!node.comments) return '';
+  return (node.comments || []).map(c => renderComment(c, style)).join('. ');
+}
+
+function renderComment(comment: Tree.Comment, style: Style): string {
+  return comment.by === 'lichess'
+    ? comment.text.replace(/Best move was (.+)\./, (_, san) => 'Best move was ' + renderSan(san, undefined, style))
+    : comment.text;
 }

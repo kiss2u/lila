@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Ti luan me të bardhat</string>
   <string name="youPlayTheBlackPieces">Ti luan me të zezat</string>
   <string name="itsYourTurn">Është radha juaj!</string>
+  <string name="cheatDetected">Ky është një kusht i përfundimit të lojës, nëse një lojtar mashtron përderisa loja është duke u luajtur. Loja përfundon menjëherë</string>
   <string name="kingInTheCenter">Mbreti në qendër</string>
   <string name="threeChecks">Tre herë shah</string>
   <string name="raceFinished">Gara mbaroi</string>
@@ -78,7 +79,7 @@
   <string name="losing">Humbes</string>
   <string name="drawn">barazim</string>
   <string name="unknown">I panjohur</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Baza e të dhënave</string>
+  <string name="database">Baza e të dhënave</string>
   <string name="whiteDrawBlack">e bardhë/barazim/e zezë</string>
   <string name="averageRatingX">mesatare pikë:%s</string>
   <string name="recentGames">Lojra te meparshme</string>
@@ -117,6 +118,18 @@
   <string name="blunder">Gabim trashanik</string>
   <string name="mistake">Gabim</string>
   <string name="inaccuracy">Mungesë saktësie</string>
+  <plurals name="nbBlunders">
+    <item quantity="one">%s gabim i madh</item>
+    <item quantity="other">%s gabime të mëdha</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="one">%s gabim</item>
+    <item quantity="other">%s gabime</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="one">%s pasaktësi</item>
+    <item quantity="other">%s pasaktësitë</item>
+  </plurals>
   <string name="moveTimes">Koha e lëvizjeve</string>
   <string name="flipBoard">Kthe fushën</string>
   <string name="threefoldRepetition">Levizje e përsëritur 3 (herë)</string>
@@ -247,7 +260,6 @@
   <string name="send">Dërgo</string>
   <string name="incrementInSeconds">Koha shtesë në sekonda</string>
   <string name="freeOnlineChess">Shah i drejtpërdrejtë pa pagesë</string>
-  <string name="spectators">Shikues:</string>
   <plurals name="nbRated">
     <item quantity="one">%s të vlerësuara</item>
     <item quantity="other">%s të vlerësuara</item>
@@ -275,7 +287,6 @@
     <item quantity="other">Dhuro %s sekonda</item>
   </plurals>
   <string name="thisAccountViolatedTos">Kjo llogari ka shkelur Kushtet e Shërbimit të Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Ky lojtar e ka rritur vlerësimin e vet në mënyre artificiale</string>
   <string name="openingExplorerAndTablebase">Eksploruesi i hapjeve &amp; tabela e fundlojës</string>
   <string name="takeback">Anulo levizje</string>
   <string name="proposeATakeback">Propozo marrje mbrapsht</string>
@@ -443,7 +454,7 @@
   <string name="firstName">Emri</string>
   <string name="lastName">Mbiemri</string>
   <string name="biography">Biografia</string>
-  <string name="country">Shteti</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Shteti apo flamuri</string>
   <string name="thankYou">Faleminderit!</string>
   <string name="socialMediaLinks">Lidhjet me llogaritë e mediat sociale</string>
   <string name="inlineNotation">Shenimet ne rresht</string>
@@ -603,7 +614,7 @@
   <string name="really">për vërtetë</string>
   <string name="contribute">Ndihmo</string>
   <string name="termsOfService">Kushtet e përdorimit</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Source Code</string>
+  <string name="sourceCode">Source Code</string>
   <string name="simultaneousExhibitions">Simultane</string>
   <string name="host">Pritës</string>
   <string name="hostColorX">Ngjyra e mikpritesit: %s</string>
@@ -666,6 +677,7 @@
   <string name="printFriendlyPDF">Printo PDF</string>
   <string name="crosstable">Kryqtryeza</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Ju mund edhe të rrotulloni rrotën mbi fushë për të lëvizur gjatë lojës.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Lëviz tek variacionet e kompjuterit t\'i shikosh paraprakisht.</string>
   <string name="analysisShapesHowTo">Shtypni shift+klikim ose klikoni me të djathtën për të vizatuar rrathë dhe shigjeta mbi fushë.</string>
   <string name="letOtherPlayersMessageYou">Lejo lojtarët e tjerë të të dërgojnë mesazh</string>
   <string name="shareYourInsightsData">Shpërndani të dhënat tuaja të depërtuara.</string>
@@ -679,8 +691,6 @@
   <string name="enableKidMode">Aktivizo modalitetin per femije</string>
   <string name="disableKidMode">Çaktivizo modalitetin per femije</string>
   <string name="security">Siguria</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Kjo eshte nje liste e pajisjeve qe kane hyre ne llogarine tuaj. Terhiq cdo seance qe nuk e njihni.</string>
-  <string name="alternativelyYouCanX">Ose mund te %s.</string>
   <string name="revokeAllSessions">terhiq te gjitha seksionet</string>
   <string name="playChessEverywhere">Luaj shah kudo</string>
   <string name="asFreeAsLichess">Pa pagesë si vetë lichess</string>
@@ -835,9 +845,9 @@
   <string name="youCannotPostYetPlaySomeGames">Ti nuk mundësh të postosh në forume akoma. Luaj disa lojra!</string>
   <string name="subscribe">Abonohu</string>
   <string name="unsubscribe">Ç\'abonohu</string>
-  <string name="mentionedYouInX"> ju permendi tek \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s ju permendi tek \"%2$s\".</string>
-  <string name="invitedYouToX"> ju ftoj tek \"%1$s\".</string>
+  <string name="mentionedYouInX">ju permendi tek \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s ju permendi tek \"%2$s\".</string>
+  <string name="invitedYouToX">ju ftoj tek \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s ju ftoj tek \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Tani je pjese e skuadres.</string>
   <string name="youHaveJoinedTeamX">Ju u antaresuat tek \"%1$s\".</string>
@@ -845,12 +855,14 @@
   <string name="congratsYouWon">Urime, ju fituat!</string>
   <string name="gameVsX">Loja vs %1$s</string>
   <string name="resVsX">%1$s vs %2$s</string>
-  <string name="youJustBecamePatron">Ju sapo u bëtë një Patron i lichess.</string>
-  <string name="patronAccountExpired">Llogaria e Patron skadoi</string>
-  <string name="pleaseReconsiderRenewIt">Ju lutemi merrni parasysh rinovimin e saj!</string>
   <string name="someoneReviewedYourCoachProfile">Dikush vleresoi profilin tuaj të trajnerit.</string>
   <string name="newPendingReview">Në pritje të shqyrtimit</string>
   <string name="lostAgainstTOSViolator">Ti ke humbur nga dikush që shkeli rregullat e Lichess</string>
   <string name="refundXpointsTimeControlY">Kompensim: %1$s pikë %2$s.</string>
   <string name="timeAlmostUp">Koha gati mbaroi!</string>
+  <string name="clickToRevealEmailAddress">[Kliko të zbulosh email adresen]</string>
+  <string name="download">Shkarko</string>
+  <string name="welcome">Mirësevini!</string>
+  <string name="lichessPatronInfo">Lichess është një program bamirësie dhe krejtësisht falas / pa burim të hapur.
+Të gjitha kostot operative, zhvillimi dhe përmbajtja financohen vetëm nga donacionet e përdoruesve.</string>
 </resources>

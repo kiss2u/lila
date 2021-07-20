@@ -1,10 +1,25 @@
 export interface RelayData {
+  tour: RelayTour;
+  rounds: RelayRound[];
+  sync?: RelaySync;
+}
+
+export interface RelayRound {
   id: string;
-  url: string;
+  name: string;
+  slug: string;
+  finished?: boolean;
+  ongoing?: boolean;
+  startsAt?: number;
+}
+
+export interface RelayTour {
+  id: string;
+  name: string;
+  slug: string;
   description: string;
   markup?: string;
   credit?: string;
-  sync: RelaySync;
 }
 
 export interface RelaySync {
@@ -14,8 +29,7 @@ export interface RelaySync {
   log: LogEvent[];
 }
 
-export interface RelayIntro {
-  exists: boolean;
+export interface RelayTourShow {
   active: boolean;
   disable(): void;
 }

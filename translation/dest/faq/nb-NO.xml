@@ -9,9 +9,9 @@
   <string name="whyLiveLightLibre">Live, fordi partiene spilles og ses på i sanntid døgnet rundt; light og libre fordi Lichess er åpen kildekode og ikke nedtynget av slikt proprietært skrot som hjemsøker andre nettsteder.</string>
   <string name="whyIsLilaCalledLila">Like ens står %1$s, kildekoden til Lichess, for li[chess in sca]la, ettersom det meste av Lichess er skrevet i %2$s, et intuitivt programmeringsspråk.</string>
   <string name="howCanIContributeToLichess">Hvordan kan jeg bidra til Lichess?</string>
-  <string name="lichessPoweredByDonationsAndVolunteers">Lichess drives av pengegaver fra mesener og arbeidsinnsats fra frivillige.</string>
+  <string name="lichessPoweredByDonationsAndVolunteers">Lichess drives av pengegaver fra patroner og arbeidsinnsats fra frivillige.</string>
   <string name="findMoreAndSeeHowHelp">Du kan lese mer om %1$s (inkludert en %2$s). Hvis du vil hjelpe Lichess med å tilby av tiden din og av ferdighetene dine, så finnes det mange %3$s.</string>
-  <string name="beingAPatron">å være mesen</string>
+  <string name="beingAPatron">å være patron</string>
   <string name="breakdownOfOurCosts">oversikt over kostnadene våre</string>
   <string name="otherWaysToHelp">andre sett å hjelpe til på</string>
   <string name="areThereWebsitesBasedOnLichess">Finnes det nettsteder som er basert på Lichess?</string>
@@ -95,7 +95,7 @@ Ikke be om LM-tittelen.</string>
   <string name="usernamesCannotBeChanged">Nei, det er tekniske og praktiske årsaker til at brukernavn ikke kan endres. Brukernavn opptrer for mange steder: databaser, eksporter, logger og folks hoder. Du kan endre mellom store og små bokstaver én gang.</string>
   <string name="uniqueTrophies">Unike trofeer</string>
   <string name="ownerUniqueTrophies">Det trofeet er unikt i Lichess-historien, ingen andre enn %1$s vil noensinne få det.</string>
-  <string name="wayOfBerserkExplanation">For å få det utfordret hiimgosu seg selv til å gå berserk i og vinne 100%% av partiene i %s.</string>
+  <string name="wayOfBerserkExplanation">For å få det utfordret hiimgosu seg selv til å gå berserk i og vinne alle partiene i %s.</string>
   <string name="aHourlyBulletTournament">timens Bullet-arena</string>
   <string name="goldenZeeExplanation">ZugAddict drev og strømmet, og i to timer hadde han uten hell forsøkt å slå maskinen på nivå 8 i et 1+0-parti. Thibault sa at om han lyktes mens han strømmet, skulle han få et unikt trofé. En time senere moste han Stockfish, og løftet ble overholdt.</string>
   <string name="lichessRatings">Lichess-ratinger</string>

@@ -82,6 +82,8 @@ object Countries {
     C("EH", "Western Sahara"),
     C("ER", "Eritrea"),
     C("ES", "Spain"),
+    C("ES-CT", "Catalonia"),
+    C("ES-EU", "Basque"),
     C("ET", "Ethiopia"),
     C("FI", "Finland"),
     C("FJ", "Fiji"),
@@ -277,7 +279,8 @@ object Countries {
     C("_lichess", "Lichess"),
     C("_pirate", "Pirate"),
     C("_rainbow", "Rainbow"),
-    C("_united-nations", "United Nations")
+    C("_united-nations", "United Nations"),
+    C("_earth", "Earth")
   )
 
   val allPairs = all map { c =>
@@ -290,7 +293,22 @@ object Countries {
     }
     .to(Map)
 
+  val nameMap: Map[Country, String] = all.view
+    .map { c =>
+      c -> c.name
+    }
+    .to(Map)
+
   val codeSet = map.keySet
 
+  val nonCountries = List(
+    "_lichess",
+    "_pirate",
+    "_rainbow",
+    "_united-nations",
+    "_earth"
+  )
+
   def info(code: String): Option[Country] = map get code
+  def name(country: Country): String      = nameMap.getOrElse(country, country.name)
 }

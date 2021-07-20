@@ -34,6 +34,9 @@ object layout {
           a(activeCls("editProfile"), href := routes.Account.profile)(
             trans.editProfile()
           ),
+          a(activeCls("username"), href := routes.Account.username)(
+            trans.changeUsername()
+          ),
           isGranted(_.Coach) option a(activeCls("coach"), href := routes.Coach.edit)(
             trans.coach.lichessCoach()
           ),
@@ -43,9 +46,6 @@ object layout {
           ),
           a(activeCls("email"), href := routes.Account.email)(
             trans.changeEmail()
-          ),
-          a(activeCls("username"), href := routes.Account.username)(
-            trans.changeUsername()
           ),
           a(activeCls("twofactor"), href := routes.Account.twoFactor)(
             trans.tfa.twoFactorAuth()
@@ -57,9 +57,8 @@ object layout {
           a(href := routes.Plan.index)(trans.patron.lichessPatron()),
           div(cls := "sep"),
           a(activeCls("oauth.token"), href := routes.OAuthToken.index)(
-            "API Access tokens"
+            "API access tokens"
           ),
-          ctx.noBot option a(activeCls("oauth.app"), href := routes.OAuthApp.index)("OAuth Apps"),
           ctx.noBot option a(href := routes.DgtCtrl.index)("DGT board"),
           div(cls := "sep"),
           a(activeCls("close"), href := routes.Account.close)(

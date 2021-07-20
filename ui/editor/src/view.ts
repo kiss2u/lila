@@ -7,7 +7,7 @@ import { parseFen, EMPTY_FEN } from 'chessops/fen';
 import modal from 'common/modal';
 import EditorCtrl from './ctrl';
 import chessground from './chessground';
-import { OpeningPosition, Selected, CastlingToggle, EditorState } from './interfaces';
+import { Selected, CastlingToggle, EditorState } from './interfaces';
 
 function castleCheckBox(ctrl: EditorCtrl, id: CastlingToggle, label: string, reversed: boolean): VNode {
   const input = h('input', {
@@ -46,7 +46,7 @@ function studyButton(ctrl: EditorCtrl, state: EditorState): VNode {
         {
           attrs: {
             type: 'submit',
-            'data-icon': '4',
+            'data-icon': '',
             disabled: !state.legalFen,
           },
           class: {
@@ -87,7 +87,7 @@ const allVariants: Array<[Rules, string]> = [
 ];
 
 function controls(ctrl: EditorCtrl, state: EditorState): VNode {
-  const position2option = function (pos: OpeningPosition): VNode {
+  const position2option = function (pos: Editor.OpeningPosition): VNode {
     return h(
       'option',
       {
@@ -99,8 +99,22 @@ function controls(ctrl: EditorCtrl, state: EditorState): VNode {
       pos.eco ? `${pos.eco} ${pos.name}` : pos.name
     );
   };
+
+  const endgamePosition2option = function (pos: Editor.EndgamePosition): VNode {
+    return h(
+      'option',
+      {
+        attrs: {
+          value: pos.epd || pos.fen,
+          'data-fen': pos.fen,
+        },
+      },
+      pos.name
+    );
+  };
+
   return h('div.board-editor__tools', [
-    ...(ctrl.cfg.embed || !ctrl.cfg.positions
+    ...(ctrl.cfg.embed || !ctrl.cfg.positions || !ctrl.cfg.endgamePositions
       ? []
       : [
           h('div', [
@@ -133,6 +147,7 @@ function controls(ctrl: EditorCtrl, state: EditorState): VNode {
                   ...ctrl.extraPositions.map(position2option),
                 ]),
                 optgroup(ctrl.trans.noarg('popularOpenings'), ctrl.cfg.positions.map(position2option)),
+                optgroup(ctrl.trans.noarg('endgamePositions'), ctrl.cfg.endgamePositions.map(endgamePosition2option)),
               ]
             ),
           ]),
@@ -221,7 +236,7 @@ function controls(ctrl: EditorCtrl, state: EditorState): VNode {
             h(
               'a.button.button-empty.text',
               {
-                attrs: { 'data-icon': 'q' },
+                attrs: { 'data-icon': '' },
                 on: {
                   click() {
                     ctrl.setFen(EMPTY_FEN);
@@ -233,7 +248,7 @@ function controls(ctrl: EditorCtrl, state: EditorState): VNode {
             h(
               'a.button.button-empty.text',
               {
-                attrs: { 'data-icon': 'B' },
+                attrs: { 'data-icon': '' },
                 on: {
                   click() {
                     ctrl.chessground!.toggleOrientation();
@@ -247,7 +262,7 @@ function controls(ctrl: EditorCtrl, state: EditorState): VNode {
               'a',
               {
                 attrs: {
-                  'data-icon': 'A',
+                  'data-icon': '',
                   rel: 'nofollow',
                   ...(state.legalFen ? { href: ctrl.makeAnalysisUrl(state.legalFen) } : {}),
                 },
@@ -270,11 +285,14 @@ function controls(ctrl: EditorCtrl, state: EditorState): VNode {
                 },
                 on: {
                   click: () => {
-                    if (state.playable) modal($('.continue-with'));
+                    if (state.playable)
+                      modal({
+                        content: $('.continue-with'),
+                      });
                   },
                 },
               },
-              [h('span.text', { attrs: { 'data-icon': 'U' } }, ctrl.trans.noarg('continueFromHere'))]
+              [h('span.text', { attrs: { 'data-icon': '' } }, ctrl.trans.noarg('continueFromHere'))]
             ),
             studyButton(ctrl, state),
           ]),

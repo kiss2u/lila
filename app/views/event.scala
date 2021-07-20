@@ -33,7 +33,7 @@ object event {
             }
           ),
           st.form(cls := "box__top__actions", action := routes.Event.cloneE(event.id), method := "get")(
-            form3.submit("Clone", "".some, klass = "button-green button-empty")
+            form3.submit("Clone", "".some)(cls := "button-green button-empty")
           )
         ),
         standardFlash(),
@@ -63,7 +63,7 @@ object event {
           )
         ),
         e.description.map { d =>
-          div(cls := "desc")(views.html.base.markdown(d))
+          div(cls := "desc")(markdown(d))
         },
         if (e.isFinished) p(cls := "desc")("The event is finished.")
         else if (e.isNow) a(href := e.url, cls := "button button-fat")(trans.eventInProgress())
@@ -76,6 +76,18 @@ object event {
       )
     }
 
+  private object markdown {
+    import scala.concurrent.duration._
+    private val renderer = new lila.common.Markdown(table = true, list = true)
+    private val cache: com.github.blemale.scaffeine.LoadingCache[String, String] =
+      lila.memo.CacheApi.scaffeineNoScheduler
+        .expireAfterAccess(10 minutes)
+        .maximumSize(64)
+        .build(renderer.apply)
+
+    def apply(text: String): Frag = raw(cache get text)
+  }
+
   def manager(events: List[Event])(implicit ctx: Context) = {
     val title = "Event manager"
     layout(title = title) {
@@ -83,7 +95,7 @@ object event {
         div(cls := "box__top")(
           h1(title),
           div(cls := "box__top__actions")(
-            a(cls := "button button-green", href := routes.Event.form, dataIcon := "O")
+            a(cls := "button button-green", href := routes.Event.form, dataIcon := "")
           )
         ),
         table(cls := "slist slist-pad")(
@@ -112,7 +124,7 @@ object event {
                   showDateTimeUTC(e.finishesAt),
                   momentFromNow(e.finishesAt)
                 ),
-                td(a(cls := "text", href := routes.Event.show(e.id), dataIcon := "v"))
+                td(a(cls := "text", href := routes.Event.show(e.id), dataIcon := ""))
               )
             }
           )

@@ -48,7 +48,7 @@ object tree {
             "Please use ",
             a(href := routes.Main.contact)("the contact page"),
             " or ",
-            a(href := "https://discordapp.com/invite/pvHanhg")("our discord server"),
+            a(href := "https://discord.gg/lichess")("our Discord server"),
             " to contact us about other issues.",
             br,
             "You can also ",
@@ -176,6 +176,37 @@ object tree {
     )
   }
 
+  private def rankBanMenu(implicit ctx: Context): Branch = {
+    val accept = "I accept that I have manipulated my account to get on the leaderboard."
+    val deny =
+      "I deny having manipulated my account to get on the leaderboard."
+    Branch(
+      "root",
+      "Your account has been excluded from leaderboards.",
+      List(
+        Leaf(
+          "rankban-accept",
+          accept,
+          frag(
+            sendUsAnAppeal,
+            newAppeal(accept)
+          )
+        ),
+        Leaf(
+          "rankban-deny",
+          deny,
+          frag(
+            sendUsAnAppeal,
+            newAppeal(deny)
+          )
+        )
+      ),
+      content = frag(
+        "We define this as using any unfair way to get on the leaderboard."
+      ).some
+    )
+  }
+
   private def playbanMenu(implicit ctx: Context): Branch = {
     Branch(
       "root",
@@ -229,7 +260,7 @@ object tree {
       p("Did you create multiple accounts? If so, remember that you promised not to, on the sign up page."),
       p(
         "If you violated the terms of service on a previous account, then you are not allowed to make a new one, ",
-        "unless it was explicitely allowed by the moderation team during an appeal."
+        "unless it was explicitly allowed by the moderation team during an appeal."
       ),
       p(
         "If you never violated the terms of service, and didn't make several accounts, then you can appeal this account closure:"
@@ -252,6 +283,7 @@ object tree {
                 else if (me.marks.engine || query.contains("engine")) engineMenu
                 else if (me.marks.boost || query.contains("boost")) boostMenu
                 else if (me.marks.troll || query.contains("shadowban")) muteMenu
+                else if (me.marks.rankban || query.contains("rankban")) rankBanMenu
                 else cleanMenu
               },
               none
@@ -264,7 +296,7 @@ object tree {
               "Read more about the appeal process"
             )
           ),
-          p(a(cls := "text", dataIcon := "x", href := routes.Account.data)("Export personal data"))
+          p(a(cls := "text", dataIcon := "", href := routes.Account.data)("Export personal data"))
         )
       )
     }

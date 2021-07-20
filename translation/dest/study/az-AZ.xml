@@ -15,6 +15,7 @@
   <string name="dateAddedOldest">Əlavə edilmə tarixi (köhnədən yeniyə)</string>
   <string name="recentlyUpdated">Ən son yenilənən</string>
   <string name="mostPopular">Ən məşhur</string>
+  <string name="alphabetical">Əlifbaya görə</string>
   <string name="addNewChapter">Yeni bir fəsil əlavə et</string>
   <plurals name="nbChapters">
     <item quantity="one">%s Fəsil</item>
@@ -62,15 +63,13 @@
   <string name="chapterPgn">Fəsil PGN-i</string>
   <string name="downloadGame">Oyunu endir</string>
   <string name="studyUrl">Çalışma URL-i</string>
-  <string name="broadcastUrl" comment="broadcastUrl&#10;&#10;This is to do with the Broadcasts feature. These are tournaments in the chess world, hosted elsewhere, for example the FIDE Championship. This specific text lets you share the URL. https://lichess.org/broadcast">Yayım URL-i</string>
   <string name="currentChapterUrl">Cari fəsil URL-ii</string>
-  <string name="currentGameUrl">Hazırkı oyun URL-i</string>
-  <string name="youCanPasteThisInTheForumToEmbed" comment="youCanPasteThisInTheForumToEmbed&#10;&#10;The thing you are pasting is a link to a study. This will make it appear in the correct section as well.">Pərçimləmək üçün bunu forumda paylaşa bilərsiniz</string>
+  <string name="youCanPasteThisInTheForumToEmbed">Pərçimləmək üçün bunu forumda paylaşa bilərsiniz</string>
   <string name="startAtInitialPosition">Başlanğıc pozisiyada başlasın</string>
   <string name="startAtX">buradan başla: %s</string>
   <string name="embedInYourWebsite">Veb sayt və ya bloqunuzda pərçimləyin</string>
   <string name="readMoreAboutEmbedding">Pərçimləmə haqqında daha ətraflı</string>
-  <string name="onlyPublicStudiesCanBeEmbedded" comment="onlyPublicStudiesCanBeEmbedded&#10;&#10;Embedding is when you put the study in another website.">Yalnız hərkəsə açıq çalışmalar pərçimlənə bilər!</string>
+  <string name="onlyPublicStudiesCanBeEmbedded">Yalnız hərkəsə açıq çalışmalar pərçimlənə bilər!</string>
   <string name="open">Aç</string>
   <string name="xBroughtToYouByY">%2$s sizə %1$s tərəfindən gətirildi</string>
   <string name="studyNotFound">Çalışma tapılmadı</string>
@@ -129,4 +128,20 @@
   <string name="deleteStudy">Çalışmanı sil</string>
   <string name="deleteTheEntireStudy">Bütün çalışma silinsin? Bunun geri dönüşü yoxdur!</string>
   <string name="whereDoYouWantToStudyThat">Harada çalışmaq istəyirsən?</string>
+  <string name="goodMove">Yaxşı gediş</string>
+  <string name="mistake">Səhv</string>
+  <string name="brilliantMove">Brilyant gediş</string>
+  <string name="blunder">Kobud səhv</string>
+  <string name="interestingMove">Maraqlı gediş</string>
+  <string name="dubiousMove" comment="dubiousMove&#10;A questionable move.">Şübhəli gediş</string>
+  <string name="onlyMove" comment="onlyMove&#10;The only possible move. This is a label that can be placed in a study of a past game. It may not technically be the only move, but the only feasible one.">Tək gediş</string>
+  <string name="zugzwang" comment="zugzwang&#10;What zugzwang is: https://lichess.org/practice/intermediate-tactics/zugzwang/9cKgYrHb/ybYJ9gNa&#10;&#10;This specific string is a label that can be applied to a position in a study, to indicate one side is in zugzwang.">Suqsvanq</string>
+  <string name="equalPosition">Bərabər mövqe</string>
+  <string name="unclearPosition" comment="unclearPosition&#10;It is unclear who is winning or losing.">Qeyri-müəyyən mövqe</string>
+  <string name="whiteIsSlightlyBetter">Ağlar biraz öndədir</string>
+  <string name="blackIsSlightlyBetter">Qaralar biraz öndədir</string>
+  <string name="whiteIsBetter">Ağlar üstündür</string>
+  <string name="blackIsBetter">Qaralar üstündür</string>
+  <string name="whiteIsWinning">Ağlar qalib gəlir</string>
+  <string name="blackIsWinning">Qaralar qalib gəlir</string>
 </resources>

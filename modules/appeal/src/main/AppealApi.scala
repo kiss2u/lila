@@ -1,14 +1,15 @@
 package lila.appeal
 
-import lila.db.dsl._
-import lila.user.User
 import org.joda.time.DateTime
-import lila.user.{ Holder, NoteApi, UserRepo }
+
+import lila.db.dsl._
+import lila.user.{ Holder, NoteApi, User, UserRepo }
 
 final class AppealApi(
     coll: Coll,
     userRepo: UserRepo,
-    noteApi: NoteApi
+    noteApi: NoteApi,
+    snoozer: lila.memo.Snoozer[Appeal.SnoozeKey]
 )(implicit ec: scala.concurrent.ExecutionContext) {
 
   import BsonHandlers._
@@ -18,6 +19,8 @@ final class AppealApi(
   def get(user: User) = coll.byId[Appeal](user.id)
 
   def byUserIds(userIds: List[User.ID]) = coll.byIds[Appeal](userIds)
+
+  def byId(appealId: User.ID) = coll.byId[Appeal](appealId)
 
   def exists(user: User) = coll.exists($id(user.id))
 
@@ -58,17 +61,21 @@ final class AppealApi(
 
   def countUnread = coll.countSel($doc("status" -> Appeal.Status.Unread.key))
 
-  def queue: Fu[List[Appeal]] =
+  def queueOf(mod: User) = queue(snoozer snoozedKeysOf mod.id map (_.appealId))
+
+  private def queue(exceptIds: Iterable[User.ID]): Fu[List[Appeal]] =
     coll
-      .find($doc("status" -> Appeal.Status.Unread.key))
+      .find($doc("status" -> Appeal.Status.Unread.key) ++ {
+        exceptIds.nonEmpty ?? $doc("_id" $nin exceptIds)
+      })
       .sort($doc("firstUnrepliedAt" -> 1))
       .cursor[Appeal]()
-      .list(12) flatMap { unreads =>
+      .list(30) flatMap { unreads =>
       coll
         .find($doc("status" $ne Appeal.Status.Unread.key))
         .sort($doc("firstUnrepliedAt" -> -1))
         .cursor[Appeal]()
-        .list(20 - unreads.size) map {
+        .list(40 - unreads.size) map {
         unreads ::: _
       }
     }
@@ -83,10 +90,13 @@ final class AppealApi(
     coll.update.one($id(appeal.id), appeal.toggleMute).void
 
   def setReadById(userId: User.ID) =
-    coll.byId[Appeal](userId) flatMap { _ ?? setRead }
+    byId(userId) flatMap { _ ?? setRead }
 
   def setUnreadById(userId: User.ID) =
-    coll.byId[Appeal](userId) flatMap { _ ?? setUnread }
+    byId(userId) flatMap { _ ?? setUnread }
 
   def onAccountClose(user: User) = setReadById(user.id)
+
+  def snooze(mod: User, appealId: User.ID, duration: String): Unit =
+    snoozer.set(Appeal.SnoozeKey(mod.id, appealId), duration)
 }

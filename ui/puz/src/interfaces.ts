@@ -1,26 +1,15 @@
-import { Role } from 'chessground/types';
-import { VNode } from 'snabbdom';
-import { Clock } from './clock';
-import { Combo } from './combo';
-import CurrentPuzzle from './current';
-
-export type MaybeVNode = VNode | string | null | undefined;
-export type MaybeVNodes = MaybeVNode[];
-export type Redraw = () => void;
-
-export interface Promotion {
-  start(orig: Key, dest: Key, callback: (orig: Key, dest: Key, prom: Role) => void): boolean;
-  cancel(): void;
-  view(): MaybeVNode;
-}
+import type { Clock } from './clock';
+import type { Combo } from './combo';
+import type CurrentPuzzle from './current';
 
 export interface PuzPrefs {
-  coords: 0 | 1 | 2;
+  coords: Prefs.Coords;
   is3d: boolean;
   destination: boolean;
   rookCastle: boolean;
   moveEvent: number;
   highlight: boolean;
+  animation: number;
 }
 
 export type UserMove = (orig: Key, dest: Key) => void;

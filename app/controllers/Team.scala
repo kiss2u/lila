@@ -12,6 +12,7 @@ import lila.app._
 import lila.common.config.MaxPerSecond
 import lila.team.{ Requesting, Team => TeamModel }
 import lila.user.{ User => UserModel, Holder }
+import lila.memo.RateLimit
 
 final class Team(
     env: Env,
@@ -78,7 +79,7 @@ final class Team(
     }
 
   def users(teamId: String) =
-    AnonOrScoped()(
+    AnonOrScoped(_.Team.Read)(
       anon = req => usersExport(teamId, none, req),
       scoped = req => me => usersExport(teamId, me.some, req)
     )
@@ -196,8 +197,8 @@ final class Team(
 
   def disable(id: String) =
     Auth { implicit ctx => me =>
-      WithOwnedTeam(id) { team =>
-        api.disable(team, me) >>
+      WithOwnedTeamEnabled(id) { team =>
+        api.toggleEnabled(team, me) >>
           env.mod.logApi.disableTeam(me.id, team.id, team.name) inject
           Redirect(routes.Team show id).flashSuccess
       }
@@ -300,9 +301,7 @@ final class Team(
                 .fold(
                   newJsonFormError,
                   setup =>
-                    env.oAuth.server.fetchAppAuthor(req) flatMap {
-                      api.joinApi(team, me, _, setup.message)
-                    } flatMap {
+                    api.join(team, me, setup.message, setup.password) flatMap {
                       case Requesting.Joined => jsonOkResult.fuccess
                       case Requesting.NeedPassword =>
                         Forbidden(jsonError("This team requires a password.")).fuccess
@@ -451,7 +450,13 @@ final class Team(
                   .map { tours =>
                     BadRequest(html.team.admin.pmAll(team, err, tours))
                   },
-              done => done inject Redirect(routes.Team.show(team.id)).flashSuccess
+              res =>
+                Redirect(routes.Team.show(team.id))
+                  .flashing(res match {
+                    case RateLimit.Through => "success" -> ""
+                    case RateLimit.Limited => "failure" -> rateLimitedMsg
+                  })
+                  .fuccess
             )
           },
       scoped = implicit req =>
@@ -460,7 +465,10 @@ final class Team(
             _.filter(_ leaders me.id) ?? { team =>
               doPmAll(team, me).fold(
                 err => BadRequest(errorsAsJson(err)(reqLang)).fuccess,
-                done => done inject jsonOkResult
+                {
+                  case RateLimit.Through => jsonOkResult.fuccess
+                  case RateLimit.Limited => rateLimitedJson.fuccess
+                }
               )
             }
           }
@@ -519,14 +527,17 @@ final class Team(
       }
     }
 
-  private def doPmAll(team: TeamModel, me: UserModel)(implicit req: Request[_]): Either[Form[_], Funit] =
+  private def doPmAll(team: TeamModel, me: UserModel)(implicit
+      req: Request[_]
+  ): Either[Form[_], RateLimit.Result] =
     forms.pmAll
       .bindFromRequest()
       .fold(
         err => Left(err),
         msg =>
           Right {
-            PmAllLimitPerUser(me.id) {
+            val cost = if (me.isVerifiedOrAdmin) 1 else pmAllCost
+            PmAllLimitPerUser[RateLimit.Result](me.id, cost) {
               val url  = s"${env.net.baseUrl}${routes.Team.show(team.id)}"
               val full = s"""$msg
 ---
@@ -536,17 +547,16 @@ You received this because you are subscribed to messages of the team $url."""
                 .addEffect { nb =>
                   lila.mon.msg.teamBulk(team.id).record(nb).unit
                 }
-              funit // we don't wait for the stream to complete, it would make lichess time out
-            }(funit)
+              RateLimit.Through // we don't wait for the stream to complete, it would make lichess time out
+            }(RateLimit.Limited)
           }
       )
 
-  private val PmAllLimitPerUser = lila.memo.RateLimit.composite[lila.user.User.ID](
-    key = "team.pm.all",
-    enforce = env.net.rateLimit.value
-  )(
-    ("fast", 1, 3.minutes),
-    ("slow", 4, 24.hours)
+  private val pmAllCost = 5
+  private val PmAllLimitPerUser = new lila.memo.RateLimit[lila.user.User.ID](
+    credits = 6 * pmAllCost,
+    duration = 20 hours,
+    key = "team.pm.all"
   )
 
   private def LimitPerWeek[A <: Result](me: UserModel)(a: => Fu[A])(implicit ctx: Context): Fu[Result] =

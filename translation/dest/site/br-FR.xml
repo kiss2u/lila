@@ -81,7 +81,7 @@
   <string name="losing">A lakay koll</string>
   <string name="drawn">Rampo</string>
   <string name="unknown">Dianav</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Dataeg</string>
+  <string name="database">Dataeg</string>
   <string name="whiteDrawBlack">Gwenn / Rampo / Du</string>
   <string name="averageRatingX">Renkadur keitat: %s</string>
   <string name="recentGames">Krogadoù diwezhañ</string>
@@ -272,7 +272,6 @@
   <string name="send">Kas</string>
   <string name="incrementInSeconds">Inkremant e eilennoù</string>
   <string name="freeOnlineChess">C\'hoari echedoù enlinenn digoust</string>
-  <string name="spectators">Arvester:</string>
   <plurals name="nbRated">
     <item quantity="one">%s c\'hoari renket</item>
     <item quantity="two">%s c\'hoari renket</item>
@@ -318,7 +317,6 @@
     <item quantity="other">Reiñ %s eilennoù</item>
   </plurals>
   <string name="thisAccountViolatedTos">Perc\'henner ar gont-mañ n\'en deus ket doujet da Reolennoù Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Kresket/digresket e vez e live en un doare direizh gant ar c\'hoarier-mañ</string>
   <string name="openingExplorerAndTablebase">Furcher an digoradurioù &amp; tablebase</string>
   <string name="takeback">Nullañ ar fiñvadenn ziwezhañ</string>
   <string name="proposeATakeback">Kinnig nullañ ar fiñvadenn ziwezhañ</string>
@@ -519,7 +517,6 @@
   <string name="firstName">Anv</string>
   <string name="lastName">Anv familh</string>
   <string name="biography">Diwar ho penn</string>
-  <string name="country">Bro</string>
   <string name="thankYou">Trugarez!</string>
   <string name="socialMediaLinks">Liammoù ar mediaoù sokial</string>
   <string name="inlineNotation">Notennoù en-linenn</string>
@@ -686,7 +683,7 @@
   <string name="really">da vat</string>
   <string name="contribute">Kenoberiañ</string>
   <string name="termsOfService">Divizoù hollek an implij</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Boneg Tarzh</string>
+  <string name="sourceCode">Boneg Tarzh</string>
   <string name="simultaneousExhibitions">Abadennoù kempred</string>
   <string name="host">Ostiz</string>
   <string name="hostColorX">Liv an ostiz: %s</string>
@@ -764,8 +761,6 @@
   <string name="enableKidMode">Gweredekaat ar mod evit ar vugale</string>
   <string name="disableKidMode">Diweredekaat ar mod evit ar vugale</string>
   <string name="security">Surentez</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Setu roll an trobarzhelloù bet luget war ho kont. Skarzhit an dalc\'hoù dianav deoc\'h.</string>
-  <string name="alternativelyYouCanX">A-hend-all e c\'hallit %s.</string>
   <string name="revokeAllSessions">skarzhañ an holl zalc\'hoù</string>
   <string name="playChessEverywhere">C\'hoari echedoù e pep lec\'h</string>
   <string name="asFreeAsLichess">Ken digoust ha lichess</string>

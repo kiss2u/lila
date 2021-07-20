@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="moveToStart">Jouez un coup pour commencer</string>
-  <string name="youPlayTheWhitePiecesInAllPuzzles">Vous avez les pièces blanches dans tous les problèmes</string>
-  <string name="youPlayTheBlackPiecesInAllPuzzles">Vous avez les pièces noires dans tous les problèmes</string>
+  <string name="youPlayTheWhitePiecesInAllPuzzles">Vous jouez les pièces blanches dans tous les problèmes</string>
+  <string name="youPlayTheBlackPiecesInAllPuzzles">Vous jouez les pièces noires dans tous les problèmes</string>
   <string name="puzzlesSolved">problèmes résolus</string>
   <string name="newDailyHighscore">Nouveau record du jour !</string>
   <string name="newWeeklyHighscore">Nouveau record de la semaine !</string>
@@ -22,11 +22,11 @@
   <string name="score">Score</string>
   <string name="moves">Coups</string>
   <string name="accuracy">Précision</string>
-  <string name="combo">Enchaînement</string>
+  <string name="combo">Combo</string>
   <string name="time">Temps</string>
   <string name="timePerMove">Temps par coup</string>
   <string name="highestSolved">Prob. résolu le plus difficile</string>
-  <string name="puzzlesPlayed">Problèmes faits</string>
+  <string name="puzzlesPlayed">Problèmes joués</string>
   <string name="newRun">Nouvel essai (raccourci clavier: Espace)</string>
   <string name="endRun">Terminer l\'essai (raccourci clavier: Entrée)</string>
   <string name="highscores">Meilleurs scores</string>
@@ -38,9 +38,10 @@
   <string name="raceComplete">Course terminée!</string>
   <string name="spectating">Observer</string>
   <string name="joinTheRace">Participez!</string>
+  <string name="startTheRace">Débuter la course</string>
   <string name="yourRankX">Votre classement : %s</string>
   <string name="waitForRematch">Attendre une offre de revanche</string>
-  <string name="nextRace">Prochaine course</string>
+  <string name="nextRace">Course suivante</string>
   <string name="joinRematch">Faire une revanche</string>
   <string name="waitingToStart">Attendre le départ de la course</string>
   <string name="createNewGame">Créer une nouvelle course</string>

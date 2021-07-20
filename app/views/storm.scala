@@ -31,6 +31,7 @@ object storm {
       ),
       title = "Puzzle Storm",
       zoomable = true,
+      playing = true,
       chessground = false
     ) {
       main(
@@ -137,6 +138,7 @@ object storm {
     )
 
   private val i18nKeys = {
+    import lila.i18n.{ I18nKeys => trans }
     import lila.i18n.I18nKeys.{ storm => s }
     List(
       s.moveToStart,
@@ -158,7 +160,8 @@ object storm {
       s.newRun,
       s.endRun,
       s.youPlayTheWhitePiecesInAllPuzzles,
-      s.youPlayTheBlackPiecesInAllPuzzles
+      s.youPlayTheBlackPiecesInAllPuzzles,
+      trans.flipBoard
     ).map(_.key)
   }
 }

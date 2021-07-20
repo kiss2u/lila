@@ -15,10 +15,18 @@ case class AssetVersion(value: String) extends AnyVal with StringValue
 object AssetVersion {
   var current = random
   def change() = { current = random }
-  private def random = AssetVersion(ornicar.scalalib.Random secureString 6)
+  private def random = AssetVersion(SecureRandom nextString 6)
 }
 
 case class IsMobile(value: Boolean) extends AnyVal with BooleanValue
+
+case class Bearer(secret: String) extends AnyVal {
+  override def toString = "Bearer(***)"
+}
+object Bearer {
+  def random()         = Bearer(s"lio_${SecureRandom.nextString(32)}")
+  def randomPersonal() = Bearer(SecureRandom.nextString(16)) // TODO: prefix lip_, more entropy
+}
 
 sealed trait IpAddress {
   def value: String

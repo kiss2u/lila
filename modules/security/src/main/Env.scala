@@ -20,17 +20,19 @@ final class Env(
     captcher: lila.hub.actors.Captcher,
     userRepo: UserRepo,
     authenticator: Authenticator,
-    slack: lila.irc.SlackApi,
+    mailer: lila.mailer.Mailer,
+    irc: lila.irc.IrcApi,
     noteApi: lila.user.NoteApi,
     cacheApi: lila.memo.CacheApi,
     settingStore: lila.memo.SettingStore.Builder,
-    tryOAuthServer: OAuthServer.Try,
+    oAuthServer: OAuthServer,
     mongoCache: lila.memo.MongoCache.Api,
     db: lila.db.Db
 )(implicit
     ec: scala.concurrent.ExecutionContext,
     system: ActorSystem,
-    scheduler: Scheduler
+    scheduler: Scheduler,
+    mode: play.api.Mode
 ) {
   import net.{ baseUrl, domain }
 
@@ -79,17 +81,6 @@ final class Env(
     mk(ugcArmedSetting.get _)
   }
 
-  lazy val mailerSecondaryPermilleSetting = settingStore[Int](
-    "mailerSecondaryPermille",
-    default = 0,
-    text = "Permille of mails to send using secondary SMTP configuration".some
-  )
-
-  private lazy val mailer = new Mailer(
-    config.mailer,
-    getSecondaryPermille = () => mailerSecondaryPermilleSetting.get()
-  )
-
   lazy val emailConfirm: EmailConfirm =
     if (config.emailConfirm.enabled)
       new EmailConfirmMailer(
@@ -122,8 +113,6 @@ final class Env(
 
   lazy val loginToken = new LoginToken(config.loginTokenSecret, userRepo)
 
-  lazy val automaticEmail = wire[AutomaticEmail]
-
   lazy val signup = wire[Signup]
 
   private lazy val dnsApi: DnsApi = wire[DnsApi]
@@ -137,8 +126,6 @@ final class Env(
     providerUrl = config.disposableEmail.providerUrl,
     checkMailBlocked = () => checkMail.fetchAllBlocked
   )
-
-  // import reactivemongo.api.bson._
 
   lazy val spamKeywordsSetting = settingStore[Strings](
     "spamKeywords",
@@ -177,8 +164,4 @@ final class Env(
   lazy val csrfRequestHandler = wire[CSRFRequestHandler]
 
   def cli = wire[Cli]
-
-  lila.common.Bus.subscribeFun("fishnet") { case lila.hub.actorApi.fishnet.NewKey(userId, key) =>
-    automaticEmail.onFishnetKey(userId, key).unit
-  }
 }

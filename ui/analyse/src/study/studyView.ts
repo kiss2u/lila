@@ -17,6 +17,7 @@ import { view as serverEvalView } from './serverEval';
 import * as practiceView from './practice/studyPracticeView';
 import { playButtons as gbPlayButtons, overrideButton as gbOverrideButton } from './gamebook/gamebookButtons';
 import { view as descView } from './description';
+import { rounds as relayTourRounds } from './relay/relayTourView';
 import AnalyseCtrl from '../ctrl';
 import { StudyCtrl, Tab, ToolTab } from './interfaces';
 import { MaybeVNodes } from '../interfaces';
@@ -83,13 +84,13 @@ function buttons(root: AnalyseCtrl): VNode {
         ctrl,
         tab: 'tags',
         hint: noarg('pgnTags'),
-        icon: iconTag('o'),
+        icon: iconTag(''),
       }),
       toolButton({
         ctrl,
         tab: 'comments',
         hint: noarg('commentThisPosition'),
-        icon: iconTag('c'),
+        icon: iconTag(''),
         onClick() {
           ctrl.commentForm.start(ctrl.vm.chapterId, root.path, root.node);
         },
@@ -121,7 +122,7 @@ function buttons(root: AnalyseCtrl): VNode {
         ctrl,
         tab: 'share',
         hint: noarg('shareAndExport'),
-        icon: iconTag('$'),
+        icon: iconTag(''),
       }),
       !ctrl.relay
         ? h('span.help', {
@@ -136,7 +137,7 @@ function buttons(root: AnalyseCtrl): VNode {
 
 function metadata(ctrl: StudyCtrl): VNode {
   const d = ctrl.data,
-    credit = ctrl.relay && ctrl.relay.data.credit,
+    credit = ctrl.relay?.data.tour.credit,
     title = `${d.name}: ${ctrl.currentChapter().name}`;
   return h('div.study__metadata', [
     h('h2', [
@@ -164,17 +165,17 @@ function metadata(ctrl: StudyCtrl): VNode {
 
 export function side(ctrl: StudyCtrl): VNode {
   const activeTab = ctrl.vm.tab(),
-    intro = ctrl.relay && ctrl.relay.intro;
+    tourShow = ctrl.relay?.tourShow;
 
-  const makeTab = function (key: Tab, name: string) {
-    return h(
+  const makeTab = (key: Tab, name: string) =>
+    h(
       'span.' + key,
       {
-        class: { active: (!intro || !intro.active) && activeTab === key },
+        class: { active: !tourShow?.active && activeTab === key },
         hook: bind(
           'mousedown',
           () => {
-            if (intro) intro.disable();
+            tourShow?.disable();
             ctrl.vm.tab(key);
           },
           ctrl.redraw
@@ -182,42 +183,52 @@ export function side(ctrl: StudyCtrl): VNode {
       },
       name
     );
-  };
 
-  const introTab =
-    intro && intro.exists
-      ? h(
-          'span.intro',
-          {
-            class: { active: intro.active },
-            hook: bind(
-              'mousedown',
-              () => {
-                intro.active = true;
-              },
-              ctrl.redraw
-            ),
+  const tourTab =
+    tourShow &&
+    h(
+      'span.relay-tour.text',
+      {
+        class: { active: tourShow.active },
+        hook: bind(
+          'mousedown',
+          () => {
+            tourShow.active = true;
           },
-          [iconTag('')]
-        )
-      : null;
+          ctrl.redraw
+        ),
+        attrs: {
+          'data-icon': '',
+        },
+      },
+      'Broadcast'
+    );
+
+  const chaptersTab =
+    tourShow && ctrl.looksNew() && !ctrl.members.canContribute()
+      ? null
+      : makeTab('chapters', ctrl.trans.plural(ctrl.relay ? 'nbGames' : 'nbChapters', ctrl.chapters.size()));
 
   const tabs = h('div.tabs-horiz', [
-    introTab,
-    makeTab('chapters', ctrl.trans.plural(ctrl.relay ? 'nbGames' : 'nbChapters', ctrl.chapters.size())),
-    makeTab('members', ctrl.trans.plural('nbMembers', ctrl.members.size())),
+    tourTab,
+    chaptersTab,
+    !tourTab || ctrl.members.canContribute() || ctrl.data.admin
+      ? makeTab('members', ctrl.trans.plural('nbMembers', ctrl.members.size()))
+      : null,
     ctrl.members.isOwner()
       ? h(
           'span.more',
           {
             hook: bind('click', () => ctrl.form.open(!ctrl.form.open()), ctrl.redraw),
           },
-          [iconTag('[')]
+          [iconTag('')]
         )
       : null,
   ]);
 
-  return h('div.study__side', [tabs, (activeTab === 'members' ? memberView : chapterView)(ctrl)]);
+  const content = tourShow?.active ? relayTourRounds(ctrl) : (activeTab === 'members' ? memberView : chapterView)(ctrl);
+
+  return h('div.study__side', [tabs, content]);
 }
 
 export function contextMenu(ctrl: StudyCtrl, path: Tree.Path, node: Tree.Node): VNode[] {
@@ -226,7 +237,7 @@ export function contextMenu(ctrl: StudyCtrl, path: Tree.Path, node: Tree.Node): 
         h(
           'a',
           {
-            attrs: dataIcon('c'),
+            attrs: dataIcon(''),
             hook: bind('click', () => {
               ctrl.vm.toolTab('comments');
               ctrl.commentForm.start(ctrl.currentChapter()!.id, path, node);

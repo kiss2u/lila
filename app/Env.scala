@@ -12,6 +12,7 @@ import lila.common.config._
 import lila.common.{ Bus, Strings, UserIds }
 import lila.memo.SettingStore.Strings._
 import lila.memo.SettingStore.UserIds._
+import lila.security.Granter
 import lila.user.{ Holder, User }
 
 final class Env(
@@ -19,6 +20,7 @@ final class Env(
     val imageRepo: lila.db.ImageRepo,
     val api: lila.api.Env,
     val user: lila.user.Env,
+    val mailer: lila.mailer.Env,
     val security: lila.security.Env,
     val hub: lila.hub.Env,
     val socket: lila.socket.Env,
@@ -144,7 +146,8 @@ final class Env(
     for {
       playbanned <- playban.api.hasCurrentBan(u.id)
       selfClose = u.id == by.id
-      badApple  = u.lameOrTrollOrAlt || !selfClose
+      modClose  = !selfClose && Granter(_.CloseAccount)(by.user)
+      badApple  = u.lameOrTrollOrAlt || modClose
       _       <- user.repo.disable(u, keepEmail = badApple || playbanned)
       _       <- relation.api.unfollowAll(u.id)
       _       <- user.rankingApi.remove(u.id)
@@ -157,7 +160,6 @@ final class Env(
       _       <- security.store.closeAllSessionsOf(u.id)
       _       <- push.webSubscriptionApi.unsubscribeByUser(u)
       _       <- streamer.api.demote(u.id)
-      _       <- coach.api.remove(u.id)
       reports <- report.api.processAndGetBySuspect(lila.report.Suspect(u))
       _       <- selfClose ?? mod.logApi.selfCloseAccount(u.id, reports)
       _       <- appeal.api.onAccountClose(u)
@@ -215,6 +217,7 @@ final class EnvBoot(
   lazy val memo: lila.memo.Env               = wire[lila.memo.Env]
   lazy val mongo: lila.db.Env                = wire[lila.db.Env]
   lazy val user: lila.user.Env               = wire[lila.user.Env]
+  lazy val mailer: lila.mailer.Env           = wire[lila.mailer.Env]
   lazy val security: lila.security.Env       = wire[lila.security.Env]
   lazy val hub: lila.hub.Env                 = wire[lila.hub.Env]
   lazy val socket: lila.socket.Env           = wire[lila.socket.Env]

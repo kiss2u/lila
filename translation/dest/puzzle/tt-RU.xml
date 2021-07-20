@@ -7,7 +7,7 @@
   <string name="motifs">Зәхәриф</string>
   <string name="advanced">Өстәмә</string>
   <string name="lengths">Озынлык</string>
-  <string name="mates">Иптәшләр</string>
+  <string name="mates">Матлар</string>
   <string name="goals">Морады</string>
   <string name="origin">Чыгыш</string>
   <string name="specialMoves">Максус хәрәкәтләр</string>
@@ -27,7 +27,7 @@
   <string name="puzzleComplete">Башваткыч чишелгән!</string>
   <string name="notTheMove">Бу хәрәкәт түгел!</string>
   <string name="trySomethingElse">Башка нәрсәне сынап карагыз.</string>
-  <string name="ratingX">Рейтингы: %s</string>
+  <string name="ratingX">Рейтинг: %s</string>
   <string name="hidden">качырылган</string>
   <plurals name="playedXTimes">
     <item quantity="other">Уйналган %s вакыт</item>
@@ -38,8 +38,14 @@
   <string name="normal">Нормаль</string>
   <string name="easier">Җиңелрәк</string>
   <string name="easiest">Иң җиңелрәге</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="other">%s сезнең башваткыч рейтингтан бер максад</item>
+  </plurals>
   <string name="harder">Авыррак</string>
   <string name="hardest">Иң авыры</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="other">%s Сезнең башваткыч рейтингтан бер максад</item>
+  </plurals>
   <string name="example">Мәсәлән</string>
   <string name="addAnotherTheme">Икенче тһеманы өстәргә</string>
   <string name="jumpToNextPuzzleImmediately">Киләсе Башваткычка шунда ук сикерегез</string>
@@ -52,6 +58,6 @@
   <string name="streakDescription">Акрынлап катлаулы башваткычларны чишегез һәм җиңү сызыгы төзегез. Сәгать юк, шуңа күрә вакытыгызны алыгыз. Бер ялгыш хәрәкәт, һәм бу уен бетте! Ләкин сез сессиягә бер хәрәкәтне калдыра аласыз.</string>
   <string name="yourStreakX">Сезнең юл %s</string>
   <string name="streakSkipExplanation">Сезнең юлны саклап калу өчен бу хәрәкәтне ташлагыз! Бер тапкыр гына эшли.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Сызуны дәвам итегез</string>
+  <string name="continueTheStreak">Сызуны дәвам итегез</string>
   <string name="newStreak">Яңа сызу</string>
 </resources>

@@ -30,13 +30,15 @@ final class StudyMultiBoard(
     else fetch(studyId, page, playing)
   } map { PaginatorJson(_) }
 
+  def invalidate(studyId: Study.Id): Unit = firstPageCache.synchronous().invalidate(studyId)
+
   private val firstPageCache: AsyncLoadingCache[Study.Id, Paginator[ChapterPreview]] =
     cacheApi.scaffeine
       .refreshAfterWrite(4 seconds)
       .expireAfterAccess(10 minutes)
       .buildAsyncFuture[Study.Id, Paginator[ChapterPreview]] { fetch(_, 1, playing = false) }
 
-  private val playingSelector = $doc("tags" -> "Result:*")
+  private val playingSelector = $doc("tags" -> "Result:*", "relay.path" $ne "")
 
   private def fetch(studyId: Study.Id, page: Int, playing: Boolean): Fu[Paginator[ChapterPreview]] =
     Paginator[ChapterPreview](

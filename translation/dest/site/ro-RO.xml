@@ -79,7 +79,7 @@
   <string name="losing">Pierde</string>
   <string name="drawn">Remiză</string>
   <string name="unknown">Necunoscut</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Bază de date</string>
+  <string name="database">Bază de date</string>
   <string name="whiteDrawBlack">Alb / Remiză / Negru</string>
   <string name="averageRatingX">Medie evaluare: %s</string>
   <string name="recentGames">Jocuri recente</string>
@@ -98,6 +98,7 @@
   <string name="noGameFound">Nu a fost găsit nici un joc</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Poate doriți să includeți mai multe jocuri din meniul de preferințe?</string>
   <string name="openingExplorer">Cercetarea deschiderilor</string>
+  <string name="openingEndgameExplorer">Explorator de deschideri/finaluri de joc</string>
   <string name="xOpeningExplorer">Exploratorul de deschideri %s</string>
   <string name="winPreventedBy50MoveRule">Victoria partidei a fost împiedicată de regula celor 50 de mutări</string>
   <string name="lossSavedBy50MoveRule">Pierderea partidei a fost împiedicată de regula celor 50 de mutări</string>
@@ -273,7 +274,6 @@
   <string name="send">Trimite</string>
   <string name="incrementInSeconds">Adaos de timp în secunde</string>
   <string name="freeOnlineChess">Șah Online Gratuit</string>
-  <string name="spectators">Spectatori:</string>
   <plurals name="nbRated">
     <item quantity="one">%s evaluat</item>
     <item quantity="few">%s evaluate</item>
@@ -307,7 +307,6 @@
     <item quantity="other">Acordă %s secunde</item>
   </plurals>
   <string name="thisAccountViolatedTos">Acest cont a încălcat condițiile de utilizare ale site-ului Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Jucătorul și-a crescut ratingul în mod artificial</string>
   <string name="openingExplorerAndTablebase">Deschide exploratorul &amp; baza de date</string>
   <string name="takeback">Revocare</string>
   <string name="proposeATakeback">Propune revocarea mutării</string>
@@ -471,6 +470,7 @@
   <string name="boardEditor">Editorul de tablă</string>
   <string name="setTheBoard">Așează tabla</string>
   <string name="popularOpenings">Deschideri populare</string>
+  <string name="chess960StartPosition">Poziție de start Chess960: %s</string>
   <string name="startPosition">Poziția de start</string>
   <string name="clearBoard">Curăță tabla</string>
   <string name="savePosition">Salvează poziția</string>
@@ -486,7 +486,7 @@
   <string name="firstName">Prenume</string>
   <string name="lastName">Nume</string>
   <string name="biography">Biografie</string>
-  <string name="country">Țară</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Țară sau steag</string>
   <string name="thankYou">Mulţumesc!</string>
   <string name="socialMediaLinks">Link-urile rețelelor de socializare</string>
   <string name="inlineNotation">Notație integrată</string>
@@ -650,7 +650,7 @@
   <string name="really">pe bune</string>
   <string name="contribute">Contribuie</string>
   <string name="termsOfService">Termeni și condiții</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Cod sursă</string>
+  <string name="sourceCode">Cod sursă</string>
   <string name="simultaneousExhibitions">Simultane de șah</string>
   <string name="host">Gazdă</string>
   <string name="hostColorX">Culoarea gazdei: %s</string>
@@ -716,6 +716,7 @@
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">De asemenea, poți acționa rotița mouse-ului pentru a face mutări pe tablă.</string>
   <string name="analysisShapesHowTo">Apasă shift+click sau click-dreapta pentru a desena cercuri și săgeți pe tablă.</string>
   <string name="letOtherPlayersMessageYou">Permite altor jucători să îți trimită mesaje</string>
+  <string name="receiveForumNotifications">Primește notificări atunci când ești menționat în forum</string>
   <string name="shareYourInsightsData">Partajează-ți statisticile legate de jocuri</string>
   <string name="withNobody">Cu nimeni</string>
   <string name="withFriends">Cu prietenii</string>
@@ -727,8 +728,7 @@
   <string name="enableKidMode">Activează modul „copil”</string>
   <string name="disableKidMode">Dezactivează modul „copil”</string>
   <string name="security">Securitate</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Aceasta este o listă cu device-urile conectate la contul dvs.. Revocați orice sesiune pe care nu o recunoașteți.</string>
-  <string name="alternativelyYouCanX">Alternativ, puteți %s.</string>
+  <string name="sessions">Sesiuni</string>
   <string name="revokeAllSessions">revocați toate sesiunile</string>
   <string name="playChessEverywhere">Joacă șah oriunde</string>
   <string name="asFreeAsLichess">Gratis ca Lichess</string>
@@ -887,9 +887,9 @@
   <string name="youCannotPostYetPlaySomeGames">Încă nu puteți posta în forumuri. Jucați câteva partide!</string>
   <string name="subscribe">Abonați-vă</string>
   <string name="unsubscribe">Dezabonați-vă</string>
-  <string name="mentionedYouInX"> te-a menționat în \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s te-a menționat în \"%2$s\".</string>
-  <string name="invitedYouToX"> te-a invitat la \"%1$s\".</string>
+  <string name="mentionedYouInX">te-a menționat în \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s te-a menționat în \"%2$s\".</string>
+  <string name="invitedYouToX">te-a invitat la \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s te-a invitat la \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Acum faci parte din echipă.</string>
   <string name="youHaveJoinedTeamX">V-ați alăturat la \"%1$s\".</string>
@@ -897,12 +897,37 @@
   <string name="congratsYouWon">Felicitări, ați câștigat!</string>
   <string name="gameVsX">Joc vs %1$s</string>
   <string name="resVsX">%1$s vs %2$s</string>
-  <string name="youJustBecamePatron">Tocmai ai devenit Patron Lichess.</string>
-  <string name="patronAccountExpired">Contul Patron a expirat</string>
-  <string name="pleaseReconsiderRenewIt">Vă rugăm să luați în considerare reînnoirea acestuia!</string>
   <string name="someoneReviewedYourCoachProfile">Cineva a verificat profilul tău de antrenor.</string>
   <string name="newPendingReview">Revizuire nouă în așteptare</string>
   <string name="lostAgainstTOSViolator">Ai pierdut în fața cuiva care a încălcat Termenii și Condițiile Lichess</string>
   <string name="refundXpointsTimeControlY">Rambursare: %1$s puncte de evaluare %2$s.</string>
   <string name="timeAlmostUp">Timpul se apropie de sfârșit!</string>
+  <string name="clickToRevealEmailAddress">[Click pentru a dezvălui adresa de e-mail]</string>
+  <string name="download">Descărcare</string>
+  <string name="welcome">Bine ați venit!</string>
+  <string name="lichessPatronInfo">Lichess este o asociație non-profit și un software gratuit și open-source.
+Toate costurile de operare și de dezvoltare sunt finanțate doar din donațiile utilizatorilor.</string>
+  <string name="cancelTournament">Anulează turneul</string>
+  <string name="tournDescription">Descrierea turneului</string>
+  <string name="tournDescriptionHelp">Vrei să spui participanților ceva special? Încearcă să fii succint. Poți folosi legături Markdown: [name](https://url)</string>
+  <string name="onlyMembersOfTeam">Numai membrii echipei</string>
+  <string name="noRestriction">Fără restricții</string>
+  <string name="markdownAvailable">%s este disponibil pentru sintaxă mai avansată.</string>
+  <string name="inYourLocalTimezone">În fusul orar local</string>
+  <string name="onlyTeamLeaders">Doar lideri de echipă</string>
+  <string name="onlyTeamMembers">Doar membrii echipei</string>
+  <string name="navigateMoveTree">Navigați pe arborele de mutări</string>
+  <string name="mouseTricks">Trucuri cu mouse-ul</string>
+  <string name="toggleLocalAnalysis">Activează/dezactivează analiza computerizată locală</string>
+  <string name="toggleAllAnalysis">Activează/dezactivează analiza computerizată</string>
+  <string name="playComputerMove">Joacă cea mai bună mutare a calculatorului</string>
+  <string name="analysisOptions">Opțiuni de analiză</string>
+  <string name="focusChat">Focalizează conversația</string>
+  <string name="showHelpDialog">Arată acest dialog de ajutor</string>
+  <string name="reopenYourAccount">Redeschide contul tău</string>
+  <string name="closedAccountChangedMind">Dacă ți-ai închis contul, dar de atunci te-ai răzgândit, primești o șansă să-ți recuperezi contul.</string>
+  <string name="onlyWorksOnce">Acest lucru va funcţiona o singură dată.</string>
+  <string name="cantDoThisTwice">Dacă închideți contul de a doua oară, nu va mai exista nicio modalitate de recuperare a acestuia.</string>
+  <string name="emailAssociatedToaccount">Adresa de e-mail asociată contului</string>
+  <string name="sentEmailWithLink">Ți-am trimis un e-mail cu un link.</string>
 </resources>

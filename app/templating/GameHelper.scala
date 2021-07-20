@@ -70,15 +70,6 @@ trait GameHelper { self: I18nHelper with UserHelper with AiHelper with StringHel
     s"$p1 plays $p2 in a $mode $speedAndClock game of $variant. $result after $moves. Click to replay, analyse, and discuss the game!"
   }
 
-  def variantName(variant: chess.variant.Variant)(implicit lang: Lang) =
-    variant match {
-      case chess.variant.Standard     => trans.standard.txt()
-      case chess.variant.FromPosition => trans.fromPosition.txt()
-      case v                          => v.name
-    }
-
-  def variantNameNoCtx(variant: chess.variant.Variant) = variantName(variant)(defaultLang)
-
   def shortClockName(clock: Option[Clock.Config])(implicit lang: Lang): Frag =
     clock.fold[Frag](trans.unlimited())(shortClockName)
 
@@ -119,8 +110,7 @@ trait GameHelper { self: I18nHelper with UserHelper with AiHelper with StringHel
   def gameVsText(game: Game, withRatings: Boolean = false): String =
     Namer.gameVsTextBlocking(game, withRatings)(lightUser)
 
-  val berserkIconSpan = iconTag("`")
-  val statusIconSpan  = i(cls := "status")
+  val berserkIconSpan = iconTag("")
 
   def playerLink(
       player: Player,
@@ -129,15 +119,11 @@ trait GameHelper { self: I18nHelper with UserHelper with AiHelper with StringHel
       withRating: Boolean = true,
       withDiff: Boolean = true,
       engine: Boolean = false,
-      withStatus: Boolean = false,
       withBerserk: Boolean = false,
       mod: Boolean = false,
       link: Boolean = true
   )(implicit lang: Lang): Frag = {
-    val statusIcon =
-      if (withStatus) statusIconSpan.some
-      else if (withBerserk && player.berserk) berserkIconSpan.some
-      else none
+    val statusIcon = (withBerserk && player.berserk) option berserkIconSpan
     player.userId.flatMap(lightUser) match {
       case None =>
         val klass = cssClass.??(" " + _)
@@ -199,7 +185,7 @@ trait GameHelper { self: I18nHelper with UserHelper with AiHelper with StringHel
       case S.NoStart =>
         val color = game.loser.fold(Color.white)(_.color).name.capitalize
         s"$color didn't move"
-      case S.Cheat => "Cheat detected"
+      case S.Cheat => trans.cheatDetected.txt()
       case S.VariantEnd =>
         game.variant match {
           case chess.variant.KingOfTheHill => trans.kingInTheCenter.txt()

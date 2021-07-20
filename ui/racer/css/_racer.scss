@@ -1,6 +1,7 @@
 @import 'car-font';
 @import 'race';
 @import 'countdown';
+@import 'zen';
 
 .racer {
   &__race {
@@ -52,6 +53,10 @@
     input {
       flex: 1 1 auto;
     }
+  }
+
+  .puz-side__start {
+    margin-top: 1em;
   }
 
   .puz-clock {

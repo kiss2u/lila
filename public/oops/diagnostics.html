@@ -49,13 +49,14 @@ function wasmInfo() {
 }
 
 function localStorageInfo() {
-  var intresting = [
+  var interesting = [
     'client-eval-enabled',
     'analyse.ceval.max-depth',
     'analyse.ceval.multipv',
     'analyse.ceval.threads',
     'analyse.ceval.hash-size',
     'analyse.ceval.infinite',
+    'analyse.ceval.enable-nnue',
     'just-notified',
     'push-subscribed',
     'grid',
@@ -65,8 +66,8 @@ function localStorageInfo() {
     'surl7'
   ];
   var info = {};
-  for (var i = 0; i < intresting.length; i++) {
-    info[intresting[i]] = window.localStorage.getItem(intresting[i]);
+  for (var i = 0; i < interesting.length; i++) {
+    info[interesting[i]] = window.localStorage.getItem(interesting[i]);
   }
   return info;
 }

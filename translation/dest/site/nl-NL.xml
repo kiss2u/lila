@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Je speelt met wit</string>
   <string name="youPlayTheBlackPieces">Je speelt met zwart</string>
   <string name="itsYourTurn">Je bent aan zet!</string>
+  <string name="cheatDetected">Valsspelen gedetecteerd</string>
   <string name="kingInTheCenter">Koning in het centrum</string>
   <string name="threeChecks">Drie keer schaak</string>
   <string name="raceFinished">De race is voorbij</string>
@@ -78,7 +79,7 @@
   <string name="losing">Verliest</string>
   <string name="drawn">Remise</string>
   <string name="unknown">Onbekend</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Databank</string>
+  <string name="database">Databank</string>
   <string name="whiteDrawBlack">Wit / Remise / Zwart</string>
   <string name="averageRatingX">Gemiddelde rating: %s</string>
   <string name="recentGames">Recente partijen</string>
@@ -95,6 +96,7 @@
   <string name="noGameFound">Geen partij gevonden</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Misschien meer partijen toevoegen via het voorkeuren-menu?</string>
   <string name="openingExplorer">Openingverkenner</string>
+  <string name="openingEndgameExplorer">Opening-/eindspelverkenner</string>
   <string name="xOpeningExplorer">%s openingsverkenner</string>
   <string name="winPreventedBy50MoveRule">Winst voorkomen door vijftig-zetten regel</string>
   <string name="lossSavedBy50MoveRule">Verlies gered door vijftig-zetten regel</string>
@@ -126,8 +128,8 @@
     <item quantity="other">%s fouten</item>
   </plurals>
   <plurals name="nbInaccuracies">
-    <item quantity="one">%s onnauwkeurigheid</item>
-    <item quantity="other">%s onnauwkeurigheden</item>
+    <item quantity="one">%s imperfectie</item>
+    <item quantity="other">%s imperfecties</item>
   </plurals>
   <string name="moveTimes">Tijdsgebruik van zetten</string>
   <string name="flipBoard">Bord draaien</string>
@@ -259,7 +261,6 @@
   <string name="send">Verstuur</string>
   <string name="incrementInSeconds">Seconden extra per zet</string>
   <string name="freeOnlineChess">Gratis online schaken</string>
-  <string name="spectators">Toeschouwers:</string>
   <plurals name="nbRated">
     <item quantity="one">%s met rating</item>
     <item quantity="other">%s met rating</item>
@@ -287,7 +288,6 @@
     <item quantity="other">Geef %s seconden</item>
   </plurals>
   <string name="thisAccountViolatedTos">Deze account heeft de Lichess Servicevoorwaarden geschonden</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Deze speler verhoogt/verlaagt zijn rating kunstmatig</string>
   <string name="openingExplorerAndTablebase">Openingsverkenner &amp; tablebase</string>
   <string name="takeback">Neem zet terug</string>
   <string name="proposeATakeback">Stel zet terugnemen voor</string>
@@ -440,6 +440,8 @@
   <string name="boardEditor">Bordbewerker</string>
   <string name="setTheBoard">Zet het bord op</string>
   <string name="popularOpenings">Populaire openingen</string>
+  <string name="endgamePositions">Eindspel posities</string>
+  <string name="chess960StartPosition">Beginstelling Chess960: %s</string>
   <string name="startPosition">Beginstelling</string>
   <string name="clearBoard">Maak het bord leeg</string>
   <string name="savePosition">Sla de stelling op</string>
@@ -455,7 +457,7 @@
   <string name="firstName">Voornaam</string>
   <string name="lastName">Achternaam</string>
   <string name="biography">Biografie</string>
-  <string name="country">Land</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Land of vlag</string>
   <string name="thankYou">Bedankt!</string>
   <string name="socialMediaLinks">Links naar sociale media</string>
   <string name="inlineNotation">Geïntegreerde notatie</string>
@@ -615,7 +617,7 @@
   <string name="really">echt waar</string>
   <string name="contribute">Draag bij</string>
   <string name="termsOfService">Algemene voorwaarden</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Broncode</string>
+  <string name="sourceCode">Broncode</string>
   <string name="simultaneousExhibitions">Simultaans</string>
   <string name="host">Simultaangever</string>
   <string name="hostColorX">Kleur simultaangever: %s</string>
@@ -678,8 +680,10 @@
   <string name="printFriendlyPDF">Printvriendelijke PDF</string>
   <string name="crosstable">Onderlinge partijen</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Je kunt ook over het bord scrollen om je zetten uit te voeren.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Beweeg de muis over computervarianten om ze te bekijken.</string>
   <string name="analysisShapesHowTo">Druk op shift+linkermuisknop of rechtermuisknop om cirkels en pijlen op het bord te tekenen.</string>
   <string name="letOtherPlayersMessageYou">Andere spelers mogen je berichten zenden</string>
+  <string name="receiveForumNotifications">Ontvang meldingen wanneer je genoemd wordt op het forum</string>
   <string name="shareYourInsightsData">Deel de data van je partijen</string>
   <string name="withNobody">Met niemand</string>
   <string name="withFriends">Met vrienden</string>
@@ -691,8 +695,7 @@
   <string name="enableKidMode">Activeer Kindermodus</string>
   <string name="disableKidMode">Deactiveer Kindermodus</string>
   <string name="security">Beveiliging</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Dit is een lijst van apparaten die zijn aangemeld op je account. Stop alle sessies die je niet herkent.</string>
-  <string name="alternativelyYouCanX">Als alternatief kunt u %s.</string>
+  <string name="sessions">Sessies</string>
   <string name="revokeAllSessions">alle sessies intrekken</string>
   <string name="playChessEverywhere">Schaak overal</string>
   <string name="asFreeAsLichess">Zo gratis als lichess</string>
@@ -847,9 +850,9 @@
   <string name="youCannotPostYetPlaySomeGames">Je kunt nog geen post in de forums plaatsen. Speel eerst een paar partijen!</string>
   <string name="subscribe">Abonneren</string>
   <string name="unsubscribe">Abonnement opzeggen</string>
-  <string name="mentionedYouInX"> heeft je genoemd in \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s heeft je genoemd in \"%2$s\".</string>
-  <string name="invitedYouToX"> heeft je uitgenodigd voor \"%1$s\".</string>
+  <string name="mentionedYouInX">heeft je genoemd in \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s heeft je genoemd in \"%2$s\".</string>
+  <string name="invitedYouToX">heeft je uitgenodigd voor \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s heeft je uitgenodigd voor \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Je maakt nu deel uit van het team.</string>
   <string name="youHaveJoinedTeamX">Je bent nu lid van \"%1$s\".</string>
@@ -857,12 +860,59 @@
   <string name="congratsYouWon">Gefeliciteerd, je hebt gewonnen!</string>
   <string name="gameVsX">Partij tegen %1$s</string>
   <string name="resVsX">%1$s tegen %2$s</string>
-  <string name="youJustBecamePatron">Je bent net een Lichess Patroon geworden.</string>
-  <string name="patronAccountExpired">Patroon status is verlopen</string>
-  <string name="pleaseReconsiderRenewIt">Overweeg alsjeblieft het te vernieuwen!</string>
   <string name="someoneReviewedYourCoachProfile">Iemand heeft je coachprofiel een beoordeling gegeven.</string>
   <string name="newPendingReview">In afwachting van beoordeling</string>
   <string name="lostAgainstTOSViolator">Je hebt verloren van iemand die de Lichess voorwaarden heeft geschonden</string>
   <string name="refundXpointsTimeControlY">Teruggekregen: %1$s %2$s ratingpunten.</string>
   <string name="timeAlmostUp">De tijd is bijna om!</string>
+  <string name="clickToRevealEmailAddress">[Klik om het e-mailadres te tonen]</string>
+  <string name="download">Downloaden</string>
+  <string name="welcome">Welkom!</string>
+  <string name="lichessPatronInfo">Lichess is een organisatie zonder winstoogmerk en is volledig open en gratis (libre).
+Alle exploitatiekosten, ontwikkeling en inhoud worden enkel gefinancierd door donaties van gebruikers.</string>
+  <string name="coachManager">Coach manager</string>
+  <string name="streamerManager">Streamer manager</string>
+  <string name="cancelTournament">Toernooi annuleren</string>
+  <string name="tournDescription">Toernooibeschrijving</string>
+  <string name="tournDescriptionHelp">Iets bijzonders dat je de deelnemers wilt vertellen? Probeer het kort te houden. Markdown-links zijn beschikbaar: [name](https://url)</string>
+  <string name="ratedFormHelp">Partijen worden met rating gespeeld 
+en hebben effect op de rating van de spelers</string>
+  <string name="onlyMembersOfTeam">Alleen leden van het team</string>
+  <string name="noRestriction">Geen restrictie</string>
+  <string name="minimumRatedGames">Minimumaantal partijen met rating</string>
+  <string name="minimumRating">Minimumrating</string>
+  <string name="maximumWeeklyRating">Maximale wekelijkse rating</string>
+  <string name="onlyTitled">Alleen titelhouders</string>
+  <string name="onlyTitledHelp">Officiële titel vereist voor deelname aan het toernooi</string>
+  <string name="positionInputHelp">Plak een geldige FEN-code om een partij te beginnen vanaf een bepaalde stelling.
+Het werkt alleen voor standaardpartijen, niet met varianten.
+U kunt de %s gebruiken om een FEN-code te genereren en deze hier plakken.
+Laat leeg om partijen te starten vanaf de normale beginstelling.</string>
+  <string name="cancelSimul">Simultaan annuleren</string>
+  <string name="simulHostcolor">Kleur van de simultaangever voor elk spel</string>
+  <string name="estimatedStart">Geschatte starttijd</string>
+  <string name="simulFeatured">Simultaan tonen op %s</string>
+  <string name="simulFeaturedHelp">De simultaan voor iedereen weergeven op %s. Schakel dit uit voor privésimultaans.</string>
+  <string name="simulDescription">Omschrijving van de simultaan</string>
+  <string name="simulDescriptionHelp">Is er nog iets wat de deelnemers moeten weten?</string>
+  <string name="markdownAvailable">%s is beschikbaar voor meer geavanceerde opmaak.</string>
+  <string name="inYourLocalTimezone">In je eigen lokale tijdzone</string>
+  <string name="tournChat">Toernooichat</string>
+  <string name="noChat">Geen chat</string>
+  <string name="onlyTeamLeaders">Alleen teamleiders</string>
+  <string name="onlyTeamMembers">Alleen teamleden</string>
+  <string name="navigateMoveTree">Navigeer door de zettenlijst</string>
+  <string name="mouseTricks">Muistrucs</string>
+  <string name="toggleLocalAnalysis">Lokale computeranalyse in-/uitschakelen</string>
+  <string name="toggleAllAnalysis">Alle computeranalyses in-/uitschakelen</string>
+  <string name="playComputerMove">Doe de beste computerzet</string>
+  <string name="analysisOptions">Analyse opties</string>
+  <string name="focusChat">Selecteer chat</string>
+  <string name="showHelpDialog">Help-dialoogvenster weergeven</string>
+  <string name="reopenYourAccount">Account heropenen</string>
+  <string name="closedAccountChangedMind">Als je je account had gesloten, maar sindsdien van gedachten veranderd bent, krijg je één kans om je account te herstellen.</string>
+  <string name="onlyWorksOnce" comment="onlyWorksOnce&#10;&#10;In relation to reopening a closed account - reopening is only allowed once if you choose to close your account.">Dit werkt maar eenmaal.</string>
+  <string name="cantDoThisTwice">Als je je account voor de tweede keer sluit, is er geen manier om deze te herstellen.</string>
+  <string name="emailAssociatedToaccount">E-mailadres gekoppeld aan het account</string>
+  <string name="sentEmailWithLink">We hebben je een e-mail gestuurd met een link.</string>
 </resources>

@@ -1,6 +1,6 @@
 import { h, VNode } from 'snabbdom';
 import TournamentController from './ctrl';
-import { MaybeVNodes } from './interfaces';
+import { MaybeVNodes, Pagination } from './interfaces';
 import { bind } from './view/util';
 import * as search from './search';
 
@@ -21,14 +21,15 @@ function scrollToMeButton(ctrl: TournamentController): VNode | undefined {
   if (ctrl.data.me)
     return h('button.fbt' + (ctrl.focusOnMe ? '.active' : ''), {
       attrs: {
-        'data-icon': '7',
+        'data-icon': '',
         title: 'Scroll to your player',
       },
       hook: bind('mousedown', ctrl.toggleFocusOnMe, ctrl.redraw),
     });
+  return undefined;
 }
 
-export function renderPager(ctrl: TournamentController, pag): MaybeVNodes {
+export function renderPager(ctrl: TournamentController, pag: Pagination): MaybeVNodes {
   const enabled = !!pag.currentPageResults,
     page = ctrl.page;
   return pag.nbPages > -1
@@ -37,18 +38,18 @@ export function renderPager(ctrl: TournamentController, pag): MaybeVNodes {
         ...(ctrl.searching
           ? [search.input(ctrl)]
           : [
-              button('First', 'W', () => ctrl.userSetPage(1), enabled && page > 1, ctrl),
-              button('Prev', 'Y', ctrl.userPrevPage, enabled && page > 1, ctrl),
+              button('First', '', () => ctrl.userSetPage(1), enabled && page > 1, ctrl),
+              button('Prev', '', ctrl.userPrevPage, enabled && page > 1, ctrl),
               h('span.page', (pag.nbResults ? pag.from + 1 : 0) + '-' + pag.to + ' / ' + pag.nbResults),
-              button('Next', 'X', ctrl.userNextPage, enabled && page < pag.nbPages, ctrl),
-              button('Last', 'V', ctrl.userLastPage, enabled && page < pag.nbPages, ctrl),
+              button('Next', '', ctrl.userNextPage, enabled && page < pag.nbPages, ctrl),
+              button('Last', '', ctrl.userLastPage, enabled && page < pag.nbPages, ctrl),
               scrollToMeButton(ctrl),
             ]),
       ]
     : [];
 }
 
-export function players(ctrl: TournamentController) {
+export function players(ctrl: TournamentController): Pagination {
   const page = ctrl.page,
     nbResults = ctrl.data.nbPlayers,
     from = (page - 1) * maxPerPage,
@@ -66,4 +67,5 @@ export function players(ctrl: TournamentController) {
 
 export function myPage(ctrl: TournamentController): number | undefined {
   if (ctrl.data.me) return Math.floor((ctrl.data.me.rank - 1) / 10) + 1;
+  return undefined;
 }

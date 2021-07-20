@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Sa mängid valgete nuppudega</string>
   <string name="youPlayTheBlackPieces">Sa mängid mustade nuppudega</string>
   <string name="itsYourTurn">Sinu käik!</string>
+  <string name="cheatDetected">Sohk Tuvastatud</string>
   <string name="kingInTheCenter">Kuningas jõudis keskele</string>
   <string name="threeChecks">Kolm tuld</string>
   <string name="raceFinished">Võiduajamine lõpetatud</string>
@@ -78,7 +79,7 @@
   <string name="losing">Kaotav</string>
   <string name="drawn">Viik</string>
   <string name="unknown">Teadmatu</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Andmebaas</string>
+  <string name="database">Andmebaas</string>
   <string name="whiteDrawBlack">Valge / Viik / Must</string>
   <string name="averageRatingX">Keskmine reiting: %s</string>
   <string name="recentGames">Hiljutised mängud</string>
@@ -117,6 +118,10 @@
   <string name="blunder">Viga</string>
   <string name="mistake">Eksimus</string>
   <string name="inaccuracy">Ebatäpsus</string>
+  <plurals name="nbInaccuracies">
+    <item quantity="one">%s ebatäpsus</item>
+    <item quantity="other">%s ebatäpsust</item>
+  </plurals>
   <string name="moveTimes">Aeg käigu tegemisel</string>
   <string name="flipBoard">Keera lauda</string>
   <string name="threefoldRepetition">Kolmekordne kordus</string>
@@ -185,7 +190,7 @@
   <string name="rankX">Koht: %s</string>
   <plurals name="rankIsUpdatedEveryNbMinutes">
     <item quantity="one">Reitingut uuendatakse iga minuti tagant</item>
-    <item quantity="other">Reitingut uuendatakse iga %s minuti tagant</item>
+    <item quantity="other">Kohta uuendatakse iga %s minuti järel</item>
   </plurals>
   <plurals name="nbPuzzles">
     <item quantity="one">%s ülesanne</item>
@@ -247,7 +252,6 @@
   <string name="send">Saada</string>
   <string name="incrementInSeconds">Lisatavad sekundid</string>
   <string name="freeOnlineChess">Tasuta interneti male</string>
-  <string name="spectators">Pealtvaatajad</string>
   <plurals name="nbRated">
     <item quantity="one">%s reitinguga</item>
     <item quantity="other">%s reitinguga</item>
@@ -275,7 +279,6 @@
     <item quantity="other">Lisa %s sekundit</item>
   </plurals>
   <string name="thisAccountViolatedTos">Selle konto kasutaja rikkus Lichessi teenusetingimusi</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">See mängija kunstlikult tõstab / vähendab oma reitingut</string>
   <string name="openingExplorerAndTablebase">Avangute uurija &amp; lõppmängude andmebaas</string>
   <string name="takeback">Tagasivõtt</string>
   <string name="proposeATakeback">Paku tagasivõttu</string>
@@ -444,7 +447,7 @@ arvutianalüüsi, mängu jututoa ning jagatava URL-i.</string>
   <string name="firstName">Eesnimi</string>
   <string name="lastName">Perekonnanimi</string>
   <string name="biography">Kirjeldus</string>
-  <string name="country">Riik</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Riik või lipp</string>
   <string name="thankYou">Aitäh!</string>
   <string name="socialMediaLinks">Sotsiaalmeedia lingid</string>
   <string name="inlineNotation">Tekstisisene notatsioon</string>
@@ -466,6 +469,8 @@ arvutianalüüsi, mängu jututoa ning jagatava URL-i.</string>
   <string name="tournamentWinners">Turniiri võitjad</string>
   <string name="name">Nimi</string>
   <string name="description">Kirjeldus</string>
+  <string name="descPrivate">Privaatne kirjeldus</string>
+  <string name="descPrivateHelp">Tekst mida näevad ainult võistkonna liikmed. Kui on valitud siis asendatakse avalik kirjeldus võistkonna liikmetele.</string>
   <string name="no">Ei</string>
   <string name="yes">Jah</string>
   <string name="help">Abi:</string>
@@ -486,6 +491,7 @@ arvutianalüüsi, mängu jututoa ning jagatava URL-i.</string>
   <string name="cheat">Sohk</string>
   <string name="insult">Solvang</string>
   <string name="troll">Troll</string>
+  <string name="ratingManipulation">Reitingu manipulatsioon</string>
   <string name="other">Muu</string>
   <string name="reportDescriptionHelp">Kleebi link mängu(de)st ja selgita, mis on valesti selle kasutaja käitumises. Sõnum käsitletakse kiiremini kui see on kirjutatud inglise keeles.</string>
   <string name="error.provideOneCheatedGameLink">Palun andke vähemalt üks link pettust sisaldavale mängule.</string>
@@ -601,7 +607,7 @@ arvutianalüüsi, mängu jututoa ning jagatava URL-i.</string>
   <string name="really">päriselt</string>
   <string name="contribute">Panusta</string>
   <string name="termsOfService">Kasutajatingimused</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Lähtekood</string>
+  <string name="sourceCode">Lähtekood</string>
   <string name="simultaneousExhibitions">Simultaanid</string>
   <string name="host">Korraldaja</string>
   <string name="hostColorX">Korraldaja värv: %s</string>
@@ -677,8 +683,7 @@ arvutianalüüsi, mängu jututoa ning jagatava URL-i.</string>
   <string name="enableKidMode">Aktiveeri lapserežiim</string>
   <string name="disableKidMode">Deaktiveeri lapserežiim</string>
   <string name="security">Turvalisus</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">See on nimekiri seadmetest, mis on sellesse kasutajasse sisselogitud. Eemalda kõik sessioonid, mis ei ole tuttavad.</string>
-  <string name="alternativelyYouCanX">Võite ka %s.</string>
+  <string name="sessions">Sessioonid</string>
   <string name="revokeAllSessions">lõpetada kõik sessioonid</string>
   <string name="playChessEverywhere">Mängi malet kõikjal</string>
   <string name="asFreeAsLichess">Tasuta nagu Lichess</string>
@@ -833,4 +838,18 @@ arvutianalüüsi, mängu jututoa ning jagatava URL-i.</string>
   <string name="youCannotPostYetPlaySomeGames">Sa ei saa veel foorumisse postitada. Mängi enne paar mängu!</string>
   <string name="subscribe">Telli</string>
   <string name="unsubscribe">Tühista tellimus</string>
+  <string name="mentionedYouInX">mainis sind sõnumis \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s mainis sind sõnumis \"%2$s\".</string>
+  <string name="invitedYouToX">kutsub sind \"%1$s\".</string>
+  <string name="xInvitedYouToY">%1$s kutsub sind \"%2$s\".</string>
+  <string name="youAreNowPartOfTeam">Sa oled nüüd võistkonna liige.</string>
+  <string name="congratsYouWon">Palju õnne, sa võitsid!</string>
+  <string name="lostAgainstTOSViolator">Sa kaotasid kellegile, kes rikkus Lichessi kasutustingimusi</string>
+  <string name="refundXpointsTimeControlY">Tagastus: %1$s %2$s reitingupunkti.</string>
+  <string name="timeAlmostUp">Aeg on peaaegu otsas!</string>
+  <string name="clickToRevealEmailAddress">[Vajuta e-maili aadressi nägemiseks]</string>
+  <string name="download">Allalaadimine</string>
+  <string name="welcome">Tere tulemast!</string>
+  <string name="cancelTournament">Tühista turniir</string>
+  <string name="tournDescription">Turniiri kirjeldus</string>
 </resources>

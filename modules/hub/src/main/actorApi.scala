@@ -98,14 +98,13 @@ package mod {
   case class ChatTimeout(mod: String, user: String, reason: String, text: String)
   case class Shadowban(user: String, value: Boolean)
   case class KickFromRankings(userId: String)
-  case class SetPermissions(userId: String, permissions: List[String])
   case class AutoWarning(userId: String, subject: String)
   case class Impersonate(userId: String, by: Option[String])
   case class SelfReportMark(userId: String, name: String)
 }
 
 package playban {
-  case class Playban(userId: String, mins: Int)
+  case class Playban(userId: String, mins: Int, inTournament: Boolean)
   case class RageSitClose(userId: String)
 }
 
@@ -120,13 +119,12 @@ package simul {
   case class PlayerMove(gameId: String)
 }
 
-package slack {
+package irc {
   sealed trait Event
-  case class Error(msg: String)                                                 extends Event
-  case class Warning(msg: String)                                               extends Event
-  case class Info(msg: String)                                                  extends Event
-  case class Victory(msg: String)                                               extends Event
-  case class TournamentName(userName: String, tourId: String, tourName: String) extends Event
+  case class Error(msg: String)   extends Event
+  case class Warning(msg: String) extends Event
+  case class Info(msg: String)    extends Event
+  case class Victory(msg: String) extends Event
 }
 
 package timeline {
@@ -162,14 +160,13 @@ package timeline {
   case class SimulJoin(userId: String, simulId: String, simulName: String) extends Atom("simulJoin", true) {
     def userIds = List(userId)
   }
-  case class StudyCreate(userId: String, studyId: String, studyName: String)
-      extends Atom("studyCreate", true) {
-    def userIds = List(userId)
-  }
   case class StudyLike(userId: String, studyId: String, studyName: String) extends Atom("studyLike", true) {
     def userIds = List(userId)
   }
   case class PlanStart(userId: String) extends Atom("planStart", true) {
+    def userIds = List(userId)
+  }
+  case class PlanRenew(userId: String, months: Int) extends Atom("planRenew", true) {
     def userIds = List(userId)
   }
   case class BlogPost(id: String, slug: String, title: String) extends Atom("blogPost", true) {
@@ -297,6 +294,9 @@ package study {
 }
 
 package plan {
-  case class ChargeEvent(username: String, amount: Int, percent: Int, date: DateTime)
+  case class ChargeEvent(username: String, cents: Int, percent: Int, date: DateTime)
   case class MonthInc(userId: String, months: Int)
+  case class PlanStart(userId: String)
+  case class PlanGift(from: String, to: String, lifetime: Boolean)
+  case class PlanExpire(userId: String)
 }

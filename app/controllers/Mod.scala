@@ -58,7 +58,7 @@ final class Mod(
     )
 
   def publicChat =
-    Secure(_.ChatTimeout) { implicit ctx => _ =>
+    Secure(_.PublicChatView) { implicit ctx => _ =>
       env.mod.publicChat.all map { case (tournamentsAndChats, simulsAndChats) =>
         Ok(html.mod.publicChat(tournamentsAndChats, simulsAndChats))
       }
@@ -186,7 +186,7 @@ final class Mod(
           _ => fuccess(redirect(username, mod = true)),
           title =>
             modApi.setTitle(me.id, username, title map Title.apply) >>
-              env.security.automaticEmail.onTitleSet(username) >>-
+              env.mailer.automaticEmail.onTitleSet(username) >>-
               env.user.lightUserApi.invalidate(UserModel normalize username) inject
               redirect(username, mod = false)
         )
@@ -210,12 +210,27 @@ final class Mod(
       }
     }
 
-  def notifySlack(username: String) =
-    OAuthMod(_.NotifySlack) { _ => me =>
-      withSuspect(username) { sus =>
-        env.irc.slack.userMod(user = sus.user, mod = me) map some
+  def inquiryToZulip =
+    Secure(_.SendToZulip) { _ => me =>
+      env.report.api.inquiries ofModId me.id flatMap {
+        case None => Redirect(routes.Report.list).fuccess
+        case Some(report) =>
+          env.user.lightUserApi asyncFallback report.user flatMap { user =>
+            import lila.report.Room
+            import lila.irc.IrcApi.ModDomain
+            env.irc.api.inquiry(
+              user = user,
+              mod = me,
+              domain = report.room match {
+                case Room.Cheat | Room.Boost => ModDomain.Hunt
+                case Room.Comm               => ModDomain.Comm
+                case _                       => ModDomain.Other
+              },
+              room = report.room.name
+            ) inject NoContent
+          }
       }
-    }(actionResult(username))
+    }
 
   def table =
     Secure(_.ModLog) { implicit ctx => _ =>
@@ -245,7 +260,7 @@ final class Mod(
               (env.shutup.api getPublicLines user.id)
                 .mon(_.mod.comm.segment("publicChats")) zip
               env.user.noteApi
-                .forMod(user.id)
+                .byUserForMod(user.id)
                 .mon(_.mod.comm.segment("notes")) zip
               env.mod.logApi
                 .userHistory(user.id)
@@ -258,13 +273,13 @@ final class Mod(
               } flatMap { case ((((((chats, convos), publicLines), notes), history), inquiry), logins) =>
                 if (priv) {
                   if (!inquiry.??(_.isRecentCommOf(Suspect(user)))) {
-                    env.irc.slack.commlog(mod = me, user = user, inquiry.map(_.oldestAtom.by.value))
+                    env.irc.api.commlog(mod = me, user = user, inquiry.map(_.oldestAtom.by.value))
                     if (isGranted(_.MonitoredMod))
-                      env.irc.slack.monitorMod(
+                      env.irc.api.monitorMod(
                         me.id,
                         "eyes",
                         s"spontaneously checked out @${user.username}'s private comms",
-                        lila.irc.SlackApi.MonitorType.Comm
+                        lila.irc.IrcApi.ModDomain.Comm
                       )
                   }
                 }
@@ -310,31 +325,55 @@ final class Mod(
   def spontaneousInquiry(username: String) =
     Secure(_.SeeReport) { implicit ctx => me =>
       OptionFuResult(env.user.repo named username) { user =>
-        env.appeal.api.exists(user) flatMap { isAppeal =>
-          val f =
-            if (isAppeal) env.report.api.inquiries.appeal _
-            else env.report.api.inquiries.spontaneous _
-          f(me, Suspect(user)) inject {
-            if (isAppeal) Redirect(s"${routes.Appeal.show(user.username)}#appeal-actions")
-            else redirect(user.username, mod = true)
+        (isGranted(_.Appeals) ?? env.appeal.api.exists(user)) flatMap { isAppeal =>
+          isAppeal.??(env.report.api.inquiries.ongoingAppealOf(user.id)) flatMap {
+            case Some(ongoing) if ongoing.mod != me.id =>
+              env.user.lightUserApi.asyncFallback(ongoing.mod) map { mod =>
+                Redirect(routes.Appeal.show(user.username))
+                  .flashFailure(s"Currently processed by ${mod.name}")
+              }
+            case _ =>
+              val f =
+                if (isAppeal) env.report.api.inquiries.appeal _
+                else env.report.api.inquiries.spontaneous _
+              f(me, Suspect(user)) inject {
+                if (isAppeal) Redirect(s"${routes.Appeal.show(user.username)}#appeal-actions")
+                else redirect(user.username, mod = true)
+              }
           }
         }
       }
     }
 
   def gamify =
-    Secure(_.SeeReport) { implicit ctx => _ =>
+    Secure(_.GamifyView) { implicit ctx => _ =>
       env.mod.gamify.leaderboards zip
         env.mod.gamify.history(orCompute = true) map { case (leaderboards, history) =>
           Ok(html.mod.gamify.index(leaderboards, history))
         }
     }
   def gamifyPeriod(periodStr: String) =
-    Secure(_.SeeReport) { implicit ctx => _ =>
+    Secure(_.GamifyView) { implicit ctx => _ =>
       lila.mod.Gamify.Period(periodStr).fold(notFound) { period =>
         env.mod.gamify.leaderboards map { leaderboards =>
           Ok(html.mod.gamify.period(leaderboards, period))
         }
+      }
+    }
+
+  def activity = activityOf("team", "month")
+
+  def activityOf(who: String, period: String) =
+    Secure(_.GamifyView) { implicit ctx => me =>
+      env.mod.activity(who, period)(me.user) map { activity =>
+        Ok(html.mod.activity(activity))
+      }
+    }
+
+  def queues(period: String) =
+    Secure(_.GamifyView) { implicit ctx => me =>
+      env.mod.queueStats(period) map { stats =>
+        Ok(html.mod.queueStats(stats))
       }
     }
 
@@ -425,9 +464,10 @@ final class Mod(
             permissions => {
               val newPermissions = Permission(permissions) diff Permission(user.roles)
               modApi.setPermissions(me, user.username, Permission(permissions)) >> {
-                newPermissions(Permission.Coach) ?? env.security.automaticEmail.onBecomeCoach(user)
+                newPermissions(Permission.Coach) ?? env.mailer.automaticEmail.onBecomeCoach(user)
               } >> {
-                Permission(permissions).exists(_ is Permission.SeeReport) ?? env.plan.api.setLifetime(user)
+                Permission(permissions)
+                  .exists(_ is Permission.SeeReport) ?? env.plan.api.setLifetime(user)
               } inject Redirect(routes.Mod.permissions(username)).flashSuccess
             }
           )
@@ -458,7 +498,7 @@ final class Mod(
           email.?? { em =>
             tryWith(em.acceptable, em.acceptable.value) orElse {
               username ?? { tryWith(em.acceptable, _) }
-            }
+            } recover lila.db.recoverDuplicateKey(_ => none)
           } getOrElse BadRequest(html.mod.emailConfirm(rawQuery, none, none)).fuccess
       }
     }
@@ -472,7 +512,7 @@ final class Mod(
     OAuthMod(_.Shadowban) { req => me =>
       val v = getBool("v", req)
       env.chat.panic.set(v)
-      env.irc.slack.chatPanic(me, v)
+      env.irc.api.chatPanic(me, v)
       fuccess(().some)
     }(_ => _ => _ => Redirect(routes.Mod.chatPanic).fuccess)
 

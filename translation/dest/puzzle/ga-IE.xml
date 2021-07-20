@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="puzzles">Fadbhbanna</string>
-  <string name="puzzleThemes">Téamaí fadhbhanna fichille</string>
+  <string name="puzzles">Fadhbanna</string>
+  <string name="puzzleThemes">Téamaí fadhbanna fichille</string>
   <string name="recommended">Molta</string>
   <string name="phases">Céimeanna</string>
   <string name="motifs">Móitífeanna</string>
   <string name="advanced">Ardleibhéal</string>
   <string name="lengths">Faid</string>
-  <string name="mates">Marbhsháinneacha</string>
-  <string name="goals">Aidhmeanna</string>
+  <string name="mates">Marbhsháinne</string>
+  <string name="goals">Aidhme</string>
   <string name="origin">Foinse</string>
   <string name="specialMoves">Bearta speisialta</string>
   <string name="didYouLikeThisPuzzle">Ba mhaith leat an fadhb seo?</string>
@@ -42,8 +42,22 @@
   <string name="normal">Gnáth</string>
   <string name="easier">Níos éasca</string>
   <string name="easiest">Is éasca</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">Pointe amháin faoi bhun do rátáil faidhbe</item>
+    <item quantity="two">%s phointe faoi bhun do rátáil faidhbe</item>
+    <item quantity="few">%s bpointe faoi bhun do rátáil faidhbe</item>
+    <item quantity="many">%s pointe faoi bhun do rátáil faidhbe</item>
+    <item quantity="other">%s pointe faoi bhun do rátáil faidhbe</item>
+  </plurals>
   <string name="harder">Níos deacra</string>
   <string name="hardest">Is deacra</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">Pointe amháin os comhair do rátáil faidhbe</item>
+    <item quantity="two">%s phointe os comhair do rátáil faidhbe</item>
+    <item quantity="few">%s bpointe os comhair do rátáil faidhbe</item>
+    <item quantity="many">%s pointe os comhair do rátáil faidhbe</item>
+    <item quantity="other">%s pointe os comhair do rátáil faidhbe</item>
+  </plurals>
   <string name="example">Sampla</string>
   <string name="addAnotherTheme">Cuir téama eile leis</string>
   <string name="jumpToNextPuzzleImmediately">Léim chuig an chéad fadhbh eile láithreach</string>
@@ -56,6 +70,13 @@
   <string name="streakDescription">Réitigh fadhbhanna níos deacra de réir a chéile chun stríoc buaite a thiomsú. Níl aon chlog ann, mar sin tóg do chuid ama. Beart mícheart amháin, agus tá an cluiche thart! Ach is féidir beart a scipeáil uair amháin i seisiúin.</string>
   <string name="yourStreakX">Do stríoc: %s</string>
   <string name="streakSkipExplanation">Scipeáil an beart seo chun do stríoc a choinneáil! Ní oibríonn sé ach uair amháin i sruth.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Lean leis an stríoc</string>
+  <string name="continueTheStreak">Lean leis an stríoc</string>
   <string name="newStreak">Stríoc nua</string>
+  <string name="fromMyGames">Ó mo chluichí</string>
+  <string name="lookupOfPlayer">Cuardaigh fadhbanna ó chluichí imreoir</string>
+  <string name="fromXGames">Fadhbanna ó chluichí %s\'</string>
+  <string name="searchPuzzles">Cuardaigh fadhbanna</string>
+  <string name="fromMyGamesNone">Níl aon fadhb agat sa bhunachar sonraí, ach is breá le Lichess tú go mór fós. 
+Imir cluichí gasta agus clasaiceacha chun cur leis na seansanna go gcuirfear fadhb de do chuid féin leis!</string>
+  <string name="fromXGamesFound">%1$s fadhb le fáil i %2$s cluiche</string>
 </resources>

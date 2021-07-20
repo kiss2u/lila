@@ -77,7 +77,7 @@
   <string name="losing">Utulyş</string>
   <string name="drawn">Deňlik</string>
   <string name="unknown">Näbelli</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Databaza</string>
+  <string name="database">Databaza</string>
   <string name="whiteDrawBlack">Aklar / Deňlik / Garalar</string>
   <string name="averageRatingX">Ortaça reýting: %s</string>
   <string name="recentGames">Ýakyndaky oýunlar</string>
@@ -242,7 +242,6 @@
   <string name="send">Iber</string>
   <string name="incrementInSeconds">Sekunt gatanjy</string>
   <string name="freeOnlineChess">Tölegsiz onlaýn küşt</string>
-  <string name="spectators">Tomaşaçylar:</string>
   <plurals name="nbRated">
     <item quantity="one">%s reýtingli</item>
     <item quantity="other">%s reýtingli</item>
@@ -269,7 +268,6 @@
     <item quantity="one">%s sekunt goş</item>
     <item quantity="other">%s sekunt goş</item>
   </plurals>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Bu oýunçy emeli usul bilen reýtingini artdyrýar/kemeldýär</string>
   <string name="openingExplorerAndTablebase">Açylyşlar eksploreri &amp; tablisasy</string>
   <string name="takeback">Yzyna al</string>
   <string name="proposeATakeback">Yza alma hödürle</string>
@@ -424,7 +422,6 @@ kompýuter derňewi, oýun çäti we paýlaşmaga URL alýaňyz.</string>
   <string name="firstName">Ady</string>
   <string name="lastName">Familýasy</string>
   <string name="biography">Biografiýa</string>
-  <string name="country">Ýurdy</string>
   <string name="thankYou">Minnetdar!</string>
   <string name="inlineNotation">Notasiýa şol bir setirde</string>
   <string name="watchLichessTV">Lichess TV-ä tomaşa et</string>
@@ -569,7 +566,7 @@ kompýuter derňewi, oýun çäti we paýlaşmaga URL alýaňyz.</string>
   <string name="really">hakykatdanam</string>
   <string name="contribute">Goşant goş</string>
   <string name="termsOfService">Hyzmat düzgünleri</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Çeşme kody</string>
+  <string name="sourceCode">Çeşme kody</string>
   <string name="simultaneousExhibitions">Birwagtly sergiler</string>
   <string name="host">Gurna</string>
   <string name="hostColorX">Gurnaýjy tarapy: %s</string>
@@ -641,8 +638,6 @@ kompýuter derňewi, oýun çäti we paýlaşmaga URL alýaňyz.</string>
   <string name="enableKidMode">Çaga moduny işlet</string>
   <string name="disableKidMode">Çaga moduny bekle</string>
   <string name="security">Howpsuzlyk</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Ynha hasabyňyza giriş amala aşyrlan enjamlaryň sanawy. Size degişli däl sessiýalary ýapyň.</string>
-  <string name="alternativelyYouCanX">Bolmasa %s hem mümkin.</string>
   <string name="revokeAllSessions">ähli sessiýalary ýapmak</string>
   <string name="playChessEverywhere">Her ýerde küşt oýna</string>
   <string name="asFreeAsLichess">Lichess deýin mugt</string>

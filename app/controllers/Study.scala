@@ -3,6 +3,7 @@ package controllers
 import play.api.libs.json._
 import play.api.mvc._
 import scala.concurrent.duration._
+import scala.util.chaining._
 
 import lila.api.Context
 import lila.app._
@@ -48,7 +49,8 @@ final class Study(
     Open { implicit ctx =>
       Reasonable(page) {
         Order(o) match {
-          case Order.Oldest => Redirect(routes.Study.allDefault(page)).fuccess
+          case order if !Order.withoutSelector.contains(order) =>
+            Redirect(routes.Study.allDefault(page)).fuccess
           case order =>
             env.study.pager.all(ctx.me, order, page) flatMap { pag =>
               negotiate(
@@ -156,28 +158,24 @@ final class Study(
   private def orRelay(id: String, chapterId: Option[String] = None)(
       f: => Fu[Result]
   )(implicit ctx: Context): Fu[Result] =
-    if (HTTPRequest isRedirectable ctx.req) env.relay.api.getOngoing(lila.relay.Relay.Id(id)) flatMap {
-      _.fold(f) { relay =>
-        fuccess(Redirect {
-          chapterId.fold(routes.Relay.show(relay.slug, relay.id.value)) { c =>
-            routes.Relay.chapter(relay.slug, relay.id.value, c)
-          }
-        })
+    if (HTTPRequest isRedirectable ctx.req) env.relay.api.getOngoing(lila.relay.RelayRound.Id(id)) flatMap {
+      _.fold(f) { rt =>
+        Redirect(chapterId.map(Chapter.Id).fold(rt.path)(rt.path)).fuccess
       }
     }
     else f
 
   private def showQuery(query: Fu[Option[WithChapter]])(implicit ctx: Context): Fu[Result] =
     OptionFuResult(query) { oldSc =>
-      CanViewResult(oldSc.study) {
+      CanView(oldSc.study, ctx.me) {
         for {
           (sc, data) <- getJsonData(oldSc)
           res <- negotiate(
             html = for {
-              chat     <- chatOf(sc.study)
-              sVersion <- env.study.version(sc.study.id)
-              streams  <- streamsOf(sc.study)
-            } yield EnableSharedArrayBuffer(Ok(html.study.show(sc.study, data, chat, sVersion, streams))),
+              chat      <- chatOf(sc.study)
+              sVersion  <- env.study.version(sc.study.id)
+              streamers <- streamersOf(sc.study)
+            } yield EnableSharedArrayBuffer(Ok(html.study.show(sc.study, data, chat, sVersion, streamers))),
             api = _ =>
               chatOf(sc.study).map { chatOpt =>
                 Ok(
@@ -194,7 +192,7 @@ final class Study(
               }
           )
         } yield res
-      }
+      }(privateUnauthorizedFu(oldSc.study), privateForbiddenFu(oldSc.study))
     } map NoCache
 
   private[controllers] def getJsonData(sc: WithChapter)(implicit ctx: Context): Fu[(WithChapter, JsData)] =
@@ -294,15 +292,20 @@ final class Study(
   ) =
     env.study.api.importGame(lila.study.StudyMaker.ImportGame(data), me) flatMap {
       _.fold(notFound) { sc =>
-        Redirect(routes.Study.show(sc.study.id.value)).fuccess
+        Redirect(routes.Study.chapter(sc.study.id.value, sc.chapter.id.value)).fuccess
       }
     }
 
   def delete(id: String) =
     Auth { _ => me =>
       env.study.api.byIdAndOwner(id, me) flatMap {
-        _ ?? env.study.api.delete
-      } inject Redirect(routes.Study.mine("hot"))
+        _ ?? { study =>
+          env.study.api.delete(study) >> env.relay.api.deleteRound(lila.relay.RelayRound.Id(id)).map {
+            case None       => Redirect(routes.Study.mine("hot"))
+            case Some(tour) => Redirect(routes.RelayTour.redirectOrApiTour(tour.slug, tour.id.value))
+          }
+        }
+      }
     }
 
   def clearChat(id: String) =
@@ -381,9 +384,9 @@ final class Study(
   def cloneStudy(id: String) =
     Auth { implicit ctx => _ =>
       OptionFuResult(env.study.api.byId(id)) { study =>
-        CanViewResult(study) {
+        CanView(study, ctx.me) {
           Ok(html.study.clone(study)).fuccess
-        }
+        }(privateUnauthorizedFu(study), privateForbiddenFu(study))
       }
     }
 
@@ -405,11 +408,11 @@ final class Study(
       CloneLimitPerUser(me.id, cost = cost) {
         CloneLimitPerIP(HTTPRequest ipAddress ctx.req, cost = cost) {
           OptionFuResult(env.study.api.byId(id)) { prev =>
-            CanViewResult(prev) {
+            CanView(prev, me.some) {
               env.study.api.clone(me, prev) map { study =>
                 Redirect(routes.Study.show((study | prev).id.value))
               }
-            }
+            }(privateUnauthorizedFu(prev), privateForbiddenFu(prev))
           }
         }(rateLimitedFu)
       }(rateLimitedFu)
@@ -425,33 +428,48 @@ final class Study(
     Open { implicit ctx =>
       PgnRateLimitPerIp(HTTPRequest ipAddress ctx.req) {
         OptionFuResult(env.study.api byId id) { study =>
-          CanViewResult(study) {
-            lila.mon.export.pgn.study.increment()
-            Ok.chunked(env.study.pgnDump(study, requestPgnFlags(ctx.req)))
-              .withHeaders(
-                noProxyBufferHeader,
-                CONTENT_DISPOSITION -> s"attachment; filename=${env.study.pgnDump filename study}.pgn"
-              )
-              .as(pgnContentType)
-              .fuccess
-          }
+          CanView(study, ctx.me) {
+            doPgn(study, ctx.req).fuccess
+          }(privateUnauthorizedFu(study), privateForbiddenFu(study))
         }
       }(rateLimitedFu)
     }
+
+  def apiPgn(id: String) = {
+    def handle(me: Option[lila.user.User], req: RequestHeader): Fu[Result] =
+      env.study.api.byId(id).map {
+        _.fold(NotFound(jsonError("Study not found"))) { study =>
+          PgnRateLimitPerIp(HTTPRequest ipAddress req) {
+            CanView(study, me) {
+              doPgn(study, req)
+            }(privateUnauthorizedJson, privateForbiddenJson)
+          }(rateLimitedJson)
+        }
+      }
+    AnonOrScoped(_.Study.Read)(
+      anon = req => handle(none, req),
+      scoped = req => me => handle(me.some, req)
+    )
+  }
+
+  private def doPgn(study: StudyModel, req: RequestHeader) = {
+    lila.mon.export.pgn.study.increment()
+    Ok.chunked(env.study.pgnDump(study, requestPgnFlags(req)))
+      .pipe(asAttachmentStream(s"${env.study.pgnDump filename study}.pgn"))
+      .as(pgnContentType)
+  }
 
   def chapterPgn(id: String, chapterId: String) =
     Open { implicit ctx =>
       env.study.api.byIdWithChapter(id, chapterId) flatMap {
         _.fold(notFound) { case WithChapter(study, chapter) =>
-          CanViewResult(study) {
+          CanView(study, ctx.me) {
             lila.mon.export.pgn.studyChapter.increment()
             Ok(env.study.pgnDump.ofChapter(study, requestPgnFlags(ctx.req))(chapter).toString)
-              .withHeaders(
-                CONTENT_DISPOSITION -> s"attachment; filename=${env.study.pgnDump.filename(study, chapter)}.pgn"
-              )
+              .pipe(asAttachment(s"${env.study.pgnDump.filename(study, chapter)}.pgn"))
               .as(pgnContentType)
               .fuccess
-          }
+          }(privateUnauthorizedFu(study), privateForbiddenFu(study))
         }
       }
     }
@@ -481,10 +499,7 @@ final class Study(
           .throttle(30, 1 second)
       } { source =>
         Ok.chunked(source)
-          .withHeaders(
-            noProxyBufferHeader,
-            CONTENT_DISPOSITION -> s"attachment; filename=${username}-${if (isMe) "all" else "public"}-studies.pgn"
-          )
+          .pipe(asAttachmentStream(s"${username}-${if (isMe) "all" else "public"}-studies.pgn"))
           .as(pgnContentType)
       }
       .fuccess
@@ -501,15 +516,13 @@ final class Study(
     Open { implicit ctx =>
       env.study.api.byIdWithChapter(id, chapterId) flatMap {
         _.fold(notFound) { case WithChapter(study, chapter) =>
-          CanViewResult(study) {
+          CanView(study, ctx.me) {
             env.study.gifExport.ofChapter(chapter) map { stream =>
               Ok.chunked(stream)
-                .withHeaders(
-                  noProxyBufferHeader,
-                  CONTENT_DISPOSITION -> s"attachment; filename=${env.study.pgnDump.filename(study, chapter)}.gif"
-                ) as "image/gif"
+                .pipe(asAttachmentStream(s"${env.study.pgnDump.filename(study, chapter)}.gif"))
+                .as("image/gif")
             }
-          }
+          }(privateUnauthorizedFu(study), privateForbiddenFu(study))
         }
       }
     }
@@ -517,9 +530,9 @@ final class Study(
   def multiBoard(id: String, page: Int) =
     Open { implicit ctx =>
       OptionFuResult(env.study.api byId id) { study =>
-        CanViewResult(study) {
+        CanView(study, ctx.me) {
           env.study.multiBoard.json(study.id, page, getBool("playing")) map JsonOk
-        }
+        }(privateUnauthorizedJson.fuccess, privateForbiddenJson.fuccess)
       }
     }
 
@@ -555,35 +568,102 @@ final class Study(
         )
     }
 
-  private[controllers] def CanViewResult(
-      study: StudyModel
-  )(f: => Fu[Result])(implicit ctx: lila.api.Context) =
-    if (canView(study)) f
-    else
-      negotiate(
-        html = fuccess(Unauthorized(html.site.message.privateStudy(study))),
-        api = _ => fuccess(Unauthorized(jsonError("This study is now private")))
-      )
+  def privateUnauthorizedJson = Unauthorized(jsonError("This study is now private"))
+  def privateUnauthorizedFu(study: StudyModel)(implicit ctx: lila.api.Context) =
+    negotiate(
+      html = fuccess(Unauthorized(html.site.message.privateStudy(study))),
+      api = _ => fuccess(privateUnauthorizedJson)
+    )
 
-  private def canView(study: StudyModel)(implicit ctx: lila.api.Context) =
-    !study.isPrivate || ctx.userId.exists(study.members.contains)
+  def privateForbiddenJson = Forbidden(jsonError("This study is now private"))
+  def privateForbiddenFu(study: StudyModel)(implicit ctx: lila.api.Context) =
+    negotiate(
+      html = fuccess(Forbidden(html.site.message.privateStudy(study))),
+      api = _ => fuccess(privateForbiddenJson)
+    )
+
+  def CanView[A](study: StudyModel, me: Option[lila.user.User])(
+      f: => A
+  )(unauthorized: => A, forbidden: => A): A =
+    me match {
+      case _ if !study.isPrivate                     => f
+      case None                                      => unauthorized
+      case Some(me) if study.members.contains(me.id) => f
+      case _                                         => forbidden
+    }
 
   implicit private def makeStudyId(id: String): StudyModel.Id = StudyModel.Id(id)
   implicit private def makeChapterId(id: String): Chapter.Id  = Chapter.Id(id)
 
-  private[controllers] def streamsOf(
-      study: StudyModel
-  )(implicit ctx: Context): Fu[List[lila.streamer.Stream]] =
-    env.streamer.liveStreamApi.all.flatMap {
-      _.streams
-        .filter { s =>
-          study.members.members.exists(m => s is m._2.id)
+  private[controllers] def streamersOf(study: StudyModel) = streamerCache get study.id
+
+  private val streamerCache =
+    env.memo.cacheApi[StudyModel.Id, List[lila.user.User.ID]](64, "study.streamers") {
+      _.refreshAfterWrite(15.seconds)
+        .maximumSize(512)
+        .buildAsyncFuture { studyId =>
+          env.study.studyRepo.membersById(studyId) flatMap {
+            _.map(_.members).filter(_.nonEmpty) ?? { members =>
+              env.streamer.liveStreamApi.all.flatMap {
+                _.streams
+                  .filter { s =>
+                    members.exists(m => s is m._2.id)
+                  }
+                  .map { stream =>
+                    env.study.isConnected(studyId, stream.streamer.userId) map {
+                      _ option stream.streamer.userId
+                    }
+                  }
+                  .sequenceFu
+                  .dmap(_.flatten)
+              }
+            }
+          }
         }
-        .map { stream =>
-          (fuccess(ctx.me ?? stream.streamer.is) >>|
-            env.study.isConnected(study.id, stream.streamer.userId)) map { _ option stream }
-        }
-        .sequenceFu
-        .map(_.flatten)
     }
+
+  def glyphs(lang: String) = Action {
+    import chess.format.pgn.Glyph
+    import lila.tree.Node.glyphWriter
+    import lila.i18n.{ I18nKeys => trans }
+
+    play.api.i18n.Lang.get(lang) ?? { implicit lang =>
+      JsonOk(
+        Json.obj(
+          "move" -> List(
+            Glyph.MoveAssessment.good.copy(name = trans.study.goodMove.txt()),
+            Glyph.MoveAssessment.mistake.copy(name = trans.study.mistake.txt()),
+            Glyph.MoveAssessment.brillant.copy(name = trans.study.brilliantMove.txt()),
+            Glyph.MoveAssessment.blunder.copy(name = trans.study.blunder.txt()),
+            Glyph.MoveAssessment.interesting.copy(name = trans.study.interestingMove.txt()),
+            Glyph.MoveAssessment.dubious.copy(name = trans.study.dubiousMove.txt()),
+            Glyph.MoveAssessment.only.copy(name = trans.study.onlyMove.txt()),
+            Glyph.MoveAssessment.zugzwang.copy(name = trans.study.zugzwang.txt())
+          ),
+          "position" -> List(
+            Glyph.PositionAssessment.equal.copy(name = trans.study.equalPosition.txt()),
+            Glyph.PositionAssessment.unclear.copy(name = trans.study.unclearPosition.txt()),
+            Glyph.PositionAssessment.whiteSlightlyBetter
+              .copy(name = trans.study.whiteIsSlightlyBetter.txt()),
+            Glyph.PositionAssessment.blackSlightlyBetter
+              .copy(name = trans.study.blackIsSlightlyBetter.txt()),
+            Glyph.PositionAssessment.whiteQuiteBetter.copy(name = trans.study.whiteIsBetter.txt()),
+            Glyph.PositionAssessment.blackQuiteBetter.copy(name = trans.study.blackIsBetter.txt()),
+            Glyph.PositionAssessment.whiteMuchBetter.copy(name = trans.study.whiteIsWinning.txt()),
+            Glyph.PositionAssessment.blackMuchBetter.copy(name = trans.study.blackIsWinning.txt())
+          ),
+          "observation" -> List(
+            Glyph.Observation.novelty.copy(name = trans.study.novelty.txt()),
+            Glyph.Observation.development.copy(name = trans.study.development.txt()),
+            Glyph.Observation.initiative.copy(name = trans.study.initiative.txt()),
+            Glyph.Observation.attack.copy(name = trans.study.attack.txt()),
+            Glyph.Observation.counterplay.copy(name = trans.study.counterplay.txt()),
+            Glyph.Observation.timeTrouble.copy(name = trans.study.timeTrouble.txt()),
+            Glyph.Observation.compensation.copy(name = trans.study.withCompensation.txt()),
+            Glyph.Observation.withIdea.copy(name = trans.study.withTheIdea.txt())
+          )
+        )
+      ).withHeaders(CACHE_CONTROL -> "max-age=3600")
+    }
+  }
 }

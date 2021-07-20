@@ -23,11 +23,11 @@ object topic {
     ) {
       main(cls := "forum forum-topic topic-form page-small box box-pad")(
         h1(
-          a(href := routes.ForumCateg.show(categ.slug), dataIcon := "I", cls := "text"),
+          a(href := routes.ForumCateg.show(categ.slug), dataIcon := "", cls := "text"),
           categ.name
         ),
         st.section(cls := "warning")(
-          h2(dataIcon := "!", cls := "text")(trans.important()),
+          h2(dataIcon := "", cls := "text")(trans.important()),
           p(
             trans.yourQuestionMayHaveBeenAnswered(
               strong(a(href := routes.Main.faq)(trans.inTheFAQ()))
@@ -100,7 +100,7 @@ object topic {
         h1(
           a(
             href := routes.ForumCateg.show(categ.slug),
-            dataIcon := "I",
+            dataIcon := "",
             cls := "text"
           ),
           topic.name
@@ -142,10 +142,10 @@ object topic {
                 cls := s"unsub ${if (uns) "on" else "off"}",
                 action := routes.Timeline.unsub(s"forum:${topic.id}")
               )(
-                button(cls := "button button-empty text on", dataIcon := "v", bits.dataUnsub := "off")(
+                button(cls := "button button-empty text on", dataIcon := "", bits.dataUnsub := "off")(
                   trans.subscribe()
                 ),
-                button(cls := "button button-empty text off", dataIcon := "v", bits.dataUnsub := "on")(
+                button(cls := "button button-empty text off", dataIcon := "", bits.dataUnsub := "on")(
                   trans.unsubscribe()
                 )
               )
@@ -156,18 +156,19 @@ object topic {
                   if (topic.hidden) "Feature" else "Un-feature"
                 )
               ),
-            canModCateg option
+            canModCateg option frag(
               postForm(action := routes.ForumTopic.close(categ.slug, topic.slug))(
                 button(cls := "button button-empty button-red")(
                   if (topic.closed) "Reopen" else "Close"
                 )
               ),
-            canModCateg option
               postForm(action := routes.ForumTopic.sticky(categ.slug, topic.slug))(
                 button(cls := "button button-empty button-brag")(
                   if (topic.isSticky) "Unsticky" else "Sticky"
                 )
-              )
+              ),
+              deleteModal
+            )
           )
         ),
         formWithCaptcha.map { case (form, captcha) =>
@@ -201,4 +202,26 @@ object topic {
         pager
       )
     }
+
+  private def deleteModal(implicit ctx: Context) =
+    div(cls := "forum-delete-modal none")(
+      p("Delete the post"),
+      st.form(method := "post", cls := "form3")(
+        st.select(
+          name := "reason",
+          cls := "form-control"
+        )(
+          option(value := "")("no message"),
+          lila.msg.MsgPreset.forumDeletion.presets.map { reason =>
+            option(value := reason)(reason)
+          }
+        ),
+        form3.actions(
+          button(cls := "cancel button button-empty", value := "cancel")("Cancel"),
+          form3.submit(
+            frag("Delete the post")
+          )(value := "default", cls := "button-red")
+        )
+      )
+    )
 }

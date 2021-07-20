@@ -1,3 +1,5 @@
+import { Config as CgConfig } from 'chessground/config';
+import { DrawShape } from 'chessground/draw';
 import { prop } from 'common';
 import throttle from 'common/throttle';
 import debounce from 'common/debounce';
@@ -8,7 +10,7 @@ import practiceCtrl from './practice/studyPracticeCtrl';
 import { StudyPracticeData, StudyPracticeCtrl } from './practice/interfaces';
 import { ctrl as commentFormCtrl, CommentForm } from './commentForm';
 import { ctrl as glyphFormCtrl, GlyphCtrl } from './studyGlyph';
-import { ctrl as studyFormCtrl, StudyFormCtrl } from './studyForm';
+import { ctrl as studyFormCtrl } from './studyForm';
 import { ctrl as topicsCtrl, TopicsCtrl } from './topics';
 import { ctrl as notifCtrl } from './notif';
 import { ctrl as shareCtrl } from './studyShare';
@@ -17,13 +19,57 @@ import { ctrl as serverEvalCtrl } from './serverEval';
 import * as tours from './studyTour';
 import * as xhr from './studyXhr';
 import { path as treePath } from 'tree';
-import { StudyCtrl, StudyVm, Tab, ToolTab, TagTypes, StudyData, StudyChapterMeta, ReloadData } from './interfaces';
+import {
+  StudyCtrl,
+  StudyVm,
+  Tab,
+  ToolTab,
+  TagTypes,
+  StudyData,
+  StudyChapterMeta,
+  ReloadData,
+  WithWhoAndPos,
+  WithChapterId,
+  WithWhoAndChap,
+  WithWho,
+  WithPosition,
+  TagArray,
+  StudyChapterRelay,
+} from './interfaces';
 import GamebookPlayCtrl from './gamebook/gamebookPlayCtrl';
 import { DescriptionCtrl } from './description';
 import RelayCtrl from './relay/relayCtrl';
 import { RelayData } from './relay/interfaces';
 import { MultiBoardCtrl } from './multiBoard';
-import { Req } from '../socket';
+import { StudySocketSendParams } from '../socket';
+import { Opening } from '../explorer/interfaces';
+
+interface Handlers {
+  path(d: WithWhoAndPos): void;
+  addNode(d: WithWhoAndPos & { d: string; n: Tree.Node; o: Opening; s: boolean; relay?: StudyChapterRelay }): void;
+  deleteNode(d: WithWhoAndPos): void;
+  promote(d: WithWhoAndPos & { toMainline: boolean }): void;
+  liking(d: WithWho & { l: { likes: number; me: boolean } }): void;
+  shapes(d: WithWhoAndPos & { s: DrawShape[] }): void;
+  members(d: { [id: string]: { user: { name: string; id: string }; role: 'r' | 'w' } }): void;
+  setComment(d: WithWhoAndPos & { c: Tree.Comment }): void;
+  deleteComment(d: WithWhoAndPos & { id: string }): void;
+  glyphs(d: WithWhoAndPos & { g: Tree.Glyph[] }): void;
+  clock(d: WithWhoAndPos & { c?: number }): void;
+  forceVariation(d: WithWhoAndPos & { force: boolean }): void;
+  chapters(d: StudyChapterMeta[]): void;
+  reload(d: null | WithChapterId): void;
+  changeChapter(d: WithWhoAndPos): void;
+  updateChapter(d: WithWhoAndChap): void;
+  descChapter(d: WithWhoAndChap & { desc?: string }): void;
+  descStudy(d: WithWho & { desc?: string }): void;
+  setTopics(d: WithWho & { topics: string[] }): void;
+  addChapter(d: WithWhoAndPos & { s: boolean }): void;
+  conceal(d: WithPosition & { ply: Ply }): void;
+  setTags(d: WithWhoAndChap & { tags: TagArray[] }): void;
+  validationError(d: { error: string }): void;
+  error(msg: string): void;
+}
 
 // data.position.path represents the server state
 // ctrl.path is the client state
@@ -64,7 +110,7 @@ export default function (
 
   const members = memberCtrl({
     initDict: data.members,
-    myId: practiceData ? null : ctrl.opts.userId,
+    myId: practiceData ? undefined : ctrl.opts.userId,
     ownerId: data.ownerId,
     send,
     tab: vm.tab,
@@ -86,18 +132,15 @@ export default function (
     ctrl
   );
 
-  function currentChapter(): StudyChapterMeta {
-    return chapters.get(vm.chapterId)!;
-  }
-  function isChapterOwner() {
-    return ctrl.opts.userId === data.chapter.ownerId;
-  }
+  const currentChapter = (): StudyChapterMeta => chapters.get(vm.chapterId)!;
+
+  const isChapterOwner = (): boolean => ctrl.opts.userId === data.chapter.ownerId;
 
   const multiBoard = new MultiBoardCtrl(data.id, redraw, ctrl.trans);
 
-  const relay = relayData ? new RelayCtrl(relayData, send, redraw, members, data.chapter) : undefined;
+  const relay = relayData ? new RelayCtrl(data.id, relayData, send, redraw, members, data.chapter) : undefined;
 
-  const form: StudyFormCtrl = studyFormCtrl(
+  const form = studyFormCtrl(
     (d, isNew) => {
       send('editStudy', d);
       if (
@@ -119,9 +162,9 @@ export default function (
     return vm.mode.write && !isGamebookPlay();
   }
 
-  function makeChange(t: string, d: any): boolean {
+  function makeChange(...args: StudySocketSendParams): boolean {
     if (isWriting()) {
-      send(t, d);
+      send(...args);
       return true;
     }
     return (vm.mode.sticky = false);
@@ -156,9 +199,11 @@ export default function (
     redraw
   );
 
-  function addChapterId(req: Req) {
-    req.ch = vm.chapterId;
-    return req;
+  function addChapterId<T>(req: T): T & { ch: string } {
+    return {
+      ...req,
+      ch: vm.chapterId,
+    };
   }
 
   function isGamebookPlay() {
@@ -200,9 +245,15 @@ export default function (
     const sameChapter = data.chapter.id === s.chapter.id;
     vm.mode.sticky = (vm.mode.sticky && s.features.sticky) || (!data.features.sticky && s.features.sticky);
     if (vm.mode.sticky) vm.behind = 0;
-    'position name visibility features settings chapter likes liked description'.split(' ').forEach(key => {
-      data[key] = s[key];
-    });
+    data.position = s.position;
+    data.name = s.name;
+    data.visibility = s.visibility;
+    data.features = s.features;
+    data.settings = s.settings;
+    data.chapter = s.chapter;
+    data.likes = s.likes;
+    data.liked = s.liked;
+    data.description = s.description;
     chapterDesc.set(data.chapter.description);
     studyDesc.set(data.description);
     document.title = data.name;
@@ -264,11 +315,9 @@ export default function (
 
   if (members.canContribute()) form.openIfNew();
 
-  function currentNode() {
-    return ctrl.node;
-  }
+  const currentNode = () => ctrl.node;
 
-  const share = shareCtrl(data, currentChapter, currentNode, !!relay, redraw, ctrl.trans);
+  const share = shareCtrl(data, currentChapter, currentNode, relay, redraw, ctrl.trans);
 
   const practice: StudyPracticeCtrl | undefined = practiceData && practiceCtrl(ctrl, data, practiceData);
 
@@ -283,7 +332,7 @@ export default function (
   }
   instanciateGamebookPlay();
 
-  function mutateCgConfig(config) {
+  function mutateCgConfig(config: Required<Pick<CgConfig, 'drawable'>>) {
     config.drawable.onChange = (shapes: Tree.Shape[]) => {
       if (vm.mode.write) {
         ctrl.tree.setShapes(shapes, ctrl.path);
@@ -299,13 +348,13 @@ export default function (
     };
   }
 
-  function wrongChapter(serverData) {
+  function wrongChapter(serverData: WithPosition & { s?: boolean }): boolean {
     if (serverData.p.chapterId !== vm.chapterId) {
       // sticky should really be on the same chapter
-      if (vm.mode.sticky && serverData.sticky) xhrReload();
+      if (vm.mode.sticky && serverData.s) xhrReload();
       return true;
     }
-    return undefined;
+    return false;
   }
 
   function setMemberActive(who?: { u: string }) {
@@ -313,15 +362,38 @@ export default function (
     vm.updatedAt = Date.now();
   }
 
-  function withPosition(obj: any) {
-    obj.ch = vm.chapterId;
-    obj.path = ctrl.path;
-    return obj;
+  function withPosition<T>(obj: T): T & { ch: string; path: string } {
+    return { ...obj, ch: vm.chapterId, path: ctrl.path };
   }
 
   const likeToggler = debounce(() => send('like', { liked: data.liked }), 1000);
 
-  const socketHandlers = {
+  function setChapter(id: string, force?: boolean) {
+    const alreadySet = id === vm.chapterId && !force;
+    if (relay?.tourShow.active) {
+      relay.tourShow.disable();
+      if (alreadySet) redraw();
+    }
+    if (alreadySet) return;
+    if (!vm.mode.sticky || !makeChange('setChapter', id)) {
+      vm.mode.sticky = false;
+      if (!vm.behind) vm.behind = 1;
+      vm.chapterId = id;
+      xhrReload();
+    }
+    vm.loading = true;
+    vm.nextChapterId = id;
+    vm.justSetChapterId = id;
+    redraw();
+  }
+
+  const [prevChapter, nextChapter] = [-1, +1].map(delta => (): StudyChapterMeta | undefined => {
+    const chs = chapters.list();
+    const i = chs.findIndex(ch => ch.id === vm.chapterId);
+    return i < 0 ? undefined : chs[i + delta];
+  });
+
+  const socketHandlers: Handlers = {
     path(d) {
       const position = d.p,
         who = d.w;
@@ -344,7 +416,7 @@ export default function (
         who = d.w,
         sticky = d.s;
       setMemberActive(who);
-      if (vm.toolTab() == 'multiBoard' || (relay && relay.intro.active)) multiBoard.addNode(d.p, d.n);
+      if (vm.toolTab() == 'multiBoard' || (relay && relay.tourShow.active)) multiBoard.addNode(d.p, d.n);
       if (sticky && !vm.mode.sticky) vm.behind++;
       if (wrongChapter(d)) {
         if (sticky && !vm.mode.sticky) redraw();
@@ -449,7 +521,7 @@ export default function (
       const position = d.p,
         who = d.w;
       setMemberActive(who);
-      if (wrongChapter(d)) return;
+      if (d.p.chapterId !== vm.chapterId) return;
       if (who && who.s === lichess.sri) return;
       ctrl.tree.setShapes(d.s, ctrl.path);
       if (ctrl.path === position.path) ctrl.withCg(cg => cg.setShapes(d.s));
@@ -486,6 +558,7 @@ export default function (
       setMemberActive(who);
       if (wrongChapter(d)) return;
       ctrl.tree.setGlyphsAt(d.g, position.path);
+      if (ctrl.path === position.path) ctrl.setAutoShapes();
       redraw();
     },
     clock(d) {
@@ -595,24 +668,7 @@ export default function (
         })
       );
     },
-    setChapter(id, force) {
-      const alreadySet = id === vm.chapterId && !force;
-      if (relay && relay.intro.active) {
-        relay.intro.disable();
-        if (alreadySet) redraw();
-      }
-      if (alreadySet) return;
-      if (!vm.mode.sticky || !makeChange('setChapter', id)) {
-        vm.mode.sticky = false;
-        if (!vm.behind) vm.behind = 1;
-        vm.chapterId = id;
-        xhrReload();
-      }
-      vm.loading = true;
-      vm.nextChapterId = id;
-      vm.justSetChapterId = id;
-      redraw();
-    },
+    setChapter,
     toggleSticky() {
       vm.mode.sticky = !vm.mode.sticky && data.features.sticky;
       xhrReload();
@@ -628,11 +684,15 @@ export default function (
     currentNode,
     practice,
     gamebookPlay: () => gamebookPlay,
-    nextChapter(): StudyChapterMeta | undefined {
-      const chapters = data.chapters,
-        currentId = currentChapter().id;
-      for (const i in chapters) if (chapters[i].id === currentId) return chapters[parseInt(i) + 1];
-      return undefined;
+    prevChapter,
+    nextChapter,
+    goToPrevChapter() {
+      const chapter = prevChapter();
+      if (chapter) setChapter(chapter.id);
+    },
+    goToNextChapter() {
+      const chapter = nextChapter();
+      if (chapter) setChapter(chapter.id);
     },
     setGamebookOverride(o) {
       vm.gamebookOverride = o;
@@ -648,10 +708,14 @@ export default function (
     onPremoveSet() {
       if (gamebookPlay) gamebookPlay.onPremoveSet();
     },
+    looksNew() {
+      const cs = chapters.list();
+      return cs.length == 1 && cs[0].name == 'Chapter 1' && !currentChapter().ongoing;
+    },
     redraw,
     trans: ctrl.trans,
     socketHandler: (t: string, d: any) => {
-      const handler = socketHandlers[t];
+      const handler = (socketHandlers as any as SocketHandlers)[t];
       if (handler) {
         handler(d);
         return true;

@@ -113,7 +113,7 @@ function renderLines(ctx: Ctx, nodes: Tree.Node[], opts: Opts): VNode {
     },
     nodes.map(n => {
       return (
-        retroLine(ctx, n, opts) ||
+        retroLine(ctx, n) ||
         h(
           'line',
           renderMoveAndChildrenOf(ctx, n, {
@@ -245,11 +245,13 @@ export default function (ctrl: AnalyseCtrl, concealOf?: ConcealOf): VNode {
     {
       hook: mainHook(ctrl),
     },
-    ([
-      isEmpty(commentTags) ? null : h('interrupt', commentTags),
-      root.ply & 1 ? moveView.renderIndex(root.ply, false) : null,
-      root.ply & 1 ? emptyMove() : null,
-    ] as MaybeVNodes).concat(
+    (
+      [
+        isEmpty(commentTags) ? null : h('interrupt', commentTags),
+        root.ply & 1 ? moveView.renderIndex(root.ply, false) : null,
+        root.ply & 1 ? emptyMove() : null,
+      ] as MaybeVNodes
+    ).concat(
       renderChildrenOf(ctx, root, {
         parentPath: '',
         isMainline: true,

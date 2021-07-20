@@ -8,7 +8,7 @@ import lila.app.mashup.TeamInfo
 import lila.app.templating.Environment._
 import lila.app.ui.ScalatagsTemplate._
 import lila.common.paginator.Paginator
-import lila.common.String.html.{ markdownLinksOrRichText, richText, safeJsonValue }
+import lila.common.String.html.{ richText, safeJsonValue }
 import lila.team.Team
 
 object show {
@@ -60,7 +60,7 @@ object show {
         }
       )(
         div(cls := "box__top")(
-          h1(cls := "text", dataIcon := "f")(t.name),
+          h1(cls := "text", dataIcon := "")(t.name),
           div(
             if (t.disabled) span(cls := "staff")("CLOSED")
             else nbMembers.plural(t.nbMembers, strong(t.nbMembers.localize))
@@ -84,17 +84,7 @@ object show {
             ),
             (t.enabled && chatOption.isDefined) option frag(
               views.html.chat.frag,
-              div(
-                cls := "chat__members",
-                aria.live := "off",
-                aria.relevant := "additions removals text"
-              )(
-                span(cls := "number")(nbsp),
-                " ",
-                trans.spectators.txt().replace(":", ""),
-                " ",
-                span(cls := "list")
-              )
+              views.html.chat.spectatorsFrag
             ),
             div(cls := "team-show__actions")(
               (t.enabled && !info.mine) option frag(
@@ -114,7 +104,7 @@ object show {
                 )(
                   div(
                     span(form3.cmnToggle("team-subscribe", "subscribe", checked = info.subscribed)),
-                    label(`for` := "team-subscribe")("Subscribe to team messages")
+                    label(`for` := "team-subscribe")(subToTeamMessages.txt())
                   )
                 )
               },
@@ -126,7 +116,7 @@ object show {
                 a(
                   href := routes.Tournament.teamBattleForm(t.id),
                   cls := "button button-empty text",
-                  dataIcon := "g"
+                  dataIcon := ""
                 )(
                   span(
                     strong(teamBattle()),
@@ -136,7 +126,7 @@ object show {
                 a(
                   href := s"${routes.Tournament.form}?team=${t.id}",
                   cls := "button button-empty text",
-                  dataIcon := "g"
+                  dataIcon := ""
                 )(
                   span(
                     strong(teamTournament()),
@@ -146,17 +136,17 @@ object show {
                 a(
                   href := s"${routes.Swiss.form(t.id)}",
                   cls := "button button-empty text",
-                  dataIcon := "g"
+                  dataIcon := ""
                 )(
                   span(
                     strong(trans.swiss.swissTournaments()),
-                    em("A Swiss tournament that only members of your team can join")
+                    em(swissTournamentOverview())
                   )
                 ),
                 a(
                   href := routes.Team.pmAll(t.id),
                   cls := "button button-empty text",
-                  dataIcon := "e"
+                  dataIcon := ""
                 )(
                   span(
                     strong(messageAllMembers()),
@@ -165,7 +155,7 @@ object show {
                 )
               ),
               ((t.enabled && info.ledByMe) || isGranted(_.Admin)) option
-                a(href := routes.Team.edit(t.id), cls := "button button-empty text", dataIcon := "%")(
+                a(href := routes.Team.edit(t.id), cls := "button button-empty text", dataIcon := "")(
                   trans.settings.settings()
                 )
             ),
@@ -186,7 +176,7 @@ object show {
           div(cls := "team-show__content__col2")(
             standardFlash(),
             st.section(cls := "team-show__desc")(
-              markdownLinksOrRichText {
+              markdown {
                 t.descPrivate.ifTrue(info.mine) | t.description
               },
               t.location.map { loc =>
@@ -237,6 +227,18 @@ object show {
         )
       )
     }
+
+  private object markdown {
+    import scala.concurrent.duration._
+    private val renderer = new lila.common.Markdown(list = true)
+    private val cache: com.github.blemale.scaffeine.LoadingCache[String, String] =
+      lila.memo.CacheApi.scaffeineNoScheduler
+        .expireAfterAccess(10 minutes)
+        .maximumSize(512)
+        .build(renderer.apply)
+
+    def apply(text: String): Frag = raw(cache get text)
+  }
 
   // handle special teams here
   private def joinButton(t: Team)(implicit ctx: Context) =

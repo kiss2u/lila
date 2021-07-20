@@ -39,8 +39,16 @@
   <string name="normal">Normal</string>
   <string name="easier">Lättare</string>
   <string name="easiest">Lättaste</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">En poäng under ditt pusselbetyg</item>
+    <item quantity="other">%s poäng under ditt pusselbetyg</item>
+  </plurals>
   <string name="harder">Svårare</string>
   <string name="hardest">Svåraste</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">En poäng över ditt pusselbetyg</item>
+    <item quantity="other">%s poäng över ditt pusselbetyg</item>
+  </plurals>
   <string name="example">Exempel</string>
   <string name="addAnotherTheme">Lägg till ett annat tema</string>
   <string name="jumpToNextPuzzleImmediately">Hoppa till nästa schackproblem direkt</string>
@@ -53,6 +61,12 @@
   <string name="streakDescription">Lös gradvis svårare pussel och bygg en vinstserie. Det finns ingen klocka, så ta din tid. Ett feldrag och spelet är över! Men du kan skippa ett drag per session.</string>
   <string name="yourStreakX">Din vinstserie: %s</string>
   <string name="streakSkipExplanation">Skippa detta drag för att bevara din vinstserie! Fungerar bara en gång per spel.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Fortsätt vinstserien</string>
+  <string name="continueTheStreak">Fortsätt vinstserien</string>
   <string name="newStreak">Ny vinstserie</string>
+  <string name="fromMyGames">Från mina partier</string>
+  <string name="lookupOfPlayer">Leta upp schackproblem från en spelares partier</string>
+  <string name="searchPuzzles">Sök schackproblem</string>
+  <string name="fromMyGamesNone">Du har inga schackproblem i databasen, men Lichess tycker om dig väldigt mycket ändå.
+Spela snabbschack och klassiska partier för att öka dina chanser att få ett av dina schackproblem tillagt!</string>
+  <string name="fromXGamesFound">%1$s schackproblem hittade i %2$s partier</string>
 </resources>

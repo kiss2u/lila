@@ -34,7 +34,9 @@ final class BotPlayer(
           if (pov.player.isOfferingDraw && offeringDraw.has(false)) declineDraw(pov)
           else if (!pov.player.isOfferingDraw && ~offeringDraw) offerDraw(pov)
           tellRound(pov.gameId, BotPlay(pov.playerId, uci, promise.some))
-          promise.future
+          promise.future recover {
+            case _: lila.round.GameIsFinishedError if ~offeringDraw && pov.game.drawn => ()
+          }
         }
       }
     }
@@ -91,7 +93,7 @@ final class BotPlayer(
       tellRound(pov.gameId, DrawNo(PlayerId(pov.playerId)))
 
   def offerDraw(pov: Pov): Unit =
-    if (pov.game.drawable && pov.game.playerCanOfferDraw(pov.color))
+    if (pov.game.drawable && (pov.game.playerCanOfferDraw(pov.color) || pov.opponent.isOfferingDraw))
       tellRound(pov.gameId, DrawYes(PlayerId(pov.playerId)))
 
   def setDraw(pov: Pov, v: Boolean): Unit =

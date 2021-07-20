@@ -22,9 +22,10 @@
   <string name="createAGame">Kreiraj partiju</string>
   <string name="whiteIsVictorious">Bijeli je pobjednik</string>
   <string name="blackIsVictorious">Crni je pobjednik</string>
-  <string name="youPlayTheWhitePieces">Igrate sa bijelim figurama</string>
+  <string name="youPlayTheWhitePieces">Igrate bijelim figurama</string>
   <string name="youPlayTheBlackPieces">Igrate sa crnim figurama</string>
   <string name="itsYourTurn">Vi Ste na Potezu!</string>
+  <string name="cheatDetected">Otkriveno varanje</string>
   <string name="kingInTheCenter">Kralj u centru</string>
   <string name="threeChecks">Tri šaha</string>
   <string name="raceFinished">Utrka je završena</string>
@@ -79,7 +80,7 @@
   <string name="losing">Gubi</string>
   <string name="drawn">Remi</string>
   <string name="unknown">Nepoznat ishod</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Baza podataka</string>
+  <string name="database">Baza podataka</string>
   <string name="whiteDrawBlack">Bijeli / Remi / Crni</string>
   <string name="averageRatingX">Prosječni rejting: %s</string>
   <string name="recentGames">Nedavne partije</string>
@@ -273,7 +274,6 @@
   <string name="send">Pošaljite</string>
   <string name="incrementInSeconds">Dodatak u sekundama</string>
   <string name="freeOnlineChess">Besplatni Internetski Šah</string>
-  <string name="spectators">Gledatelji:</string>
   <plurals name="nbRated">
     <item quantity="one">%s za bodove</item>
     <item quantity="few">%s za bodove</item>
@@ -307,7 +307,6 @@
     <item quantity="other">Dodajte protivniku %s sekundi</item>
   </plurals>
   <string name="thisAccountViolatedTos">Korisnik ovog računa prekršio je Lichessove uvjete korištenja</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Ovaj igrač umjetno podiže/spušta svoj rejting</string>
   <string name="openingExplorerAndTablebase">Pretraživač otvaranja &amp; baza pozicija u završnici</string>
   <string name="takeback">Vratite potez</string>
   <string name="proposeATakeback">Predložite vraćanje poteza</string>
@@ -487,7 +486,7 @@ računarsku analizu, mogućnost dopisivanja i link za slanje drugima.</string>
   <string name="firstName">Ime</string>
   <string name="lastName">Prezime</string>
   <string name="biography">Biografija</string>
-  <string name="country">Država</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Država ili zastava</string>
   <string name="thankYou">Hvala!</string>
   <string name="socialMediaLinks">Linkovi na društvene mreže</string>
   <string name="inlineNotation">Kompaktnija notacija</string>
@@ -650,7 +649,7 @@ računarsku analizu, mogućnost dopisivanja i link za slanje drugima.</string>
   <string name="really">stvarno</string>
   <string name="contribute">Doprinesite</string>
   <string name="termsOfService">Uslovi korištenja</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Izvorni kod</string>
+  <string name="sourceCode">Izvorni kod</string>
   <string name="simultaneousExhibitions">Simultanke</string>
   <string name="host">Domaćin</string>
   <string name="hostColorX">Boja domaćina: %s</string>
@@ -714,6 +713,7 @@ računarsku analizu, mogućnost dopisivanja i link za slanje drugima.</string>
   <string name="printFriendlyPDF">Preuzmite PDF partije</string>
   <string name="crosstable">Tabela rezultata</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Možete koristiti točak od Vašeg miša da brže pređete preko poteza za vrijeme analize partije.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Skrolajte preko računarskih varijanti da ih pregledate.</string>
   <string name="analysisShapesHowTo">Pritisnite shift + lijevi ili desni klik miša kako bi ste nacrtali krugove i strelice na ploči.</string>
   <string name="letOtherPlayersMessageYou">Dopustite drugim igračima da Vam mogu poslati poruku</string>
   <string name="shareYourInsightsData">Podijelite Vašu šahovsku analitiku</string>
@@ -727,8 +727,7 @@ računarsku analizu, mogućnost dopisivanja i link za slanje drugima.</string>
   <string name="enableKidMode">Uključite dječji režim</string>
   <string name="disableKidMode">Isključite dječji režim</string>
   <string name="security">Sigurnost</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Ovo je popis uređaja koji su se prijavili na Vaš račun. Opozovite bilo koju sesiju koju ne prepoznajete.</string>
-  <string name="alternativelyYouCanX">Alternativno, možete %s.</string>
+  <string name="sessions">Sesije</string>
   <string name="revokeAllSessions">opozvati sve sesije</string>
   <string name="playChessEverywhere">Igrajte šah svugdje</string>
   <string name="asFreeAsLichess">Besplatno kao i lichess</string>
@@ -887,9 +886,9 @@ računarsku analizu, mogućnost dopisivanja i link za slanje drugima.</string>
   <string name="youCannotPostYetPlaySomeGames">Još ne možete objavljivati na forumima. Odigrajte nekoliko partija!</string>
   <string name="subscribe">Pretplatite se</string>
   <string name="unsubscribe">Odjavite pretplatu</string>
-  <string name="mentionedYouInX"> spomenuo Vas je u \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s Vas je spomenuo u \"%2$s\".</string>
-  <string name="invitedYouToX"> Vas je pozvao u \"%1$s\".</string>
+  <string name="mentionedYouInX">spomenuo Vas je u \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s Vas je spomenuo u \"%2$s\".</string>
+  <string name="invitedYouToX">Vas je pozvao u \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s Vas je pozvao u \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Sada ste dio tima.</string>
   <string name="youHaveJoinedTeamX">Pridružili ste se \"%1$s\".</string>
@@ -897,12 +896,16 @@ računarsku analizu, mogućnost dopisivanja i link za slanje drugima.</string>
   <string name="congratsYouWon">Čestitamo, pobijedili ste!</string>
   <string name="gameVsX">Partija protiv %1$s</string>
   <string name="resVsX">%1$s protiv %2$s</string>
-  <string name="youJustBecamePatron">Upravo ste postali sponzor.</string>
-  <string name="patronAccountExpired">Račun sponzora istekao</string>
-  <string name="pleaseReconsiderRenewIt">Molimo, razmotrite da ga obnovite!</string>
   <string name="someoneReviewedYourCoachProfile">Neko je pogledao Vaš trenerski profil.</string>
   <string name="newPendingReview">Novi pregled na čekanju</string>
   <string name="lostAgainstTOSViolator">Izgubili ste od nekoga ko je prekršio Lichessove uvjete upotrebe</string>
   <string name="refundXpointsTimeControlY">Povrat: %1$s %2$s rejting-bodova.</string>
   <string name="timeAlmostUp">Vrijeme je pri kraju!</string>
+  <string name="clickToRevealEmailAddress">[Kliknite da otkrijete adresu e-pošte]</string>
+  <string name="download">Preuzmite</string>
+  <string name="welcome">Dobro došli!</string>
+  <string name="lichessPatronInfo">Lichess je dobrotvorni i potpuno besplatan softver otvorenog koda.
+Svi operativni troškovi, razvoj i sadržaj finansiraju se isključivo od donacija korisnikâ.</string>
+  <string name="coachManager">Postavke za trenera</string>
+  <string name="streamerManager">Postavke za strimera</string>
 </resources>

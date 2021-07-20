@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Bạn chơi quân trắng</string>
   <string name="youPlayTheBlackPieces">Bạn chơi quân đen</string>
   <string name="itsYourTurn">Đến lượt bạn!</string>
+  <string name="cheatDetected">Phát hiện gian lận</string>
   <string name="kingInTheCenter">Vua ở trung tâm</string>
   <string name="threeChecks">Ba lần chiếu</string>
   <string name="raceFinished">Cuộc thi kết thúc.</string>
@@ -77,7 +78,7 @@
   <string name="losing">Đang thua dần</string>
   <string name="drawn">Hòa cờ</string>
   <string name="unknown">Không chắc</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Cơ sở dữ liệu</string>
+  <string name="database">Cơ sở dữ liệu</string>
   <string name="whiteDrawBlack">Trắng / Hòa / Đen</string>
   <string name="averageRatingX">Xếp loại bình quân: %s</string>
   <string name="recentGames">Các ván cờ gần đây</string>
@@ -92,6 +93,7 @@
   <string name="noGameFound">Không có ván đấu nào trùng khớp</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Bạn có muốn thêm nhiều ván đấu hơn từ mục lục?</string>
   <string name="openingExplorer">Sách khai cuộc</string>
+  <string name="openingEndgameExplorer">Sách khai cuộc/cờ tàn</string>
   <string name="xOpeningExplorer">Sách khai cuộc %s</string>
   <string name="winPreventedBy50MoveRule">Chiến thắng bị ngăn chặn bởi luật 50 nước</string>
   <string name="lossSavedBy50MoveRule">Ván đấu được cứu thua bởi luật 50 nước</string>
@@ -114,6 +116,15 @@
   <string name="blunder">Sai lầm</string>
   <string name="mistake">Lỗi</string>
   <string name="inaccuracy">Thiếu chính xác</string>
+  <plurals name="nbBlunders">
+    <item quantity="other">%s sai lầm nghiêm trọng</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="other">%s nước đi sai</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="other">%s nước đi không chính xác</item>
+  </plurals>
   <string name="moveTimes">Thời gian đi</string>
   <string name="flipBoard">Quay bàn cờ</string>
   <string name="threefoldRepetition">Lặp cờ</string>
@@ -138,7 +149,7 @@
   <string name="computersAreNotAllowedToPlay">Máy tính và người chơi có máy tính hỗ trợ không được phép chơi. Vui lòng không nhận hỗ trợ từ các công cụ cờ vua, cơ sở dữ liệu, hoặc từ những người chơi khác khi chơi. Cũng lưu ý rằng việc lập nhiều tài khoản không được khuyến khích và việc gian lận quá nhiều sẽ dẫn đến bị cấm.</string>
   <string name="games">Các ván đấu</string>
   <string name="forum">Diễn đàn</string>
-  <string name="xPostedInForumY">%1$s được đăng trong diễn đàn %2$s</string>
+  <string name="xPostedInForumY">%1$s có viết trong diễn đàn %2$s</string>
   <string name="latestForumPosts">Bài đăng mới nhất</string>
   <string name="players">Kỳ thủ</string>
   <string name="friends">Bạn bè</string>
@@ -236,7 +247,6 @@
   <string name="send">Gửi</string>
   <string name="incrementInSeconds">Thêm giây</string>
   <string name="freeOnlineChess">Chơi cờ miễn phí online</string>
-  <string name="spectators">Khán giả:</string>
   <plurals name="nbRated">
     <item quantity="other">%s tính elo</item>
   </plurals>
@@ -258,7 +268,6 @@
     <item quantity="other">Cho thêm %s giây</item>
   </plurals>
   <string name="thisAccountViolatedTos">Tài khoản này đã vi phạm điều khoản dịch vụ của Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Kỳ thủ này đã tăng hệ số một cách giả tạo</string>
   <string name="openingExplorerAndTablebase">Sách khai cuộc &amp; bảng dữ liệu</string>
   <string name="takeback">Đi lại</string>
   <string name="proposeATakeback">Đề nghị lùi một nước</string>
@@ -316,7 +325,7 @@
   <string name="pasteThePgnStringHere">Dán chuỗi PGN ở đây</string>
   <string name="fromPosition">Từ thế trận</string>
   <string name="continueFromHere">Tiếp tục từ đây</string>
-  <string name="toStudy">Học chơi</string>
+  <string name="toStudy">Nghiên cứu</string>
   <string name="importGame">Nhập ván cờ</string>
   <string name="importGameExplanation">Khi paste PGN vào đây, bạn replay được ván cờ trên trình duyệt, phân tích bởi máy tính, chat trong game và URL share được.</string>
   <plurals name="nbImportedGames">
@@ -400,6 +409,8 @@
   <string name="boardEditor">Chỉnh sửa bàn cờ</string>
   <string name="setTheBoard">Thiết lập bàn cờ</string>
   <string name="popularOpenings">Khai cuộc phổ biến</string>
+  <string name="endgamePositions">Các vị trí trong tàn cuộc</string>
+  <string name="chess960StartPosition">Thế cờ đầu cho Chess960: %s</string>
   <string name="startPosition">Thế trận ban đầu</string>
   <string name="clearBoard">Xóa bàn cờ</string>
   <string name="savePosition">Lưu lại thế trận</string>
@@ -415,7 +426,7 @@
   <string name="firstName">Tên</string>
   <string name="lastName">Họ</string>
   <string name="biography">Lý lịch</string>
-  <string name="country">Quốc gia</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Quốc gia hoặc quốc kỳ</string>
   <string name="thankYou">Cám ơn!</string>
   <string name="socialMediaLinks">Kênh mạng xã hội</string>
   <string name="inlineNotation">Ký hiệu bên trong bàn cờ</string>
@@ -436,6 +447,8 @@
   <string name="tournamentWinners">Các nhà vô địch giải</string>
   <string name="name">Tên</string>
   <string name="description">Mô tả</string>
+  <string name="descPrivate">Mô tả riêng tư</string>
+  <string name="descPrivateHelp">Mô tả mà chỉ thành viên đội nhìn thấy. Nếu được đặt, sẽ thay thế mô tả thường cho thành viên đội.</string>
   <string name="no">Không chọn</string>
   <string name="yes">Chọn</string>
   <string name="help">Hổ trợ</string>
@@ -456,6 +469,7 @@
   <string name="cheat">Gian lận</string>
   <string name="insult">Xúc phạm</string>
   <string name="troll">Chọc tức</string>
+  <string name="ratingManipulation">Thao tác xếp hạng</string>
   <string name="other">Khác</string>
   <string name="reportDescriptionHelp">Dán đường dẫn (các) ván cờ và giải thích về vấn đề của kỳ thủ này. Đừng chỉ nói \"họ gian lận\", mà hãy miêu tả chi tiết nhất có thể. Vấn đề sẽ được giải quyết nhanh hơn nếu bạn viết bằng tiếng Anh.</string>
   <string name="error.provideOneCheatedGameLink">Xin hãy cung cấp ít nhất một đường dẫn đến ván cờ bị gian lận.</string>
@@ -529,12 +543,12 @@
   <string name="playOfflineComputer">Chơi ngoại tuyến với máy tính</string>
   <string name="opponent">Đối thủ</string>
   <string name="learnMenu">Học</string>
-  <string name="studyMenu">Học chơi</string>
+  <string name="studyMenu">Nghiên cứu</string>
   <string name="practice">Luyện tập</string>
   <string name="community">Cộng đồng</string>
   <string name="tools">Công cụ</string>
   <string name="increment">Gia tăng</string>
-  <string name="sharePGN">Chia sẻ tập tin pgn</string>
+  <string name="sharePGN">Chia sẻ tập tin PGN</string>
   <string name="playOnline">Chơi trực tuyến</string>
   <string name="playOffline">Chơi ngoại tuyến</string>
   <string name="allowAnalytics">Cho phép thống kê nặc danh</string>
@@ -556,7 +570,7 @@
   </plurals>
   <string name="tpTimeSpentPlaying">Thời gian đã chơi: %s</string>
   <string name="watchGames">Xem các ván đấu</string>
-  <string name="tpTimeSpentOnTV">Thời gian xem Lichess TV: %s</string>
+  <string name="tpTimeSpentOnTV">Thời gian được lên Lichess TV: %s</string>
   <string name="watch">Xem</string>
   <string name="videoLibrary">Thư viện video</string>
   <string name="streamersMenu">Các streamer</string>
@@ -568,7 +582,7 @@
   <string name="really">là thật</string>
   <string name="contribute">Đóng góp</string>
   <string name="termsOfService">Điều khoản dịch vụ</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Mã Nguồn</string>
+  <string name="sourceCode">Mã Nguồn</string>
   <string name="simultaneousExhibitions">Đấu cờ đồng loạt</string>
   <string name="host">Người chủ trì</string>
   <string name="hostColorX">Màu chủ nhà: %s</string>
@@ -630,8 +644,10 @@
   <string name="printFriendlyPDF">Bản PDF thân thiện với in ấn</string>
   <string name="crosstable">Bảng tổng điểm</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Bạn cũng có thể cuộn chuột trên bàn cờ để xem các nước đi của ván.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Cuộn qua các biến thể máy tính để xem trước chúng.</string>
   <string name="analysisShapesHowTo">Nhấn shift + click hoặc nhấp chuột phải để vẽ vòng tròn, mũi tên trên bàn cờ.</string>
   <string name="letOtherPlayersMessageYou">Cho phép người chơi khác gửi tin nhắn cho bạn</string>
+  <string name="receiveForumNotifications">Nhận thông báo khi được đề cập trong diễn đàn</string>
   <string name="shareYourInsightsData">Chia sẻ dữ liệu chi tiết về cờ vua của bạn</string>
   <string name="withNobody">Không chia sẻ</string>
   <string name="withFriends">Với bạn bè</string>
@@ -643,8 +659,7 @@
   <string name="enableKidMode">Kích hoạt chế độ trẻ em</string>
   <string name="disableKidMode">Tắt chế độ trẻ em</string>
   <string name="security">Bảo mật</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Đây là danh sách các thiết bị đã đăng nhập bằng tài khoản của bạn. Hãy xóa những phiên đăng nhập mà bạn không hận ra.</string>
-  <string name="alternativelyYouCanX">Ngoài ra, bạn có thể %s.</string>
+  <string name="sessions">Session</string>
   <string name="revokeAllSessions">xóa toàn bộ phiên đăng nhập</string>
   <string name="playChessEverywhere">Chơi cờ ở bất cứ đâu</string>
   <string name="asFreeAsLichess">Miễn phí như lichess</string>
@@ -691,7 +706,7 @@
   <string name="chessBasics">Cờ cơ bản</string>
   <string name="coaches">Huấn luyện viên</string>
   <string name="invalidPgn">PGN không hợp lệ</string>
-  <string name="invalidFen">PEN không hợp lệ</string>
+  <string name="invalidFen">FEN không hợp lệ</string>
   <string name="error.minLength">Độ dài tối thiểu là %s</string>
   <string name="error.maxLength">Độ dài tối đa là %s</string>
   <string name="error.min">Phải lớn hơn hoặc bằng %s</string>
@@ -795,4 +810,58 @@
   <string name="youCannotPostYetPlaySomeGames">Bạn bây giờ chưa thể đăng bài lên diễn đàng được. Chơi vài trận đi!</string>
   <string name="subscribe">Đăng kí</string>
   <string name="unsubscribe">Hủy đăng ký</string>
+  <string name="mentionedYouInX">đã đề cập đến bạn trong \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s đã đề cập đến bạn trong \"%2$s\".</string>
+  <string name="invitedYouToX">đã mời bạn tham gia \"%1$s\".</string>
+  <string name="xInvitedYouToY">%1$s đã mời bạn tham gia \"%2$s\".</string>
+  <string name="youAreNowPartOfTeam">Bây giờ bạn là một phần của nhóm.</string>
+  <string name="youHaveJoinedTeamX">Bạn đã tham gia \"%1$s\".</string>
+  <string name="someoneYouReportedWasBanned">Ai đó bạn báo cáo đã bị cấm</string>
+  <string name="congratsYouWon">Chúc mừng bạn đã chiến thắng!</string>
+  <string name="gameVsX">Trò chơi so với%1$s</string>
+  <string name="resVsX">%1$s so với%2$s</string>
+  <string name="someoneReviewedYourCoachProfile">Ai đó đã xem xét hồ sơ huấn luyện viên của bạn.</string>
+  <string name="newPendingReview">Đánh giá mới đang chờ xử lý</string>
+  <string name="lostAgainstTOSViolator">Bạn đã thua người vi phạm Điều Khoản Dịch Vụ của Lichess</string>
+  <string name="refundXpointsTimeControlY">Hoàn lại:%1$s %2$s điểm xếp hạng.</string>
+  <string name="timeAlmostUp">Thời gian sắp hết!</string>
+  <string name="clickToRevealEmailAddress">[Nhấp để tiết lộ địa chỉ email]</string>
+  <string name="download">Tải xuống</string>
+  <string name="welcome">Xin chào!</string>
+  <string name="lichessPatronInfo">Lichess là một tổ chức từ thiện và phần mềm nguồn mở hoàn toàn miễn phí.
+Tất cả chi phí vận hành, phát triển và nội dung chỉ được tài trợ bởi sự đóng góp của người dùng.</string>
+  <string name="coachManager">Quản lý huấn luyện viên</string>
+  <string name="streamerManager">Người quản lý streamer</string>
+  <string name="cancelTournament">Hủy giải đấu</string>
+  <string name="tournDescription">Mô tả giải đấu</string>
+  <string name="tournDescriptionHelp">Có điều gì đặc biệt bạn muốn nói với những người tham gia không? Cố gắng giữ nó ngắn gọn. Các liên kết đánh dấu có sẵn: [name] (https: // url)</string>
+  <string name="ratedFormHelp">Trò chơi được xếp hạng và tác động đến xếp hạng của người chơi</string>
+  <string name="onlyMembersOfTeam">Chỉ dành cho thành viên trong đội</string>
+  <string name="noRestriction">Không giới hạn</string>
+  <string name="minimumRatedGames">Trò chơi được xếp hạng tối thiểu</string>
+  <string name="minimumRating">Xếp hạng tối thiểu</string>
+  <string name="maximumWeeklyRating">Hệ số cao nhất trong tuần</string>
+  <string name="onlyTitled">Kỳ thủ phải có danh hiệu</string>
+  <string name="onlyTitledHelp">Đòi hỏi danh hiệu chính thức khi gia nhập giải đấu</string>
+  <string name="cancelSimul">Bỏ cuộc đánh đồng loạt</string>
+  <string name="simulHostcolor">Chọn màu cho ky thủ tổ chức đánh đồng loạt</string>
+  <string name="estimatedStart">Thời gian dự kiến bắt đầu</string>
+  <string name="simulFeatured">Hiển thị trên %s</string>
+  <string name="simulFeaturedHelp">Hiển thị cuộc đánh đồng loạt của bạn trên %s. Không áp dụng cho các cuộc đánh không công khai.</string>
+  <string name="simulDescription">Mô tả cuộc đánh đồng loạt</string>
+  <string name="simulDescriptionHelp">Bạn có muốn thông báo gì thêm cho những người tham gia không?</string>
+  <string name="markdownAvailable">%s dùng được ở đây, nếu cần soạn thảo phức tạp.</string>
+  <string name="inYourLocalTimezone">Trên múi giờ địa phương của bạn</string>
+  <string name="tournChat">Chat trong cuộc thi đấu</string>
+  <string name="noChat">Không chat</string>
+  <string name="onlyTeamLeaders">Chỉ dành cho nhóm quản lý</string>
+  <string name="onlyTeamMembers">Chỉ dành cho thành viên</string>
+  <string name="mouseTricks">Mẹo khi sử dụng chuột</string>
+  <string name="showHelpDialog">Hiển thị giao diện trợ giúp này</string>
+  <string name="reopenYourAccount">Mở lại tài khoản</string>
+  <string name="closedAccountChangedMind">Nếu bạn đóng tài khoản, song thay đổi ý định, bạn có đúng một cơ hội để mở lại tài khoản.</string>
+  <string name="onlyWorksOnce">Chỉ làm được một lần.</string>
+  <string name="cantDoThisTwice">Nếu bạn đóng tài khoản lần thứ hai, tài khoản sẽ không thể phục hồi lại.</string>
+  <string name="emailAssociatedToaccount">Địa chỉ email liên kết với tài khoản này</string>
+  <string name="sentEmailWithLink">Chúng tôi vừa gửi bạn một email với link.</string>
 </resources>

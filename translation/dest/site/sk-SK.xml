@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Hráte za bieleho</string>
   <string name="youPlayTheBlackPieces">Hráte za čierneho</string>
   <string name="itsYourTurn">Ste na ťahu!</string>
+  <string name="cheatDetected">Bolo zaznamenané podvádzanie</string>
   <string name="kingInTheCenter">Kráľ v strede</string>
   <string name="threeChecks">Tri šachy</string>
   <string name="raceFinished">Preteky ukončené</string>
@@ -80,7 +81,7 @@
   <string name="losing">Prehráva</string>
   <string name="drawn">Remizuje</string>
   <string name="unknown">Neznáme</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Databáza</string>
+  <string name="database">Databáza</string>
   <string name="whiteDrawBlack">Biely / Remíza / Čierny</string>
   <string name="averageRatingX">Priemerný rating: %s</string>
   <string name="recentGames">Nedávne partie</string>
@@ -281,7 +282,6 @@
   <string name="send">Poslať</string>
   <string name="incrementInSeconds">Prírastok v sekundách</string>
   <string name="freeOnlineChess">Online šach zdarma</string>
-  <string name="spectators">Diváci:</string>
   <plurals name="nbRated">
     <item quantity="one">%s hodnotená</item>
     <item quantity="few">%s hodnotené</item>
@@ -321,7 +321,6 @@
     <item quantity="other">Pridať %s sekúnd</item>
   </plurals>
   <string name="thisAccountViolatedTos">Tento účet porušil Podmienky poskytovania služby Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Tento hráč si umelo zvyšuje/znižuje svoje hodnotenie</string>
   <string name="openingExplorerAndTablebase">Knižnica otvorení &amp; koncoviek</string>
   <string name="takeback">Vrátiť ťah</string>
   <string name="proposeATakeback">Ponúknuť vrátenie ťahu</string>
@@ -511,7 +510,7 @@
   <string name="firstName">Meno</string>
   <string name="lastName">Priezvisko</string>
   <string name="biography">Životopis</string>
-  <string name="country">Krajina</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Štát alebo vlajka</string>
   <string name="thankYou">Ďakujeme!</string>
   <string name="socialMediaLinks">Odkazy na sociálne siete</string>
   <string name="inlineNotation">Notácia v riadkoch</string>
@@ -679,7 +678,7 @@
   <string name="really">naozaj</string>
   <string name="contribute">Prispieť</string>
   <string name="termsOfService">Podmienky služby</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Zdrojový kód</string>
+  <string name="sourceCode">Zdrojový kód</string>
   <string name="simultaneousExhibitions">Simultánne exhibície</string>
   <string name="host">Hostiteľ</string>
   <string name="hostColorX">Farba simultánneho hráča: %s</string>
@@ -757,8 +756,7 @@
   <string name="enableKidMode">Povoliť detský režim</string>
   <string name="disableKidMode">Vypnúť detský režim</string>
   <string name="security">Zabezpečenie</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Toto je prehľad zariadení, ktoré sa prihlásili cez Váš účet. Ak niektoré zariadenie nespoznávate, môžete zrušiť jeho reláciu.</string>
-  <string name="alternativelyYouCanX">Alebo môžete %s.</string>
+  <string name="sessions">Pripojenia</string>
   <string name="revokeAllSessions">odobrať všetky relácie</string>
   <string name="playChessEverywhere">Hrajte šachy kdekoľvek</string>
   <string name="asFreeAsLichess">Slobodný ako lichess</string>
@@ -921,4 +919,9 @@
   <string name="youCannotPostYetPlaySomeGames">Nemôžeš prispievať do fóra. Zahraj si nejaké hry!</string>
   <string name="subscribe">Prihlásiť sa k odberu</string>
   <string name="unsubscribe">Odhlásiť sa z odberu</string>
+  <string name="timeAlmostUp">Čas čoskoro vyprší!</string>
+  <string name="clickToRevealEmailAddress">[Kliknite pre zobrazenie e-mailovej adresy]</string>
+  <string name="download">Stiahnuť</string>
+  <string name="welcome">Vitajte!</string>
+  <string name="streamerManager">Správca streamov</string>
 </resources>

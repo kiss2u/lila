@@ -30,7 +30,9 @@ export default class OnlineFriends {
     this.trans = trans(JSON.parse(this.el.getAttribute('data-i18n')!));
     this.users = new Map();
     pubsub.on('socket.in.following_onlines', this.receive);
-    ['enters', 'leaves', 'playing', 'stopped_playing'].forEach(k => pubsub.on('socket.in.following_' + k, this[k]));
+    (['enters', 'leaves', 'playing', 'stopped_playing'] as const).forEach(k =>
+      pubsub.on('socket.in.following_' + k, this[k])
+    );
   }
   receive = (friends: TitleName[], msg: { playing: string[]; patrons: string[] }) => {
     this.users.clear();
@@ -65,7 +67,7 @@ export default class OnlineFriends {
         : '',
       url = '/@/' + friend.name,
       tvButton = friend.playing
-        ? `<a data-icon="1" class="tv ulpt" data-pt-pos="nw" href="${url}/tv" data-href="${url}"></a>`
+        ? `<a data-icon="" class="tv ulpt" data-pt-pos="nw" href="${url}/tv" data-href="${url}"></a>`
         : '';
     return `<div><a class="user-link ulpt" data-pt-pos="nw" href="${url}">${icon}${titleTag}${friend.name}</a>${tvButton}</div>`;
   };

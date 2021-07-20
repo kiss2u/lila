@@ -10,6 +10,8 @@ import {
   renderSan,
   renderPieces,
   renderBoard,
+  renderMainline,
+  renderComments,
   styleSetting,
   pieceSetting,
   prefixSetting,
@@ -21,6 +23,10 @@ import {
   positionJumpHandler,
   pieceJumpingHandler,
   Style,
+  castlingFlavours,
+  inputToLegalUci,
+  namePiece,
+  lastCapturedCommandHandler,
 } from 'nvui/chess';
 import { renderSetting } from 'nvui/setting';
 import { Notify } from 'nvui/notify';
@@ -28,6 +34,8 @@ import { commands } from 'nvui/command';
 import * as moveView from '../moveView';
 import { bind } from '../util';
 import throttle from 'common/throttle';
+import { Role } from 'chessground/types';
+import explorerView from '../explorer/explorerView';
 
 export const throttled = (sound: string) => throttle(100, () => lichess.sound.play(sound));
 
@@ -80,18 +88,34 @@ lichess.AnalyseNVUI = function (redraw: Redraw) {
             },
             renderMainline(ctrl.mainline, ctrl.path, style)
           ),
+          ...(!ctrl.studyPractice
+            ? [
+                h(
+                  'button',
+                  {
+                    attrs: {
+                      'aria-pressed': `${ctrl.explorer.enabled()}`,
+                    },
+                    hook: bind('click', _ => ctrl.explorer.toggle(), redraw),
+                  },
+                  ctrl.trans.noarg('openingExplorerAndTablebase')
+                ),
+                explorerView(ctrl),
+              ]
+            : []),
           h('h2', 'Pieces'),
           h('div.pieces', renderPieces(ctrl.chessground.state.pieces, style)),
           h('h2', 'Current position'),
           h(
-            'p.position',
+            'p.position.lastMove',
             {
               attrs: {
                 'aria-live': 'assertive',
-                'aria-atomic': true,
+                'aria-atomic': 'true',
               },
             },
-            renderCurrentNode(ctrl.node, style)
+            // make sure consecutive positions are different so that they get re-read
+            renderCurrentNode(ctrl.node, style) + (ctrl.node.ply % 2 === 0 ? '' : ' ')
           ),
           h('h2', 'Move form'),
           h(
@@ -134,8 +158,12 @@ lichess.AnalyseNVUI = function (redraw: Redraw) {
                   const $board = $(el.elm as HTMLElement);
                   $board.on('keypress', boardCommandsHandler());
                   const $buttons = $board.find('button');
-                  $buttons.on('click', selectionHandler(ctrl.data.opponent.color, selectSound));
+                  const steps = () => ctrl.tree.getNodeList(ctrl.path);
+                  const fenSteps = () => steps().map(step => step.fen);
+                  const opponentColor = () => (ctrl.node.ply % 2 === 0 ? 'black' : 'white');
+                  $buttons.on('click', selectionHandler(opponentColor, selectSound));
                   $buttons.on('keydown', arrowKeyHandler(ctrl.data.player.color, borderSound));
+                  $buttons.on('keypress', lastCapturedCommandHandler(fenSteps, pieceStyle.get(), prefixStyle.get()));
                   $buttons.on('keypress', positionJumpHandler());
                   $buttons.on('keypress', pieceJumpingHandler(wrapSound, errorSound));
                 },
@@ -150,10 +178,27 @@ lichess.AnalyseNVUI = function (redraw: Redraw) {
               boardStyle.get()
             )
           ),
+          h(
+            'div.boardstatus',
+            {
+              attrs: {
+                'aria-live': 'polite',
+                'aria-atomic': 'true',
+              },
+            },
+            ''
+          ),
           h('div.content', {
             hook: {
               insert: vnode => {
-                $(vnode.elm as HTMLElement).append($('.blind-content').removeClass('none'));
+                const root = $(vnode.elm as HTMLElement);
+                root.append($('.blind-content').removeClass('none'));
+                root.find('.copy-pgn').on('click', () => {
+                  (root.find('.game-pgn').attr('type', 'text')[0] as HTMLInputElement).select();
+                  document.execCommand('copy');
+                  root.find('.game-pgn').attr('type', 'hidden');
+                  notify.set('PGN copied into clipboard.');
+                });
               },
             },
           }),
@@ -206,10 +251,20 @@ lichess.AnalyseNVUI = function (redraw: Redraw) {
 
 function onSubmit(ctrl: AnalyseController, notify: (txt: string) => void, style: () => Style, $input: Cash) {
   return function () {
-    let input = ($input.val() as string).trim();
+    let input = castlingFlavours(($input.val() as string).trim());
     if (isShortCommand(input)) input = '/' + input;
     if (input[0] === '/') onCommand(ctrl, notify, input.slice(1), style());
-    else notify('Invalid command');
+    else {
+      const uci = inputToLegalUci(input, ctrl.node.fen, ctrl.chessground);
+      if (uci)
+        ctrl.sendMove(
+          uci.slice(0, 2) as Key,
+          uci.slice(2, 4) as Key,
+          undefined,
+          namePiece[uci.slice(4)] as Role | undefined
+        );
+      else notify('Invalid command');
+    }
     $input.val('');
     return false;
   };
@@ -291,47 +346,11 @@ function requestAnalysisButton(ctrl: AnalyseController, inProgress: Prop<boolean
   );
 }
 
-function renderMainline(nodes: Tree.Node[], currentPath: Tree.Path, style: Style) {
-  const res: Array<string | VNode> = [];
-  let path: Tree.Path = '';
-  nodes.forEach(node => {
-    if (!node.san || !node.uci) return;
-    path += node.id;
-    const content: MaybeVNodes = [
-      node.ply & 1 ? moveView.plyToTurn(node.ply) + ' ' : null,
-      renderSan(node.san, node.uci, style),
-    ];
-    res.push(
-      h(
-        'move',
-        {
-          attrs: { p: path },
-          class: { active: path === currentPath },
-        },
-        content
-      )
-    );
-    res.push(renderComments(node, style));
-    res.push(', ');
-    if (node.ply % 2 === 0) res.push(h('br'));
-  });
-  return res;
-}
-
 function renderCurrentNode(node: Tree.Node, style: Style): string {
   if (!node.san || !node.uci) return 'Initial position';
-  return [moveView.plyToTurn(node.ply), renderSan(node.san, node.uci, style), renderComments(node, style)].join(' ');
-}
-
-function renderComments(node: Tree.Node, style: Style): string {
-  if (!node.comments) return '';
-  return (node.comments || []).map(c => renderComment(c, style)).join('. ');
-}
-
-function renderComment(comment: Tree.Comment, style: Style): string {
-  return comment.by === 'lichess'
-    ? comment.text.replace(/Best move was (.+)\./, (_, san) => 'Best move was ' + renderSan(san, undefined, style))
-    : comment.text;
+  return [moveView.plyToTurn(node.ply), renderSan(node.san, node.uci, style), renderComments(node, style)]
+    .join(' ')
+    .trim();
 }
 
 function renderPlayer(ctrl: AnalyseController, player: Player) {

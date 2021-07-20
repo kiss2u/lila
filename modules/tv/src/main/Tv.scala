@@ -35,9 +35,12 @@ final class Tv(
     }
 
   def getGames(channel: Tv.Channel, max: Int): Fu[List[Game]] =
-    trouper.ask[List[Game.ID]](TvTrouper.GetGameIds(channel, max, _)) flatMap {
+    getGameIds(channel, max) flatMap {
       _.map(roundProxyGame).sequenceFu.map(_.flatten)
     }
+
+  def getGameIds(channel: Tv.Channel, max: Int): Fu[List[Game.ID]] =
+    trouper.ask[List[Game.ID]](TvTrouper.GetGameIds(channel, max, _))
 
   def getBestGame = getGame(Tv.Channel.Best) orElse gameRepo.random
 
@@ -79,7 +82,7 @@ object Tv {
     case object Best
         extends Channel(
           name = "Top Rated",
-          icon = "C",
+          icon = "",
           secondsSinceLastMove = freshBlitz,
           filters = Seq(rated(2150), standard, noBot)
         )
@@ -177,14 +180,14 @@ object Tv {
     case object Bot
         extends Channel(
           name = "Bot",
-          icon = "n",
+          icon = "",
           secondsSinceLastMove = freshBlitz,
           filters = Seq(standard, hasBot)
         )
     case object Computer
         extends Channel(
           name = "Computer",
-          icon = "n",
+          icon = "",
           secondsSinceLastMove = freshBlitz,
           filters = Seq(computerFromInitialPosition)
         )

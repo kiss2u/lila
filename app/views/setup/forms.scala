@@ -13,11 +13,12 @@ object forms {
 
   import bits._
 
-  def hook(form: Form[_])(implicit ctx: Context) =
+  def hook(form: Form[_], forceTimeMode: Boolean = false)(implicit ctx: Context) =
     layout(
       "hook",
       trans.createAGame(),
-      routes.Setup.hook("sri-placeholder")
+      routes.Setup.hook("sri-placeholder"),
+      forceTimeMode = forceTimeMode
     ) {
       frag(
         renderVariant(form, translatedVariantChoicesWithVariants),
@@ -78,7 +79,9 @@ object forms {
               ),
               div(cls := "ai_info")(
                 ratings.toList.map { case (level, _) =>
-                  div(cls := s"${prefix}level_$level")(trans.aiNameLevelAiLevel("Stockfish 13", level))
+                  div(cls := s"${prefix}level_$level")(
+                    trans.aiNameLevelAiLevel("Fairy-Stockfish 13.1", level)
+                  )
                 }
               )
             )
@@ -122,7 +125,8 @@ object forms {
       typ: String,
       titleF: Frag,
       route: Call,
-      error: Option[Frag] = None
+      error: Option[Frag] = None,
+      forceTimeMode: Boolean = false
   )(fields: Frag)(implicit ctx: Context) =
     div(cls := error.isDefined option "error")(
       h2(titleF),
@@ -131,7 +135,7 @@ object forms {
           frag(
             p(cls := "error")(e),
             br,
-            a(href := routes.Lobby.home, cls := "button text", dataIcon := "L")(trans.cancel.txt())
+            a(href := routes.Lobby.home, cls := "button text", dataIcon := "")(trans.cancel.txt())
           )
         }
         .getOrElse {
@@ -140,7 +144,8 @@ object forms {
             novalidate,
             dataRandomColorVariants,
             dataType := typ,
-            dataAnon := ctx.isAnon.option("1")
+            dataAnon := ctx.isAnon.option("1"),
+            dataForceTimeMode := forceTimeMode.option("1")
           )(
             fields,
             if (ctx.blind) submitButton("Create the game")

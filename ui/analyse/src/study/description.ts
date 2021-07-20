@@ -2,7 +2,7 @@ import { h, VNode } from 'snabbdom';
 import { StudyCtrl } from './interfaces';
 import { bind, richHTML, onInsert } from '../util';
 
-export type Save = (string) => void;
+export type Save = (t: string) => void;
 
 export class DescriptionCtrl {
   edit = false;
@@ -38,7 +38,7 @@ export function view(study: StudyCtrl, chapter: boolean): VNode | undefined {
             ? null
             : h('a', {
                 attrs: {
-                  'data-icon': 'm',
+                  'data-icon': '',
                   title: 'Edit',
                 },
                 hook: bind(
@@ -51,7 +51,7 @@ export function view(study: StudyCtrl, chapter: boolean): VNode | undefined {
               }),
           h('a', {
             attrs: {
-              'data-icon': 'q',
+              'data-icon': '',
               title: 'Delete',
             },
             hook: bind('click', () => {
@@ -84,7 +84,7 @@ function edit(ctrl: DescriptionCtrl, id: string, chapter: boolean): VNode {
       descTitle(chapter),
       h('button.button.button-empty.button-red', {
         attrs: {
-          'data-icon': 'L',
+          'data-icon': '',
           title: 'Close',
         },
         hook: bind('click', () => (ctrl.edit = false), ctrl.redraw),

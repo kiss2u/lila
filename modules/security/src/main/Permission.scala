@@ -17,9 +17,11 @@ object Permission {
   case object ModerateForum extends Permission("MODERATE_FORUM", "Moderate forum")
 
   case object ChatTimeout           extends Permission("CHAT_TIMEOUT", "Chat timeout")
+  case object PublicChatView        extends Permission("VIEW_PUBLIC_CHAT", "See public chat page")
+  case object GamifyView            extends Permission("GAMIFY_VIEW", "See mod leaderboard")
   case object UserModView           extends Permission("USER_SPY", "User profile mod view")
   case object UserEvaluate          extends Permission("USER_EVALUATE", "Request evaluation")
-  case object NotifySlack           extends Permission("NOTIFY_SLACK", List(UserModView), "Notify #tavern")
+  case object SendToZulip           extends Permission("NOTIFY_SLACK", List(UserModView), "Send to Zulip")
   case object ViewPrivateComms      extends Permission("VIEW_PRIVATE_COMS", "View private comms")
   case object Shadowban             extends Permission("SHADOWBAN", List(UserModView, ChatTimeout), "Shadowban")
   case object SetKidMode            extends Permission("SET_KID_MODE", List(UserModView), "Set Kid Mode")
@@ -75,6 +77,17 @@ object Permission {
         "Lichess team"
       )
 
+  case object TimeoutMod
+      extends Permission(
+        "TIMEOUT_MOD",
+        List(
+          ChatTimeout,
+          PublicChatView,
+          GamifyView
+        ),
+        "Timeout mod"
+      )
+
   case object Hunter
       extends Permission(
         "HUNTER",
@@ -83,8 +96,8 @@ object Permission {
           ViewBlurs,
           MarkEngine,
           MarkBooster,
-          CloseAccount,
           UserModView,
+          GamifyView,
           UserEvaluate,
           SeeReport,
           ModLog,
@@ -102,10 +115,11 @@ object Permission {
       extends Permission(
         "SHUSHER",
         List(
+          LichessTeam,
+          TimeoutMod,
           ViewPrivateComms,
           Shadowban,
           SetKidMode,
-          ChatTimeout,
           ModerateForum,
           ReportBan,
           ModMessage,
@@ -133,7 +147,7 @@ object Permission {
           ManageTournament,
           ManageSimul,
           ManageEvent,
-          NotifySlack,
+          SendToZulip,
           PracticeConfig,
           PuzzleCurator,
           Presets,
@@ -167,6 +181,7 @@ object Permission {
       Shadowban,
       SetKidMode,
       ChatTimeout,
+      PublicChatView,
       ModerateForum,
       ReportBan,
       ModMessage,
@@ -191,6 +206,7 @@ object Permission {
     ),
     "Misc mod" -> List(
       SeeReport,
+      GamifyView,
       Appeals,
       UserSearch,
       MonitoredMod,
@@ -231,6 +247,7 @@ object Permission {
     ),
     "Package" -> List(
       LichessTeam,
+      TimeoutMod,
       Hunter,
       Shusher,
       Admin,
@@ -243,7 +260,7 @@ object Permission {
   }.toSet
 
   lazy val nonModPermissions: Set[Permission] =
-    Set(Beta, Prismic, Coach, Teacher, Developer, Verified, ApiHog, ApiChallengeAdmin)
+    Set(Beta, Prismic, Coach, Teacher, Developer, Verified, ApiHog, Relay)
 
   lazy val modPermissions: Set[Permission] = all diff nonModPermissions
 

@@ -1,11 +1,10 @@
 import config from '../config';
 import RacerCtrl from '../ctrl';
 import renderClock from 'puz/view/clock';
-import { bind } from 'puz/util';
+import { MaybeVNodes, bind } from 'common/snabbdom';
 import { h, VNode } from 'snabbdom';
 import { playModifiers, renderCombo } from 'puz/view/util';
 import { renderRace } from './race';
-import { MaybeVNodes } from 'puz/interfaces';
 import { renderBoard } from './board';
 import { povMessage } from 'puz/run';
 
@@ -45,7 +44,13 @@ const selectScreen = (ctrl: RacerCtrl): MaybeVNodes => {
         : [
             waitingToStart(noarg),
             h('div.racer__pre__message', [
-              ctrl.raceFull() ? undefined : ctrl.isPlayer() ? renderLink(ctrl) : renderJoin(ctrl),
+              ...(ctrl.raceFull()
+                ? ctrl.isPlayer()
+                  ? [renderStart(ctrl)]
+                  : []
+                : ctrl.isPlayer()
+                ? [renderLink(ctrl), renderStart(ctrl)]
+                : [renderJoin(ctrl)]),
               povMsg,
             ]),
             comboZone(ctrl),
@@ -107,7 +112,24 @@ const spectating = (noarg: TransNoArg) =>
 
 const renderBonus = (bonus: number) => `+${bonus}`;
 
-const comboZone = (ctrl: RacerCtrl) => h('div.puz-side__table', [renderCombo(config, renderBonus)(ctrl.run)]);
+const renderControls = (ctrl: RacerCtrl): VNode =>
+  h(
+    'div.puz-side__control',
+    h('a.puz-side__control__flip.button', {
+      class: {
+        active: ctrl.flipped,
+        'button-empty': !ctrl.flipped,
+      },
+      attrs: {
+        'data-icon': '',
+        title: ctrl.trans.noarg('flipBoard') + ' (Keyboard: f)',
+      },
+      hook: bind('click', ctrl.flip),
+    })
+  );
+
+const comboZone = (ctrl: RacerCtrl) =>
+  h('div.puz-side__table', [renderControls(ctrl), renderCombo(config, renderBonus)(ctrl.run)]);
 
 const playerScore = (ctrl: RacerCtrl): VNode =>
   h('div.puz-side__top.puz-side__solved', [h('div.puz-side__solved__text', ctrl.myScore() || 0)]);
@@ -127,11 +149,31 @@ const renderLink = (ctrl: RacerCtrl) =>
         attrs: {
           title: 'Copy URL',
           'data-rel': `racer-url-${ctrl.race.id}`,
-          'data-icon': '"',
+          'data-icon': '',
         },
       }),
     ]),
   ]);
+
+const renderStart = (ctrl: RacerCtrl) =>
+  ctrl.isOwner() && !ctrl.vm.startsAt
+    ? h(
+        'div.puz-side__start',
+        h(
+          'button.button.button-fat',
+          {
+            class: {
+              disabled: ctrl.players().length < 2,
+            },
+            hook: bind('click', ctrl.start),
+            attrs: {
+              disabled: ctrl.players().length < 2,
+            },
+          },
+          ctrl.trans.noarg('startTheRace')
+        )
+      )
+    : null;
 
 const renderJoin = (ctrl: RacerCtrl) =>
   h(

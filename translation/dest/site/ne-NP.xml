@@ -9,6 +9,7 @@
   <string name="yourTurn">तपाइको पालो</string>
   <string name="aiNameLevelAiLevel">%1$s तह %2$s</string>
   <string name="level">तह</string>
+  <string name="strength">तागत</string>
   <string name="toggleTheChat">बार्तालाप खोल्ने/बन्द गर्ने</string>
   <string name="toggleSound">ध्वनी खोल्ने/बन्द गर्ने</string>
   <string name="chat">बार्तालाप</string>
@@ -77,7 +78,7 @@
   <string name="losing">हार्ने</string>
   <string name="drawn">बराबर</string>
   <string name="unknown">अज्ञात</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">डाटाबेस</string>
+  <string name="database">डाटाबेस</string>
   <string name="whiteDrawBlack">सेतो / बराबरी / कालो</string>
   <string name="averageRatingX">औसत रेटिंग: %s</string>
   <string name="recentGames">पछिल्लो खेलहरु</string>
@@ -244,7 +245,6 @@
   <string name="send">पठाउनु</string>
   <string name="incrementInSeconds">हरेक चालमा थप सेकेण्ड</string>
   <string name="freeOnlineChess">निःशुल्क अनलाईन बुद्धिचाल</string>
-  <string name="spectators">दर्शकहरु:</string>
   <plurals name="nbRated">
     <item quantity="one">%s रेटेड</item>
     <item quantity="other">%s रेटेड</item>
@@ -271,7 +271,6 @@
     <item quantity="one">%s सेकेण्ड दिनु</item>
     <item quantity="other">%s सेकेण्ड दिनु</item>
   </plurals>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">यो खेलाडी कृतिम रुपमा रेटिङ घटबढ गराउने गर्दछ</string>
   <string name="openingExplorerAndTablebase">शुरुका चाल अन्वेषक &amp; टेबलबेस</string>
   <string name="takeback">चाल फिर्ता</string>
   <string name="proposeATakeback">चाल फिर्ता लिने प्रस्ताव गरौं</string>
@@ -439,7 +438,6 @@
   <string name="firstName">शुभनाम</string>
   <string name="lastName">थर</string>
   <string name="biography">जीवनी</string>
-  <string name="country">देश</string>
   <string name="thankYou">धन्यवाद!</string>
   <string name="socialMediaLinks">सामाजिक सञ्जाल लिङ्क</string>
   <string name="inlineNotation">पङ्तिमा नोटेशन</string>
@@ -592,7 +590,7 @@
   <string name="really">साच्चै</string>
   <string name="contribute">योगदान गर्नुहोस्</string>
   <string name="termsOfService">सेवाका सर्तहरू</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">सोर्स कोड</string>
+  <string name="sourceCode">सोर्स कोड</string>
   <string name="simultaneousExhibitions">समकालिक प्रदर्शन</string>
   <string name="host">आयोजक</string>
   <string name="hostColorX">आयोजकको रङ्ग: %s</string>
@@ -667,8 +665,6 @@
   <string name="enableKidMode">बाल मोड लागु गरौं</string>
   <string name="disableKidMode">बाल मोड बन्द गरौं</string>
   <string name="security">सुरक्षा</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">यो सुची तपाइको खाताबाट लीचेसमा लग इन गरेका उपकरणहरुको हो। तपाइले नचिन्ने सत्रहरु हटाउनुहोस्।</string>
-  <string name="alternativelyYouCanX">वैकल्पिक रूपमा तपाइ %s गर्न सक्नुहुनेछ।</string>
   <string name="revokeAllSessions">सबै सत्र रद्द गर्नुहोस्</string>
   <string name="playChessEverywhere">सबै ठाउँमा बुद्धिचाल खेलौं</string>
   <string name="asFreeAsLichess">लीचेस जस्तै सित्तैमा</string>
@@ -815,4 +811,5 @@
   <string name="inTheFAQ">प्रायः सोधिने प्रश्नहरूमा</string>
   <string name="toReportSomeoneForCheatingOrBadBehavior">चोरी वा खराब ब्यहोराको उजुरी गर्नुपरेमा %1$s</string>
   <string name="useTheReportForm">रिपोर्ट फारम प्रयोग गर्नुहोस्</string>
+  <string name="timeAlmostUp">समय सक्किन लाग्यो!</string>
 </resources>

@@ -49,11 +49,9 @@ final class PrefApi(
     getPref(user) dmap RequestPref.queryParamOverride(req)
 
   def followable(userId: User.ID): Fu[Boolean] =
-    coll.find($id(userId), $doc("follow" -> true).some).one[Bdoc] dmap {
-      _ flatMap (_.getAsOpt[Boolean]("follow")) getOrElse Pref.default.follow
-    }
+    coll.primitiveOne[Boolean]($id(userId), "follow") map (_ | Pref.default.follow)
 
-  def unfollowableIds(userIds: List[User.ID]): Fu[Set[User.ID]] =
+  private def unfollowableIds(userIds: List[User.ID]): Fu[Set[User.ID]] =
     coll.secondaryPreferred.distinctEasy[User.ID, Set](
       "_id",
       $inIds(userIds) ++ $doc("follow" -> false)
@@ -66,6 +64,15 @@ final class PrefApi(
     followableIds(userIds) map { followables =>
       userIds map followables.contains
     }
+
+  private def unmentionableIds(userIds: Set[User.ID]): Fu[Set[User.ID]] =
+    coll.secondaryPreferred.distinctEasy[User.ID, Set](
+      "_id",
+      $inIds(userIds) ++ $doc("mention" -> false)
+    )
+
+  def mentionableIds(userIds: Set[User.ID]): Fu[Set[User.ID]] =
+    unmentionableIds(userIds) map userIds.diff
 
   def setPref(pref: Pref): Funit =
     coll.update.one($id(pref.id), pref, upsert = true).void >>-

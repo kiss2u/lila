@@ -20,7 +20,7 @@ object presets {
         views.html.mod.menu("presets"),
         div(cls := "page-menu__content box box-pad mod-presets")(
           h1(
-            s"${setting.get().value.size} $group presets",
+            s"$group presets",
             small(
               " / ",
               ModPresets.groups.filter(group !=).map { group =>
@@ -38,7 +38,7 @@ object presets {
               ).some
             )(form3.textarea(_)(rows := 20)),
             form3.action(
-              submitButton(cls := "button text", dataIcon := "E")("Save")
+              submitButton(cls := "button text", dataIcon := "")("Save")
             )
           )
         )

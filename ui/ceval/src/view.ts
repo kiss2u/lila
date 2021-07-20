@@ -1,5 +1,5 @@
 import * as winningChances from './winningChances';
-import { defined } from 'common';
+import { defined, notNull } from 'common';
 import { Eval, CevalCtrl, ParentCtrl, NodeEvals } from './types';
 import { h, VNode } from 'snabbdom';
 import { Position } from 'chessops/chess';
@@ -38,7 +38,7 @@ function localEvalInfo(ctrl: ParentCtrl, evs: NodeEvals): Array<VNode | string> 
       h('a.deeper', {
         attrs: {
           title: trans.noarg('goDeeper'),
-          'data-icon': 'O',
+          'data-icon': '',
         },
         hook: {
           insert: vnode =>
@@ -68,7 +68,7 @@ function threatButton(ctrl: ParentCtrl): VNode | null {
       hidden: !!ctrl.getNode().check,
     },
     attrs: {
-      'data-icon': '7',
+      'data-icon': '',
       title: ctrl.trans.noarg('showThreat') + ' (x)',
     },
     hook: {
@@ -114,7 +114,7 @@ export function getBestEval(evs: NodeEvals): Eval | undefined {
   if (!serverEv) return localEv;
   if (!localEv) return serverEv;
 
-  // Prefer localEv if it exeeds fishnet node limit or finds a better mate.
+  // Prefer localEv if it exceeds fishnet node limit or finds a better mate.
   if (
     localEv.nodes > serverNodes ||
     (typeof localEv.mate !== 'undefined' &&
@@ -254,12 +254,32 @@ function getElFen(el: HTMLElement): string {
   return el.getAttribute('data-fen')!;
 }
 
-function getElUci(e: MouseEvent): string | undefined {
+function getElUci(e: TouchEvent | MouseEvent): string | undefined {
   return (
     $(e.target as HTMLElement)
       .closest('div.pv')
       .attr('data-uci') || undefined
   );
+}
+
+function getElUciList(e: TouchEvent | MouseEvent): string[] {
+  return getElPvMoves(e)
+    .filter(notNull)
+    .map(move => move.split('|')[1]);
+}
+
+function getElPvMoves(e: TouchEvent | MouseEvent): (string | null)[] {
+  const pvMoves: (string | null)[] = [];
+
+  $(e.target as HTMLElement)
+    .closest('div.pv')
+    .children()
+    .filter('span.pv-san')
+    .each(function () {
+      pvMoves.push($(this).attr('data-board'));
+    });
+
+  return pvMoves;
 }
 
 function checkHover(el: HTMLElement, instance: CevalCtrl): void {
@@ -276,7 +296,9 @@ export function renderPvs(ctrl: ParentCtrl): VNode | undefined {
     node = ctrl.getNode(),
     setup = parseFen(node.fen).unwrap();
   let pvs: Tree.PvData[],
-    threat = false;
+    threat = false,
+    pvMoves: (string | null)[],
+    pvIndex: number | null;
   if (ctrl.threatMode() && node.threat) {
     pvs = node.threat.pvs;
     threat = true;
@@ -287,6 +309,7 @@ export function renderPvs(ctrl: ParentCtrl): VNode | undefined {
     if (setup.turn == 'white') setup.fullmoves += 1;
   }
   const pos = setupPosition(lichessVariantRules(instance.variant.key), setup);
+
   return h(
     'div.pv_box',
     {
@@ -295,19 +318,43 @@ export function renderPvs(ctrl: ParentCtrl): VNode | undefined {
         insert: vnode => {
           const el = vnode.elm as HTMLElement;
           el.addEventListener('mouseover', (e: MouseEvent) => {
+            const instance = ctrl.getCeval();
             instance.setHovering(getElFen(el), getElUci(e));
-            const pvBoard = (e.target as HTMLElement).getAttribute('data-board');
+            const pvBoard = (e.target as HTMLElement).dataset.board;
             if (pvBoard) {
+              pvIndex = Number((e.target as HTMLElement).dataset.moveIndex);
+              pvMoves = getElPvMoves(e);
               const [fen, uci] = pvBoard.split('|');
               instance.setPvBoard({ fen, uci });
             }
           });
-          el.addEventListener('mouseout', () => instance.setHovering(getElFen(el)));
-          el.addEventListener('mousedown', (e: MouseEvent) => {
-            const uci = getElUci(e);
-            if (uci) ctrl.playUci(uci);
+          el.addEventListener('wheel', (e: WheelEvent) => {
+            e.preventDefault();
+            if (pvIndex != null && pvMoves != null) {
+              if (e.deltaY < 0 && pvIndex > 0) pvIndex -= 1;
+              else if (e.deltaY > 0 && pvIndex < pvMoves.length - 1) pvIndex += 1;
+
+              const pvBoard = pvMoves[pvIndex];
+              if (pvBoard) {
+                const [fen, uci] = pvBoard.split('|');
+                ctrl.getCeval().setPvBoard({ fen, uci });
+              }
+            }
           });
-          el.addEventListener('mouseleave', () => instance.setPvBoard(null));
+          el.addEventListener('mouseout', () => ctrl.getCeval().setHovering(getElFen(el)));
+          for (const event of ['touchstart', 'mousedown']) {
+            el.addEventListener(event, (e: TouchEvent | MouseEvent) => {
+              const uciList = getElUciList(e);
+              if (uciList.length > (pvIndex ?? 0)) {
+                ctrl.playUciList(uciList.slice(0, (pvIndex ?? 0) + 1));
+                e.preventDefault();
+              }
+            });
+          }
+          el.addEventListener('mouseleave', () => {
+            ctrl.getCeval().setPvBoard(null);
+            pvIndex = null;
+          });
           checkHover(el, instance);
         },
         postpatch: (_, vnode) => checkHover(vnode.elm as HTMLElement, instance),
@@ -344,10 +391,13 @@ function renderPvWrapToggle(): VNode {
     hook: {
       insert: (vnode: VNode) => {
         const el = vnode.elm as HTMLElement;
-        el.addEventListener('mousedown', (e: MouseEvent) => {
-          e.stopPropagation();
-          $(el).closest('.pv').toggleClass('pv--nowrap');
-        });
+        for (const event of ['touchstart', 'mousedown']) {
+          el.addEventListener(event, (e: Event) => {
+            e.stopPropagation();
+            e.preventDefault();
+            $(el).closest('.pv').toggleClass('pv--nowrap');
+          });
+        }
       },
     },
   });
@@ -379,6 +429,7 @@ function renderPvMoves(pos: Position, pv: Uci[]): VNode[] {
         {
           key,
           attrs: {
+            'data-move-index': i,
             'data-board': `${fen}|${uci}`,
           },
         },
@@ -404,7 +455,6 @@ function renderPvBoard(ctrl: ParentCtrl): VNode | undefined {
     orientation,
     coordinates: false,
     viewOnly: true,
-    resizable: false,
     drawable: {
       enabled: false,
       visible: false,

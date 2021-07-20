@@ -1,26 +1,28 @@
-import { RelayData, LogEvent, RelayIntro } from './interfaces';
+import { RelayData, LogEvent, RelayTourShow, RelaySync, RelayRound } from './interfaces';
 import { StudyChapter, StudyChapterRelay } from '../interfaces';
 import { isFinished } from '../studyChapters';
+import { StudyMemberCtrl } from '../studyMembers';
+import { AnalyseSocketSend } from '../../socket';
 
 export default class RelayCtrl {
   log: LogEvent[] = [];
   cooldown = false;
   clockInterval?: number;
-  intro: RelayIntro;
+  tourShow: RelayTourShow;
 
   constructor(
+    public id: string,
     public data: RelayData,
-    readonly send: SocketSend,
+    readonly send: AnalyseSocketSend,
     readonly redraw: () => void,
-    readonly members: any,
+    readonly members: StudyMemberCtrl,
     chapter: StudyChapter
   ) {
     this.applyChapterRelay(chapter, chapter.relay);
-    this.intro = {
-      exists: !!data.markup,
-      active: !!data.markup && (location.pathname.match(/\//g) || []).length < 4,
+    this.tourShow = {
+      active: (location.pathname.match(/\//g) || []).length < 5,
       disable: () => {
-        this.intro.active = false;
+        this.tourShow.active = false;
       },
     };
   }
@@ -30,7 +32,7 @@ export default class RelayCtrl {
     this.redraw();
   };
 
-  loading = () => !this.cooldown && this.data.sync.ongoing;
+  loading = () => !this.cooldown && this.data.sync?.ongoing;
 
   applyChapterRelay = (c: StudyChapter, r?: StudyChapterRelay) => {
     if (this.clockInterval) clearInterval(this.clockInterval);
@@ -38,6 +40,15 @@ export default class RelayCtrl {
       c.relay = this.convertDate(r);
       if (!isFinished(c)) this.clockInterval = setInterval(this.redraw, 1000);
     }
+  };
+
+  roundById = (id: string) => this.data.rounds.find(r => r.id == id);
+  currentRound = () => this.roundById(this.id)!;
+
+  tourPath = () => `/broadcast/${this.data.tour.slug}/${this.data.tour.id}`;
+  roundPath = (round?: RelayRound) => {
+    const r = round || this.currentRound();
+    return r && `/broadcast/${this.data.tour.slug}/${r.slug}/${r.id}`;
   };
 
   private convertDate = (r: StudyChapterRelay): StudyChapterRelay => {
@@ -49,12 +60,19 @@ export default class RelayCtrl {
 
   private socketHandlers = {
     relayData: (d: RelayData) => {
-      d.sync.log = this.data.sync.log;
+      if (d.sync) d.sync.log = this.data.sync?.log || [];
       this.data = d;
       this.redraw();
     },
+    relaySync: (sync: RelaySync) => {
+      this.data.sync = {
+        ...sync,
+        log: this.data.sync?.log || sync.log,
+      };
+      this.redraw();
+    },
     relayLog: (event: LogEvent) => {
-      if (event.id !== this.data.id) return;
+      if (!this.data.sync) return;
       this.data.sync.log.push(event);
       this.data.sync.log = this.data.sync.log.slice(-20);
       this.cooldown = true;
@@ -67,9 +85,9 @@ export default class RelayCtrl {
     },
   };
 
-  socketHandler = (t: string, d: any) => {
-    const handler = this.socketHandlers[t];
-    if (handler && d.id === this.data.id) {
+  socketHandler = (t: string, d: any): boolean => {
+    const handler = (this.socketHandlers as SocketHandlers)[t];
+    if (handler && d.id === this.id) {
       handler(d);
       return true;
     }

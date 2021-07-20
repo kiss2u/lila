@@ -49,7 +49,7 @@ object clas {
           href := routes.Clas.form,
           cls := "new button button-empty",
           title := trans.clas.newClass.txt(),
-          dataIcon := "O"
+          dataIcon := ""
         )
       ),
       if (classes.isEmpty)
@@ -70,7 +70,7 @@ object clas {
       classes.map { clas =>
         div(
           cls := List("clas-widget" -> true, "clas-widget-archived" -> clas.isArchived),
-          dataIcon := "f"
+          dataIcon := ""
         )(
           a(cls := "overlay", href := routes.Clas.show(clas.id.value)),
           div(
@@ -148,11 +148,7 @@ object clas {
           form3.group(
             form("teachers"),
             trans.clas.teachersOfTheClass(),
-            help = frag(
-              trans.clas.addLichessUsernames(),
-              br,
-              trans.clas.theyMustFirstApply()
-            ).some
+            help = trans.clas.addLichessUsernames().some
           )(form3.textarea(_)(rows := 4))
       },
       form3.actions(

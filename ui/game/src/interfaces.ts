@@ -2,7 +2,6 @@ export interface GameData {
   game: Game;
   player: Player;
   opponent: Player;
-  spectator?: boolean;
   tournament?: Tournament;
   simul?: Simul;
   swiss?: Swiss;
@@ -56,7 +55,7 @@ export type StatusId = number;
 
 export interface Player {
   id: string;
-  name: string;
+  name: string | null;
   user?: PlayerUser;
   spectator?: boolean;
   color: Color;

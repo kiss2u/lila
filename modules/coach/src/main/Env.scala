@@ -40,27 +40,23 @@ final class Env(
 
   lazy val pager = wire[CoachPager]
 
-  lila.common.Bus.subscribeFun("adjustCheater", "finishGame", "shadowban", "setPermissions") {
+  lila.common.Bus.subscribeFun(
+    "adjustCheater",
+    "adjustBooster",
+    "finishGame",
+    "shadowban",
+    "setPermissions"
+  ) {
     case lila.hub.actorApi.mod.Shadowban(userId, true) =>
-      api.toggleApproved(userId, value = false)
       api.reviews.deleteAllBy(userId).unit
     case lila.hub.actorApi.mod.MarkCheater(userId, true) =>
-      api.toggleApproved(userId, value = false)
       api.reviews.deleteAllBy(userId).unit
-    case lila.hub.actorApi.mod.SetPermissions(userId, permissions) =>
-      api.toggleApproved(userId, permissions.has(Permission.Coach.dbKey)).unit
+    case lila.hub.actorApi.mod.MarkBooster(userId) =>
+      api.reviews.deleteAllBy(userId).unit
     case lila.game.actorApi.FinishGame(game, white, black) if game.rated =>
       if (game.perfType.exists(lila.rating.PerfType.standard.contains)) {
         white ?? api.setRating
         black ?? api.setRating
       }.unit
   }
-
-  def cli =
-    new lila.common.Cli {
-      def process = {
-        case "coach" :: "enable" :: username :: Nil  => api.toggleApproved(username, value = true)
-        case "coach" :: "disable" :: username :: Nil => api.toggleApproved(username, value = false)
-      }
-    }
 }

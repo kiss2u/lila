@@ -1,3 +1,5 @@
+# Run `./lila playRoutes` after modifying this file
+
 # Lobby
 GET   /                                controllers.Lobby.home
 GET   /lobby/seeks                     controllers.Lobby.seeks
@@ -31,6 +33,7 @@ GET   /games                           controllers.Tv.games
 GET   /games/:chanKey                  controllers.Tv.gamesChannel(chanKey: String)
 GET   /api/tv/channels                 controllers.Tv.channels
 GET   /api/tv/feed                     controllers.Tv.feed
+GET   /api/tv/:chanKey                 controllers.Tv.apiGamesChannel(chanKey: String)
 
 # Relation
 POST  /rel/follow/:userId              controllers.Relation.follow(userId: String)
@@ -59,6 +62,7 @@ GET   /@/:username/mini                controllers.User.showMini(username: Strin
 GET   /@/:username/tv                  controllers.User.tv(username: String)
 GET   /@/:username/perf/:perfKey       controllers.User.perfStat(username: String, perfKey: String)
 GET   /@/:username/all                 controllers.User.gamesAll(username: String, page: Int ?= 1)
+GET   /@/:username/download            controllers.User.download(username: String)
 GET   /@/:username/:filterName         controllers.User.games(username: String, filterName: String, page: Int ?= 1)
 GET   /@/:username                     controllers.User.show(username: String)
 GET   /player/myself                   controllers.User.myself
@@ -164,18 +168,24 @@ GET   /study/topic                     controllers.Study.topics
 POST  /study/topic                     controllers.Study.setTopics
 GET   /study/topic/:topic/:order       controllers.Study.byTopic(topic: String, order: String, page: Int ?= 1)
 GET   /study/topic/autocomplete        controllers.Study.topicAutocomplete
+GET   /study/glyphs/:lang.json         controllers.Study.glyphs(lang)
+GET   /api/study/$id<\w{8}>.pgn        controllers.Study.apiPgn(id: String)
 
 # Relay
-GET   /broadcast                           controllers.Relay.index(page: Int ?= 1)
-GET   /broadcast/new                       controllers.Relay.form
-POST  /broadcast/new                       controllers.Relay.create
-GET   /broadcast/:slug/$id<\w{8}>          controllers.Relay.show(slug: String, id: String)
-GET   /broadcast/:slug/$id<\w{8}>/$chapterId<\w{8}> controllers.Relay.chapter(slug: String, id: String, chapterId: String)
-GET   /broadcast/:slug/$id<\w{8}>/edit     controllers.Relay.edit(slug: String, id: String)
-POST  /broadcast/:slug/$id<\w{8}>/edit     controllers.Relay.update(slug: String, id: String)
-POST  /broadcast/:slug/$id<\w{8}>/reset    controllers.Relay.reset(slug: String, id: String)
-POST  /broadcast/:slug/$id<\w{8}>/clone    controllers.Relay.cloneRelay(slug: String, id: String)
-POST  /broadcast/:slug/$id<\w{8}>/push     controllers.Relay.push(slug: String, id: String)
+GET   /broadcast                              controllers.RelayTour.index(page: Int ?= 1)
+GET   /broadcast/new                          controllers.RelayTour.form
+POST  /broadcast/new                          controllers.RelayTour.create
+GET   /broadcast/:rs/$anyId<\w{8}>            controllers.RelayTour.redirectOrApiTour(rs: String, anyId: String)
+GET   /broadcast/$tourId<\w{8}>/edit          controllers.RelayTour.edit(tourId: String)
+POST  /broadcast/$tourId<\w{8}>/edit          controllers.RelayTour.update(tourId: String)
+GET   /broadcast/$tourId<\w{8}>/new           controllers.RelayRound.form(tourId: String)
+POST  /broadcast/$tourId<\w{8}>/new           controllers.RelayRound.create(tourId: String)
+GET   /broadcast/:ts/:rs/$roundId<\w{8}>      controllers.RelayRound.show(ts: String, rs: String, roundId: String)
+GET   /broadcast/:ts/:rs/$roundId<\w{8}>/$chapterId<\w{8}> controllers.RelayRound.chapter(ts: String, rs: String, roundId: String, chapterId: String)
+GET   /broadcast/round/$roundId<\w{8}>/edit   controllers.RelayRound.edit(roundId: String)
+POST  /broadcast/round/$roundId<\w{8}>/edit   controllers.RelayRound.update(roundId: String)
+POST  /broadcast/round/$roundId<\w{8}>/reset  controllers.RelayRound.reset(roundId: String)
+POST  /broadcast/round/$roundId<\w{8}>/push   controllers.RelayRound.push(roundId: String)
 
 # Learn
 GET   /learn                           controllers.Learn.index
@@ -189,8 +199,10 @@ GET   /patron/list                     controllers.Plan.list
 POST  /patron/switch                   controllers.Plan.switch
 POST  /patron/cancel                   controllers.Plan.cancel
 POST  /patron/webhook                  controllers.Plan.webhook
-POST  /patron/stripe-checkout          controllers.Plan.stripeCheckout
+POST  /patron/stripe/checkout          controllers.Plan.stripeCheckout
 POST  /patron/ipn                      controllers.Plan.payPalIpn
+POST  /patron/stripe/update-payment    controllers.Plan.updatePayment
+GET   /patron/stripe/update-payment    controllers.Plan.updatePaymentCallback
 GET   /features                        controllers.Plan.features
 GET   /donate                          controllers.Main.movedPermanently(to: String = "/patron")
 
@@ -208,6 +220,7 @@ POST  /practice/complete/:chapterId/:moves        controllers.Practice.complete(
 
 # Streamer
 GET   /streamer                        controllers.Streamer.index(page: Int ?= 1)
+GET   /api/streamer/featured           controllers.Streamer.featured
 GET   /streamer/live                   controllers.Streamer.live
 GET   /streamer/edit                   controllers.Streamer.edit
 POST  /streamer/new                    controllers.Streamer.create
@@ -452,9 +465,12 @@ POST  /mod/:username/games             controllers.GameMod.post(username: String
 GET   /mod/table                       controllers.Mod.table
 POST  /mod/:username/refreshUserAssess controllers.Mod.refreshUserAssess(username: String)
 POST  /mod/:username/email             controllers.Mod.setEmail(username: String)
-POST  /mod/:username/notify-slack      controllers.Mod.notifySlack(username: String)
+POST  /mod/inquiry-to-zulip            controllers.Mod.inquiryToZulip
 GET   /mod/leaderboard                 controllers.Mod.gamify
 GET   /mod/leaderboard/:period         controllers.Mod.gamifyPeriod(period: String)
+GET   /mod/activity                    controllers.Mod.activity
+GET   /mod/activity/:who/:period       controllers.Mod.activityOf(who: String, period: String)
+GET   /mod/queues/:period              controllers.Mod.queues(period: String)
 GET   /mod/search                      controllers.Mod.search
 GET   /mod/chat-user/:username         controllers.Mod.chatUser(username: String)
 GET   /mod/:username/permissions       controllers.Mod.permissions(username: String)
@@ -517,7 +533,7 @@ POST  /coach/approve-review/:id        controllers.Coach.approveReview(id: Strin
 POST  /coach/mod-review/:id            controllers.Coach.modReview(id: String)
 GET   /coach/:username                 controllers.Coach.show(username: String)
 POST  /coach/:username/review          controllers.Coach.review(username: String)
-GET   /coach/:lang/:order              controllers.Coach.search(lang: String, order: String, page: Int ?= 1)
+GET   /coach/:lang/:country/:order     controllers.Coach.search(lang: String, order: String, country: String, page: Int ?= 1)
 
 # Clas
 GET   /class                           controllers.Clas.index
@@ -550,6 +566,8 @@ GET   /class/$id<\w{8}>/student/:username/edit controllers.Clas.studentEdit(id: 
 POST  /class/$id<\w{8}>/student/:username/edit controllers.Clas.studentUpdate(id: String, username: String)
 GET   /class/$id<\w{8}>/student/:username/release controllers.Clas.studentRelease(id: String, username: String)
 POST  /class/$id<\w{8}>/student/:username/release controllers.Clas.studentReleasePost(id: String, username: String)
+GET   /class/$id<\w{8}>/student/:username/close controllers.Clas.studentClose(id: String, username: String)
+POST  /class/$id<\w{8}>/student/:username/close controllers.Clas.studentClosePost(id: String, username: String)
 POST  /class/$id<\w{8}>/invitation/revoke controllers.Clas.invitationRevoke(id: String)
 
 # DB image
@@ -586,7 +604,8 @@ GET   /appeal/queue                    controllers.Appeal.queue
 GET   /appeal/:username                controllers.Appeal.show(username: String)
 POST  /appeal/:username                controllers.Appeal.reply(username: String)
 POST  /appeal/:username/mute           controllers.Appeal.mute(username: String)
-POST  /appeal/:username/notify-slack   controllers.Appeal.notifySlack(username: String)
+POST  /appeal/:username/snooze/:dur    controllers.Appeal.snooze(username: String, dur: String)
+POST  /appeal/:username/send-to-zulip  controllers.Appeal.sendToZulip(username: String)
 
 # Stats
 GET    /stat/rating/distribution/:perf controllers.Stat.ratingDistribution(perf: String)
@@ -606,6 +625,7 @@ GET   /api/user/:name/followers        controllers.Relation.apiFollowers(name: S
 POST  /api/user/:name/note             controllers.User.apiWriteNote(name: String)
 GET   /api/user/:name/rating-history   controllers.User.ratingHistory(name: String)
 GET   /api/user/:name/current-game     controllers.User.tvExport(name: String)
+GET   /api/user/:name/perf/:perfKey    controllers.Api.perfStat(name: String, perfKey: String)
 GET   /api/game/:id                    controllers.Api.game(id: String)
 GET   /api/tournament                  controllers.Api.currentTournaments
 GET   /api/tournament/:id              controllers.Api.tournament(id: String)
@@ -627,6 +647,7 @@ GET   /api/users/status                controllers.Api.usersStatus
 GET   /api/crosstable/:u1/:u2          controllers.Api.crosstable(u1: String, u2: String)
 POST  /api/stream/games-by-users       controllers.Api.gamesByUsersStream
 GET   /api/stream/event                controllers.Api.eventStream
+GET   /api/stream/game/:id             controllers.Api.moveStream(id: String)
 GET   /api/account                     controllers.Account.apiMe
 GET   /api/account/playing             controllers.Account.apiNowPlaying
 GET   /api/account/email               controllers.Account.apiEmail
@@ -635,7 +656,6 @@ POST  /api/account/kid                 controllers.Account.apiKidPost
 GET   /api/account/preferences         controllers.Pref.apiGet
 POST  /api/challenge/ai                controllers.Setup.apiAi
 POST  /api/challenge/open              controllers.Challenge.openCreate
-POST  /api/challenge/admin/:orig/:dest controllers.Challenge.apiCreateAdmin(orig: String, dest: String)
 POST  /api/challenge/:user             controllers.Challenge.apiCreate(user: String)
 POST  /api/challenge/$id<\w{8}>/accept controllers.Challenge.apiAccept(id: String)
 POST  /api/challenge/$id<\w{8}>/decline controllers.Challenge.apiDecline(id: String)
@@ -643,7 +663,7 @@ POST  /api/challenge/$id<\w{8}>/cancel controllers.Challenge.apiCancel(id: Strin
 POST  /api/challenge/$id<\w{8}>/start-clocks  controllers.Challenge.apiStartClocks(id: String)
 POST  /api/round/$id<\w{8}>/add-time/:seconds controllers.Round.apiAddTime(id: String, seconds: Int)
 GET   /api/cloud-eval                  controllers.Api.cloudEval
-GET   /api/broadcast                   controllers.Relay.apiIndex
+GET   /api/broadcast                   controllers.RelayTour.apiIndex
 POST  /api/import                      controllers.Importer.apiSendGame
 GET   /api/bulk-pairing                controllers.BulkPairing.list
 POST  /api/bulk-pairing                controllers.BulkPairing.create
@@ -697,17 +717,18 @@ GET   /account/info                    controllers.Account.info
 GET   /account/now-playing             controllers.Account.nowPlaying
 
 # OAuth
-GET   /account/oauth/token                  controllers.OAuthToken.index
-GET   /account/oauth/token/create           controllers.OAuthToken.create
-POST  /account/oauth/token/create           controllers.OAuthToken.createApply
-POST  /account/oauth/token/:publicId/delete controllers.OAuthToken.delete(publicId: String)
-GET   /account/oauth/app                    controllers.OAuthApp.index
-GET   /account/oauth/app/create             controllers.OAuthApp.create
-POST  /account/oauth/app/create             controllers.OAuthApp.createApply
-GET   /account/oauth/app/:id/edit           controllers.OAuthApp.edit(id: String)
-POST  /account/oauth/app/:id/edit           controllers.OAuthApp.update(id: String)
-POST  /account/oauth/app/:id/delete         controllers.OAuthApp.delete(id: String)
-POST  /account/oauth/app/:id/revoke         controllers.OAuthApp.revoke(id: String)
+GET    /oauth                          controllers.OAuth.authorize
+POST   /oauth                          controllers.OAuth.legacyTokenApply
+GET    /oauth/authorize                controllers.OAuth.legacyAuthorize
+POST   /oauth/authorize                controllers.OAuth.authorizeApply
+POST   /oauth/revoke-client            controllers.OAuth.revokeClient
+POST   /api/token                      controllers.OAuth.tokenApply
+DELETE /api/token                      controllers.OAuth.tokenRevoke
+GET    /account/oauth/token            controllers.OAuthToken.index
+GET    /account/oauth/token/create     controllers.OAuthToken.create
+POST   /account/oauth/token/create     controllers.OAuthToken.createApply
+POST   /account/oauth/token/:id/delete controllers.OAuthToken.delete(id: String)
+POST   /api/token/admin-challenge      controllers.OAuth.challengeTokens
 
 # Events
 GET   /event/$id<\w{8}>                controllers.Event.show(id: String)

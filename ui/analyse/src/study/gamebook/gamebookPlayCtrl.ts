@@ -2,7 +2,7 @@ import AnalyseCtrl from '../../ctrl';
 import { path as treePath, ops as treeOps } from 'tree';
 import { makeShapesFromUci } from '../../autoShape';
 
-type Feedback = 'play' | 'good' | 'bad' | 'end';
+export type Feedback = 'play' | 'good' | 'bad' | 'end';
 
 export interface State {
   feedback: Feedback;
@@ -41,8 +41,10 @@ export default class GamebookPlayCtrl {
       },
       parPath = treePath.init(this.root.path),
       parNode = this.root.tree.nodeAtPath(parPath);
-    if (!this.root.onMainline && !this.root.tree.pathIsMainline(parPath)) return;
-    if (this.root.onMainline && !node.children[0]) {
+    if (
+      (this.root.onMainline && !node.children[0]) ||
+      (!this.root.onMainline && !this.root.tree.pathIsMainline(parPath))
+    ) {
       state.feedback = 'end';
     } else if (this.isMyMove()) {
       state.feedback = 'play';
@@ -63,6 +65,8 @@ export default class GamebookPlayCtrl {
   };
 
   isMyMove = () => this.root.turnColor() === this.root.data.orientation;
+
+  movableColor = () => (['play', 'good'].includes(this.state.feedback) ? this.root.data.orientation : undefined);
 
   retry = () => {
     let path = this.root.path;
@@ -85,9 +89,7 @@ export default class GamebookPlayCtrl {
         this.retry();
         break;
       case 'end': {
-        const s = this.root.study!,
-          c = s.nextChapter();
-        if (c) s.setChapter(c.id);
+        this.root.study!.goToNextChapter();
         break;
       }
       default:

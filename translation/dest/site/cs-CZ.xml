@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Hrajete bílými figurami</string>
   <string name="youPlayTheBlackPieces">Hrajete černými figurami</string>
   <string name="itsYourTurn">Jste na tahu!</string>
+  <string name="cheatDetected">Podvádění detekováno</string>
   <string name="kingInTheCenter">Král uprostřed (King of the hill)</string>
   <string name="threeChecks">Třikrát šach</string>
   <string name="raceFinished">Závod skončil</string>
@@ -80,7 +81,7 @@
   <string name="losing">Prohrává</string>
   <string name="drawn">Remízuje</string>
   <string name="unknown">Neznámé</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Databáze</string>
+  <string name="database">Databáze</string>
   <string name="whiteDrawBlack">Bílý / Remíza / Černý</string>
   <string name="averageRatingX">Průměrný rating: %s</string>
   <string name="recentGames">Nedávné hry</string>
@@ -287,7 +288,6 @@
   <string name="send">Odeslat</string>
   <string name="incrementInSeconds">Bonus za tah (v sekundách)</string>
   <string name="freeOnlineChess">Šachy online zdarma</string>
-  <string name="spectators">Diváci:</string>
   <plurals name="nbRated">
     <item quantity="one">%s hodnocená</item>
     <item quantity="few">%s hodnocené</item>
@@ -327,7 +327,6 @@
     <item quantity="other">Přidat %s sekund</item>
   </plurals>
   <string name="thisAccountViolatedTos">Tento účet porušil podmínky služeb Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Tento hráč uměle ovlivnil své hodnocení</string>
   <string name="openingExplorerAndTablebase">Knihovna zahájení / tablebase koncovek</string>
   <string name="takeback">Vrátit tah</string>
   <string name="proposeATakeback">Navrhnout vrácení tahu</string>
@@ -517,7 +516,7 @@
   <string name="firstName">Jméno</string>
   <string name="lastName">Příjmení</string>
   <string name="biography">O mně</string>
-  <string name="country">Země</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Země nebo vlajka</string>
   <string name="thankYou">Děkujeme!</string>
   <string name="socialMediaLinks">Odkazy na sociální sítě</string>
   <string name="inlineNotation">Notace v řádcích</string>
@@ -685,7 +684,7 @@
   <string name="really">opravdu</string>
   <string name="contribute">Přispějte</string>
   <string name="termsOfService">Podmínky používání</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Zdrojový kod</string>
+  <string name="sourceCode">Zdrojový kod</string>
   <string name="simultaneousExhibitions">Simultánky</string>
   <string name="host">Host</string>
   <string name="hostColorX">Barva zakladatele: %s</string>
@@ -750,8 +749,10 @@
   <string name="printFriendlyPDF">PDF pro tisk</string>
   <string name="crosstable">Výsledky</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">K pohybu v partii můžete také použít scrollovací kolečko myši nad šachovnicí.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Najetím na varianty počítače zobrazíte jejich náhled.</string>
   <string name="analysisShapesHowTo">Kliknutím se shiftem či kliknutím pravým tlačítkem lze kreslit do šachovnice kolečka a šipky.</string>
   <string name="letOtherPlayersMessageYou">Povolit zprávy od ostatních hráčů</string>
+  <string name="receiveForumNotifications">Dostat oznámení, pokud jste zmíněni ve fóru</string>
   <string name="shareYourInsightsData">Sdílejte výsledky analýzy vašeho hraní</string>
   <string name="withNobody">S nikým</string>
   <string name="withFriends">S přáteli</string>
@@ -763,8 +764,6 @@
   <string name="enableKidMode">Povolit dětský režim</string>
   <string name="disableKidMode">Vypnout dětský režim</string>
   <string name="security">Zabezpečení</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Toto je přehled zařízení, na kterých došlo k přihlášení k Vašemu účtu. Pokud některé zařízení nepoznáváte, můžete zrušit jeho relaci.</string>
-  <string name="alternativelyYouCanX">Nebo můžete %s.</string>
   <string name="revokeAllSessions">odebrat všechny relace</string>
   <string name="playChessEverywhere">Hrajte šachy kdekoliv</string>
   <string name="asFreeAsLichess">Svobodný jako lichess</string>
@@ -927,9 +926,9 @@
   <string name="youCannotPostYetPlaySomeGames">Zatím nemůžete přidávat příspěvky na fóra. Zahrajte si nějaké hry!</string>
   <string name="subscribe">Odebírat</string>
   <string name="unsubscribe">Zrušit odběr</string>
-  <string name="mentionedYouInX"> vás zmínil v \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s Vás zmínil(a) v příspěvku \"%2$s\".</string>
-  <string name="invitedYouToX"> vás pozval ke studii \"%1$s\".</string>
+  <string name="mentionedYouInX">vás zmínil v \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s Vás zmínil(a) v příspěvku \"%2$s\".</string>
+  <string name="invitedYouToX">vás pozval ke studii \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s vás pozval ke studii \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Nyní jste součástí týmu.</string>
   <string name="youHaveJoinedTeamX">Připojili jste se k týmu \"%1$s\".</string>
@@ -937,12 +936,14 @@
   <string name="congratsYouWon">Gratulujeme, zvítězili jste!</string>
   <string name="gameVsX">Partie proti %1$s</string>
   <string name="resVsX">%1$s vs. %2$s</string>
-  <string name="youJustBecamePatron">Právě jste se stal patronem (podporovatelem) Lichess.</string>
-  <string name="patronAccountExpired">Platnost účtu Patrona vypršela</string>
-  <string name="pleaseReconsiderRenewIt">Zvažte prosím jeho obnovení!</string>
   <string name="someoneReviewedYourCoachProfile">Někdo přidal recenzi na váš profil trenéra.</string>
   <string name="newPendingReview">Nový, čeká na kontrolu</string>
   <string name="lostAgainstTOSViolator">Prohráli jste proti hráči, jež porušil Podmínky použití Lichess</string>
   <string name="refundXpointsTimeControlY">Vráceno %1$s %2$s ratingových bodů.</string>
   <string name="timeAlmostUp">Čas vám běží!</string>
+  <string name="clickToRevealEmailAddress">[Klikněte pro zobrazení e-mailové adresy]</string>
+  <string name="download">Stáhnout</string>
+  <string name="welcome">Vítej!</string>
+  <string name="lichessPatronInfo">Lichess je bezplatný a zcela svobodný/nezávislý open source software.
+Veškeré provozní náklady, vývoj a obsah jsou financovány výhradně z příspěvků uživatelů.</string>
 </resources>

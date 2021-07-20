@@ -49,12 +49,16 @@
   <string name="puzzleDashboard">Shrnutí Vašeho řešení úloh</string>
   <string name="improvementAreas">Zlepšení pozice</string>
   <string name="strengths">Silné stránky</string>
-  <string name="history">Historie úloh</string>
+  <string name="history">Historie řešení úloh</string>
   <string name="solved">vyřešeno</string>
   <string name="failed">nezdařilo se</string>
   <string name="streakDescription">Vyřešte postupně těžší hádanky a vytvořte vítěznou sérii. Není tu žádný limit, takže si dejte na na čas. Jeden špatný tah a je to hra skončí! Můžete ale přeskočit jeden tah za běh.</string>
   <string name="yourStreakX">Vaše série: %s</string>
   <string name="streakSkipExplanation">Přeskočit tento krok pro zachování své série! Funguje pouze jednou za běh.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Pokračovat v sérii</string>
+  <string name="continueTheStreak">Pokračovat v sérii</string>
   <string name="newStreak">Nová série</string>
+  <string name="fromMyGames">Z mých partií</string>
+  <string name="fromMyGamesNone">V databázi nemáte žádné úlohy, ale Lichess vás stále velmi miluje.
+Hrajte rapid a klasické hry ke zvýšení šance na přidání vlastní úlohy!</string>
+  <string name="fromXGamesFound">%1$s úloh nalezeno v %2$s partiích</string>
 </resources>

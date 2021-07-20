@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">आप सफेद मोहरों से खेलेंगे</string>
   <string name="youPlayTheBlackPieces">आप काले मोहरों से खेलेंगे</string>
   <string name="itsYourTurn">यह आपकी बारी है!</string>
+  <string name="cheatDetected">धोखा का पता चला</string>
   <string name="kingInTheCenter">राजा मध्य में</string>
   <string name="threeChecks">तीन शह</string>
   <string name="raceFinished">दौड़ समाप्त</string>
@@ -78,7 +79,7 @@
   <string name="losing">हार</string>
   <string name="drawn">ड्रॉ</string>
   <string name="unknown">अज्ञात</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">डेटाबेस</string>
+  <string name="database">डेटाबेस</string>
   <string name="whiteDrawBlack">सफ़ेद / ड्रॉ / काला</string>
   <string name="averageRatingX">औसत रेटिंग: %s</string>
   <string name="recentGames">हाल के खेल</string>
@@ -117,6 +118,10 @@
   <string name="blunder">भयंकर गलती</string>
   <string name="mistake">गलती</string>
   <string name="inaccuracy">गलती</string>
+  <plurals name="nbBlunders">
+    <item quantity="one">%s गंभीर गलती</item>
+    <item quantity="other">%s गंभीर गल्तियां</item>
+  </plurals>
   <string name="moveTimes">चाल समय</string>
   <string name="flipBoard">बोर्ड पलटें</string>
   <string name="threefoldRepetition">तीन बार दोहराव</string>
@@ -247,7 +252,6 @@
   <string name="send">भेजें</string>
   <string name="incrementInSeconds">हर चाल पर सेकंड्स की वृद्धि</string>
   <string name="freeOnlineChess">मुफ्त ऑनलाइन शतरंज</string>
-  <string name="spectators">दर्शक</string>
   <plurals name="nbRated">
     <item quantity="one">%s रेटेड खेल</item>
     <item quantity="other">%s रेटेड खेल</item>
@@ -275,7 +279,6 @@
     <item quantity="other">%s सेकंड्स दें</item>
   </plurals>
   <string name="thisAccountViolatedTos">इस खाते ने सेवा की शर्तों का उल्लंघन किया</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">यह खिलाड़ी धोखे से अपने अंक बदलता है</string>
   <string name="openingExplorerAndTablebase">ओपनिंग एक्सप्लोरर &amp; टेबलबेस</string>
   <string name="takeback">चाल को वापस लें</string>
   <string name="proposeATakeback">चाल को वापस लेने की प्रस्ताव को भेजें</string>
@@ -428,7 +431,7 @@
   <string name="boardEditor">बोर्ड संपादक</string>
   <string name="setTheBoard">बोर्ड सेट करें</string>
   <string name="popularOpenings">लोकप्रिय शुरुआती चाल</string>
-  <string name="startPosition">शुरुआत की स्थिती</string>
+  <string name="startPosition">शुरू करने की स्थिति:</string>
   <string name="clearBoard">बोर्ड सॉफ करें</string>
   <string name="savePosition">जगह सुरक्षित करें</string>
   <string name="loadPosition">इस स्थिति से चालू करें</string>
@@ -443,7 +446,7 @@
   <string name="firstName">प्रथम नाम</string>
   <string name="lastName">अंतिम नाम</string>
   <string name="biography">जीवनी</string>
-  <string name="country">देश</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">देश या झंडा</string>
   <string name="thankYou">धन्यवाद!</string>
   <string name="socialMediaLinks">सामाजिक माध्यम</string>
   <string name="inlineNotation">इनलाइन नोटेशन</string>
@@ -485,7 +488,7 @@
   <string name="reason">कारण</string>
   <string name="whatIsIheMatter">बात क्या है?</string>
   <string name="cheat">धोखेबाज़ी</string>
-  <string name="insult">बेइज़्ज़ती</string>
+  <string name="insult">अपमान</string>
   <string name="troll">ट्रोल</string>
   <string name="ratingManipulation">जब एक उपयोगकर्ता (lichess. org/report) की रिपोर्टिंग करते हैं, तो \"कारण\" ड्रॉपडाउन के संभावित चयनों में से एक। यह रिपोर्टिंग खिलाड़ियों के लिए है जो उनकी रेटिंग में हेरफेर करते हैं, या तो इसे बढ़ाते हैं या नकली खातों के साथ कृत्रिम रूप से घटाते हैं</string>
   <string name="other">दूसरा</string>
@@ -582,9 +585,7 @@
   <string name="error.email_unique">यह ईमेल पहले ही ली जा चुकी है</string>
   <string name="error.email_different">यह पहले से ही आपका ईमेल पता है</string>
   <string name="ifRatingIsPlusMinusX">अगर स्तर %s ऊपर निचे हो तब</string>
-  <string name="onlyExistingConversations">मैसेजिंग गोपनीयता सेटिंग्स के विकल्पों में से एक (अन्य खिलाड़ियों को आपको संदेश दें: केवल मौजूदा वार्तालाप / केवल मित्र / हमेशा)
-
-केवल मौजूदा वार्तालाप</string>
+  <string name="onlyExistingConversations">केवल मौजूदा वार्तालाप</string>
   <string name="onlyFriends">केवल दोस्त</string>
   <string name="menu">मेनू</string>
   <string name="castling">केस्लिंग</string>
@@ -600,7 +601,7 @@
   <string name="watch">देखें</string>
   <string name="videoLibrary">वीडियो लाइब्रेरी</string>
   <string name="streamersMenu">प्रसारण करता</string>
-  <string name="mobileApp">मोबाइल ऐप्प</string>
+  <string name="mobileApp">मोबाइल ऐप</string>
   <string name="webmasters">वेबमास्टर्स</string>
   <string name="about">के बारे में</string>
   <string name="aboutX">%s के बारे में</string>
@@ -608,7 +609,7 @@
   <string name="really">सचमुच</string>
   <string name="contribute">सहयोग करें</string>
   <string name="termsOfService">नियम और शर्तें</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">सोर्स कोड</string>
+  <string name="sourceCode">सोर्स कोड</string>
   <string name="simultaneousExhibitions">एकसमयी प्रदर्शनी</string>
   <string name="host">मेजबानी  करें</string>
   <string name="hostColorX">मेजबान रंग: %s</string>
@@ -673,6 +674,7 @@
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">आप खेल में जाने के लिए बोर्ड पर भी स्क्रॉल कर सकते हैं।</string>
   <string name="analysisShapesHowTo">बोर्ड पर मंडलियां और तीरों को आकर्षित करने के लिए shift + click या right-click दबाएं</string>
   <string name="letOtherPlayersMessageYou">अन्य खिलाड़ियों को आपको संदेश देने दें</string>
+  <string name="receiveForumNotifications">जब आपके नाम का ज़िक्र हो तब नोटिफ़िकेशन पाएँ</string>
   <string name="shareYourInsightsData">अपने इनसाइट डेटा साझा करें</string>
   <string name="withNobody">किसी के साथ नहीं</string>
   <string name="withFriends">दोस्तों के साथ</string>
@@ -684,8 +686,7 @@
   <string name="enableKidMode">बच्चे मोड को सक्षम करें</string>
   <string name="disableKidMode">बच्चे मोड अक्षम करें</string>
   <string name="security">सुरक्षा</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">यह उन डिवाइसों की एक सूची है जो आपके खाते में लॉग इन हैं। उन सत्रों को रद्द करें जिन्हें आप नहीं पहचानते हैं</string>
-  <string name="alternativelyYouCanX">वैकल्पिक रूप से आप %s कर सकते हैं।</string>
+  <string name="sessions">सत्र</string>
   <string name="revokeAllSessions">सभी सत्र रद्द</string>
   <string name="playChessEverywhere">हर जगह शतरंज खेलें</string>
   <string name="asFreeAsLichess">Lichess जैसा मुक्त</string>
@@ -840,9 +841,9 @@
   <string name="youCannotPostYetPlaySomeGames">आप अभी तक फ़ोरम में पोस्ट नहीं कर सकते। कुछ गेम्स खेलें!</string>
   <string name="subscribe">सदस्यता लें</string>
   <string name="unsubscribe">सदस्यता रद्द करें</string>
-  <string name="mentionedYouInX"> आपने \"%1$s\" में उल्लेख किया है।</string>
-  <string name="xMentionedYouInY"> %1$s ने \"%2$s\" में आपका उल्लेख किया।</string>
-  <string name="invitedYouToX"> आपको \"%1$s\" के लिए आमंत्रित किया गया है।</string>
+  <string name="mentionedYouInX">आपने \"%1$s\" में उल्लेख किया है।</string>
+  <string name="xMentionedYouInY">%1$s ने \"%2$s\" में आपका उल्लेख किया।</string>
+  <string name="invitedYouToX">आपको \"%1$s\" के लिए आमंत्रित किया गया है।</string>
   <string name="xInvitedYouToY">%1$s ने आपको \"%2$s\" के लिए आमंत्रित किया।</string>
   <string name="youAreNowPartOfTeam">अब आप टीम का हिस्सा हैं।</string>
   <string name="youHaveJoinedTeamX">आप \"%1$s\" में शामिल हो गए हैं।</string>
@@ -850,12 +851,18 @@
   <string name="congratsYouWon">बधाई हो, आप जीत गए!</string>
   <string name="gameVsX">खेल बनाम %1$s</string>
   <string name="resVsX">%1$s बनाम %2$s</string>
-  <string name="youJustBecamePatron">आप बस एक लिशेस पैट्रन बन गए।</string>
-  <string name="patronAccountExpired">Patron खाता समाप्त हो गया</string>
-  <string name="pleaseReconsiderRenewIt">कृपया इसे नवीनीकृत करने पर विचार करें!</string>
   <string name="someoneReviewedYourCoachProfile">किसी ने आपके कोच प्रोफ़ाइल की समीक्षा की।</string>
   <string name="newPendingReview">नई लंबित समीक्षा</string>
   <string name="lostAgainstTOSViolator">आप Lichess TOS का उल्लंघन करने वाले व्यक्ति से हार गए</string>
   <string name="refundXpointsTimeControlY">%1$s %2$s वापसी की</string>
   <string name="timeAlmostUp">समय लगभग समाप्त है!</string>
+  <string name="clickToRevealEmailAddress">[ईमेल देखने के लिए क्लिक करें]</string>
+  <string name="download">डाउनलोड करें</string>
+  <string name="welcome">आपका स्वागत है!</string>
+  <string name="lichessPatronInfo">Lichess एक चैरिटी और पूरी तरह से फ्री/लिबर ओपन सोर्स सॉफ्टवेयर है।
+सभी परिचालन लागत, विकास और सामग्री पूरी तरह से उपयोगकर्ता दान द्वारा वित्त पोषित हैं।</string>
+  <string name="coachManager">कोच मनेजर</string>
+  <string name="streamerManager">स्ट्रीमर मैनेजर</string>
+  <string name="cancelTournament">टूर्नामेंट रद्द करें</string>
+  <string name="tournDescription">टूर्नामेंट विवरण</string>
 </resources>

@@ -4,27 +4,27 @@ import { dataIcon, bind, onInsert } from '../../util';
 import { LogEvent } from './interfaces';
 
 export default function (ctrl: RelayCtrl): VNode | undefined {
-  if (ctrl.members.canContribute())
-    return h(
-      'div.relay-admin',
-      {
-        hook: onInsert(_ => lichess.loadCssPath('analyse.relay-admin')),
-      },
-      [
-        h('h2', [
-          h('span.text', { attrs: dataIcon('') }, 'Broadcast manager'),
-          h('a', {
-            attrs: {
-              href: `${ctrl.data.url}/edit`,
-              'data-icon': '%',
-            },
-          }),
-        ]),
-        ctrl.data.sync.url || ctrl.data.sync.ids ? (ctrl.data.sync.ongoing ? stateOn : stateOff)(ctrl) : null,
-        renderLog(ctrl),
-      ]
-    );
-  return undefined;
+  return ctrl.members.canContribute()
+    ? h(
+        'div.relay-admin',
+        {
+          hook: onInsert(_ => lichess.loadCssPath('analyse.relay-admin')),
+        },
+        [
+          h('h2', [
+            h('span.text', { attrs: dataIcon('') }, 'Broadcast manager'),
+            h('a', {
+              attrs: {
+                href: `/broadcast/round/${ctrl.id}/edit`,
+                'data-icon': '',
+              },
+            }),
+          ]),
+          ctrl.data.sync?.url || ctrl.data.sync?.ids ? (ctrl.data.sync.ongoing ? stateOn : stateOff)(ctrl) : null,
+          renderLog(ctrl),
+        ]
+      )
+    : undefined;
 }
 
 function logSuccess(e: LogEvent) {
@@ -33,8 +33,8 @@ function logSuccess(e: LogEvent) {
 
 function renderLog(ctrl: RelayCtrl) {
   const dateFormatter = getDateFormatter();
-  const url = ctrl.data.sync.url;
-  const logLines = ctrl.data.sync.log
+  const url = ctrl.data.sync?.url;
+  const logLines = (ctrl.data.sync?.log || [])
     .slice(0)
     .reverse()
     .map(e => {
@@ -57,7 +57,7 @@ function renderLog(ctrl: RelayCtrl) {
         'div' + (err ? '.err' : ''),
         {
           key: e.at,
-          attrs: dataIcon(err ? 'j' : 'E'),
+          attrs: dataIcon(err ? '' : ''),
         },
         [h('div', [...(err ? [err] : logSuccess(e)), h('time', dateFormatter(new Date(e.at)))])]
       );
@@ -67,13 +67,13 @@ function renderLog(ctrl: RelayCtrl) {
 }
 
 function stateOn(ctrl: RelayCtrl) {
-  const url = ctrl.data.sync.url;
-  const ids = ctrl.data.sync.ids;
+  const url = ctrl.data.sync?.url;
+  const ids = ctrl.data.sync?.ids;
   return h(
     'div.state.on.clickable',
     {
       hook: bind('click', _ => ctrl.setSync(false)),
-      attrs: dataIcon('B'),
+      attrs: dataIcon(''),
     },
     [
       h(
@@ -93,7 +93,7 @@ function stateOff(ctrl: RelayCtrl) {
     'div.state.off.clickable',
     {
       hook: bind('click', _ => ctrl.setSync(true)),
-      attrs: dataIcon('G'),
+      attrs: dataIcon(''),
     },
     [h('div.fat', 'Click to connect')]
   );

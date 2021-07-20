@@ -204,6 +204,11 @@ object mon {
   object duct {
     def overflow(name: String) = counter("duct.overflow").withTag("name", name)
   }
+  object irc {
+    object zulip {
+      def say(stream: String) = future("irc.zulip.say", Map("stream" -> stream))
+    }
+  }
   object user {
     val online = gauge("user.online").withoutTags()
     object register {
@@ -392,6 +397,7 @@ object mon {
           "client"  -> client
         )
       )
+    def withdrawableIds(reason: String) = future("tournament.withdrawableIds", reason)
   }
   object swiss {
     def standingOverload      = counter("swiss.standing.overload").withoutTags()
@@ -411,8 +417,15 @@ object mon {
     val percent = gauge("plan.percent").withoutTags()
     object charge {
       def first(service: String) = counter("plan.charge.first").withTag("service", service)
-      def countryCents(country: String, service: String) =
-        histogram("plan.charge.country.cents").withTags(Map("country" -> country, "service" -> service))
+      def countryCents(country: String, currency: java.util.Currency, service: String, gift: Boolean) =
+        histogram("plan.charge.country.cents").withTags(
+          Map(
+            "country"  -> country,
+            "currency" -> currency.getCurrencyCode,
+            "service"  -> service,
+            "gift"     -> gift
+          )
+        )
     }
   }
   object forum {
@@ -697,6 +710,8 @@ object mon {
   private def histogram(name: String) = kamon.Kamon.histogram(name)
 
   private def future(name: String) = (success: Boolean) => timer(name).withTag("success", successTag(success))
+  private def future(name: String, tags: Map[String, String]) = (success: Boolean) =>
+    timer(name).withTags(tags + ("success" -> successTag(success)))
   private def future(name: String, segment: String) =
     (success: Boolean) =>
       timer(name).withTags(

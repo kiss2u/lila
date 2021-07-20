@@ -566,11 +566,18 @@ object JsonView {
 
   implicit private[tournament] def perfTypeWrites(implicit lang: Lang): OWrites[PerfType] =
     OWrites { pt =>
-      Json.obj(
-        "icon" -> pt.iconChar.toString,
-        "name" -> pt.trans
-      )
+      Json
+        .obj("key" -> pt.key, "name" -> pt.trans)
+        .add("icon" -> mobileBcIcons.get(pt)) // mobile BC only
     }
 
   implicit private[tournament] val statsWrites: Writes[TournamentStats] = Json.writes[TournamentStats]
+
+  private[tournament] val mobileBcIcons: Map[PerfType, String] = Map(
+    PerfType.UltraBullet -> "{",
+    PerfType.Bullet      -> "T",
+    PerfType.Blitz       -> ")",
+    PerfType.Rapid       -> "#",
+    PerfType.Classical   -> "+"
+  )
 }

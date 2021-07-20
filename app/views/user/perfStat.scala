@@ -6,7 +6,7 @@ import lila.api.Context
 import lila.app.templating.Environment._
 import lila.app.ui.ScalatagsTemplate._
 import lila.rating.{ Perf, PerfType }
-import lila.perfStat.PerfStat
+import lila.perfStat.{ PerfStat, PerfStatData }
 import lila.user.User
 
 import controllers.routes
@@ -16,15 +16,13 @@ object perfStat {
   import trans.perfStat._
 
   def apply(
-      u: User,
-      rankMap: lila.rating.UserRankMap,
-      perfType: lila.rating.PerfType,
-      percentile: Option[Double],
-      stat: PerfStat,
+      data: PerfStatData,
       ratingChart: Option[String]
-  )(implicit ctx: Context) =
+  )(implicit ctx: Context) = {
+    import data._
+    import stat.perfType
     views.html.base.layout(
-      title = s"${u.username} - ${perfStats.txt(perfType.trans)}",
+      title = s"${user.username} - ${perfStats.txt(perfType.trans)}",
       robots = false,
       moreJs = frag(
         jsModule("user"),
@@ -40,25 +38,25 @@ object perfStat {
       moreCss = cssTag("perf-stat")
     ) {
       main(cls := s"page-menu")(
-        st.aside(cls := "page-menu__menu")(show.side(u, rankMap, perfType.some)),
+        st.aside(cls := "page-menu__menu")(show.side(user, ranks, perfType.some)),
         div(cls := s"page-menu__content box perf-stat ${perfType.key}")(
           div(cls := "box__top")(
             h1(
-              a(href := routes.User.show(u.username))(u.username),
+              a(href := routes.User.show(user.username))(user.username),
               span(perfStats(perfType.trans))
             ),
             div(cls := "box__top__actions")(
-              u.perfs(perfType).nb > 0 option a(
+              user.perfs(perfType).nb > 0 option a(
                 cls := "button button-empty text",
                 dataIcon := perfType.iconChar,
-                href := s"${routes.User.games(u.username, "search")}?perf=${perfType.id}"
+                href := s"${routes.User.games(user.username, "search")}?perf=${perfType.id}"
               )(viewTheGames()),
-              bits.perfTrophies(u, rankMap.view.filterKeys(perfType.==).toMap)
+              bits.perfTrophies(user, ranks.view.filterKeys(perfType.==).toMap)
             )
           ),
           ratingChart.isDefined option div(cls := "rating-history")(spinner),
           div(cls := "box__pad perf-stat__content")(
-            glicko(u, perfType, u.perfs(perfType), percentile),
+            glicko(user, perfType, user.perfs(perfType), percentile),
             counter(stat.count),
             highlow(stat),
             resultStreak(stat.resultStreak),
@@ -69,6 +67,7 @@ object perfStat {
         )
       )
     }
+  }
 
   private def decimal(v: Double) = lila.common.Maths.roundAt(v, 2)
 
@@ -96,13 +95,13 @@ object perfStat {
             if (ctx is u) {
               trans.youAreBetterThanPercentOfPerfTypePlayers(
                 a(href := routes.Stat.ratingDistribution(perfType.key))(strong(percentile, "%")),
-                a(href := routes.Stat.ratingDistribution(perfType.key))(perfType.trans)
+                a(href := routes.User.topNb(200, perfType.key))(perfType.trans)
               )
             } else {
               trans.userIsBetterThanPercentOfPerfTypePlayers(
                 a(href := routes.User.show(u.username))(u.username),
                 a(href := routes.Stat.ratingDistribution(perfType.key))(strong(percentile, "%")),
-                a(href := routes.Stat.ratingDistribution(perfType.key))(perfType.trans)
+                a(href := routes.User.topNb(200, perfType.key))(perfType.trans)
               )
             }
           )
@@ -112,14 +111,18 @@ object perfStat {
         progressOverLastXGames(12),
         " ",
         span(cls := "progress")(
-          if (perf.progress > 0) tag("green")(dataIcon := "N")(perf.progress)
-          else if (perf.progress < 0) tag("red")(dataIcon := "M")(-perf.progress)
+          if (perf.progress > 0) tag("green")(dataIcon := "")(perf.progress)
+          else if (perf.progress < 0) tag("red")(dataIcon := "")(-perf.progress)
           else "-"
         ),
         ". ",
         ratingDeviation(
           strong(
-            title := ratingDeviationHelp.txt(lila.rating.Glicko.provisionalDeviation)
+            title := ratingDeviationTooltip.txt(
+              lila.rating.Glicko.provisionalDeviation,
+              lila.rating.Glicko.standardRankableDeviation,
+              lila.rating.Glicko.variantRankableDeviation
+            )
           )(decimal(perf.glicko.deviation).toString)
         )
       )

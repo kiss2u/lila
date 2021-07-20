@@ -2,7 +2,7 @@ import { h } from 'snabbdom';
 import SimulCtrl from '../ctrl';
 import * as util from './util';
 import created from './created';
-import { richHTML } from './text';
+import { richHTML } from 'common/richText';
 import results from './results';
 import pairings from './pairings';
 
@@ -20,7 +20,10 @@ export default function (ctrl: SimulCtrl) {
       h('aside.simul__side', {
         hook: util.onInsert(el => {
           $(el).replaceWith(ctrl.opts.$side);
-          ctrl.opts.chat && lichess.makeChat(ctrl.opts.chat);
+          if (ctrl.opts.chat) {
+            ctrl.opts.chat.data.hostId = ctrl.data.host.id;
+            lichess.makeChat(ctrl.opts.chat);
+          }
         }),
       }),
       h(
@@ -34,13 +37,9 @@ export default function (ctrl: SimulCtrl) {
         },
         handler(ctrl)
       ),
-      h(
-        'div.chat__members.none',
-        {
-          hook: util.onInsert(lichess.watchers),
-        },
-        h('span.list')
-      ),
+      h('div.chat__members.none', {
+        hook: util.onInsert(lichess.watchers),
+      }),
     ]
   );
 }

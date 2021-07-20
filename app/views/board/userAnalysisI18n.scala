@@ -42,6 +42,7 @@ object userAnalysisI18n {
     trans.playingRightNow,
     trans.whiteIsVictorious,
     trans.blackIsVictorious,
+    trans.cheatDetected,
     trans.kingInTheCenter,
     trans.threeChecks,
     trans.variantEnding,
@@ -54,7 +55,6 @@ object userAnalysisI18n {
     trans.learnFromYourMistakes,
     trans.averageCentipawnLoss,
     trans.viewTheSolution,
-    trans.spectators,
     // action menu
     trans.menu,
     trans.boardEditor,

@@ -33,7 +33,8 @@ object index {
           url = s"$netBaseUrl${routes.Learn.index}"
         )
         .some,
-      zoomable = true
+      zoomable = true,
+      chessground = false
     ) {
       main(id := "learn-app")
     }
@@ -173,6 +174,8 @@ object index {
       pieceValueIntro,
       queenOverBishop,
       takeThePieceWithTheHighestValue,
+      pieceValueLegal,
+      pieceValueExchange,
       pieceValueComplete,
       checkInTwo,
       twoMovesToGiveCheck,

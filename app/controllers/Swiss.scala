@@ -3,6 +3,7 @@ package controllers
 import play.api.libs.json.Json
 import play.api.mvc._
 import scala.concurrent.duration._
+import scala.util.chaining._
 import views._
 
 import lila.api.Context
@@ -94,17 +95,24 @@ final class Swiss(
       }
     }
 
+  private def CheckTeamLeader(teamId: String)(f: => Fu[Result])(implicit ctx: Context): Fu[Result] =
+    ctx.userId ?? { env.team.cached.isLeader(teamId, _) } flatMap { _ ?? f }
+
   def form(teamId: String) =
-    Open { implicit ctx =>
-      Ok(html.swiss.form.create(env.swiss.forms.create, teamId)).fuccess
+    Auth { implicit ctx => me =>
+      NoLameOrBot {
+        CheckTeamLeader(teamId) {
+          Ok(html.swiss.form.create(env.swiss.forms.create(me), teamId)).fuccess
+        }
+      }
     }
 
   def create(teamId: String) =
     AuthBody { implicit ctx => me =>
-      env.team.cached.isLeader(teamId, me.id) flatMap {
-        case false => notFound
-        case _ =>
-          env.swiss.forms.create
+      NoLameOrBot {
+        CheckTeamLeader(teamId) {
+          env.swiss.forms
+            .create(me)
             .bindFromRequest()(ctx.body, formBinding)
             .fold(
               err => BadRequest(html.swiss.form.create(err, teamId)).fuccess,
@@ -115,6 +123,7 @@ final class Swiss(
                   }
                 }
             )
+        }
       }
     }
 
@@ -125,7 +134,8 @@ final class Swiss(
         env.team.cached.isLeader(teamId, me.id) flatMap {
           case false => notFoundJson("You're not a leader of that team")
           case _ =>
-            env.swiss.forms.create
+            env.swiss.forms
+              .create(me)
               .bindFromRequest()
               .fold(
                 jsonFormErrorDefaultLang,
@@ -179,7 +189,7 @@ final class Swiss(
   def edit(id: String) =
     Auth { implicit ctx => me =>
       WithEditableSwiss(id, me) { swiss =>
-        Ok(html.swiss.form.edit(swiss, env.swiss.forms.edit(swiss))).fuccess
+        Ok(html.swiss.form.edit(swiss, env.swiss.forms.edit(me, swiss))).fuccess
       }
     }
 
@@ -188,7 +198,7 @@ final class Swiss(
       WithEditableSwiss(id, me) { swiss =>
         implicit val req = ctx.body
         env.swiss.forms
-          .edit(swiss)
+          .edit(me, swiss)
           .bindFromRequest()
           .fold(
             err => BadRequest(html.swiss.form.edit(swiss, err)).fuccess,
@@ -256,7 +266,7 @@ final class Swiss(
         case None => NotFound("Tournament not found")
         case Some(swiss) =>
           Ok.chunked(env.swiss.trf(swiss, sorted = true) intersperse "\n")
-            .withHeaders(CONTENT_DISPOSITION -> s"attachment; filename=lichess_swiss_$id.trf")
+            .pipe(asAttachmentStream(env.api.gameApiV2.filename(swiss, "trf")))
       }
     }
 

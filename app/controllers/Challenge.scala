@@ -9,13 +9,12 @@ import views.html
 import lila.api.Context
 import lila.app._
 import lila.challenge.{ Challenge => ChallengeModel }
-import lila.common.{ HTTPRequest, IpAddress }
+import lila.common.{ Bearer, HTTPRequest, IpAddress, Template }
 import lila.game.{ AnonCookie, Pov }
 import lila.oauth.{ AccessToken, OAuthScope }
 import lila.setup.ApiConfig
 import lila.socket.Socket.SocketVersion
 import lila.user.{ User => UserModel }
-import lila.common.Template
 
 final class Challenge(
     env: Env
@@ -175,24 +174,37 @@ final class Challenge(
     }
 
   def apiCancel(id: String) =
-    Scoped(_.Challenge.Write, _.Bot.Play, _.Board.Play) { _ => me =>
+    Scoped(_.Challenge.Write, _.Bot.Play, _.Board.Play) { req => me =>
       api.activeByIdBy(id, me) flatMap {
         case Some(c) => api.cancel(c) inject jsonOkResult
         case None =>
           api.activeByIdFor(id, me) flatMap {
             case Some(c) => api.decline(c, ChallengeModel.DeclineReason.default) inject jsonOkResult
             case None =>
+              import lila.hub.actorApi.map.Tell
+              import lila.hub.actorApi.round.Abort
+              import lila.round.actorApi.round.AbortForce
               env.game.gameRepo game id dmap {
                 _ flatMap { Pov.ofUserId(_, me.id) }
               } flatMap {
                 _ ?? { p => env.round.proxyRepo.upgradeIfPresent(p) dmap some }
-              } dmap (_.filter(_.game.abortable)) flatMap {
-                case Some(pov) =>
-                  import lila.hub.actorApi.map.Tell
-                  import lila.hub.actorApi.round.Abort
+              } flatMap {
+                case Some(pov) if pov.game.abortable =>
                   lila.common.Bus.publish(Tell(id, Abort(pov.playerId)), "roundSocket")
                   jsonOkResult.fuccess
-                case None => notFoundJson()
+                case Some(pov) if pov.game.playable =>
+                  get("opponentToken", req).map(Bearer.apply) match {
+                    case None => BadRequest(jsonError("The game can no longer be aborted")).fuccess
+                    case Some(bearer) =>
+                      env.oAuth.server.auth(bearer, List(OAuthScope.Challenge.Write)) map {
+                        case Right(OAuthScope.Scoped(op, _)) if pov.opponent.isUser(op) =>
+                          lila.common.Bus.publish(Tell(id, AbortForce), "roundSocket")
+                          jsonOkResult
+                        case Right(_)  => BadRequest(jsonError("Not the opponent token"))
+                        case Left(err) => BadRequest(jsonError(err.message))
+                      }
+                  }
+                case _ => notFoundJson()
               }
           }
       }
@@ -202,7 +214,7 @@ final class Challenge(
     Action.async { req =>
       import cats.implicits._
       val scopes = List(OAuthScope.Challenge.Write)
-      (get("token1", req) map AccessToken.Id, get("token2", req) map AccessToken.Id).mapN {
+      (get("token1", req) map Bearer.apply, get("token2", req) map Bearer.apply).mapN {
         env.oAuth.server.authBoth(scopes)
       } ?? {
         _ flatMap {
@@ -291,7 +303,7 @@ final class Challenge(
                         case Some(denied) =>
                           BadRequest(jsonError(lila.challenge.ChallengeDenied.translated(denied))).fuccess
                         case _ =>
-                          (env.challenge.api create challenge) map {
+                          env.challenge.api create challenge map {
                             case true =>
                               JsonOk(
                                 env.challenge.jsonView
@@ -307,26 +319,6 @@ final class Challenge(
             }(rateLimitedFu)
           }
         )
-    }
-
-  def apiCreateAdmin(origName: String, destName: String) =
-    ScopedBody(_.Challenge.Write) { implicit req => admin =>
-      IfGranted(_.ApiChallengeAdmin, req, admin) {
-        env.user.repo.namePair(origName, destName) flatMap {
-          _ ?? { case (orig, dest) =>
-            env.setup.forms.api.admin
-              .bindFromRequest()
-              .fold(
-                err => BadRequest(apiFormError(err)).fuccess,
-                config =>
-                  acceptOauthChallenge(dest, makeOauthChallenge(config, orig, dest.some))(
-                    admin,
-                    config.message
-                  )
-              )
-          }
-        }
-      }
     }
 
   private def makeOauthChallenge(config: ApiConfig, orig: UserModel, dest: Option[UserModel]) = {
@@ -349,37 +341,31 @@ final class Challenge(
       )
   }
 
-  private def acceptOauthChallenge(
-      dest: UserModel,
-      challenge: ChallengeModel
-  )(managedBy: lila.user.User, template: Option[Template]) =
-    env.challenge.api.oauthAccept(dest, challenge) flatMap {
-      case None => BadRequest(jsonError("Couldn't create game")).fuccess
-      case Some(g) =>
-        env.challenge.msg.onApiPair(challenge)(managedBy, template) inject Ok(
-          Json.obj(
-            "game" -> {
-              env.game.jsonView(g, challenge.initialFen) ++ Json.obj(
-                "url" -> s"${env.net.baseUrl}${routes.Round.watcher(g.id, "white")}"
-              )
-            }
-          )
-        )
-    }
-
   private def apiChallengeAccept(
       dest: UserModel,
       challenge: lila.challenge.Challenge,
       strToken: String
   )(managedBy: lila.user.User, message: Option[Template]) =
-    env.security.api.oauthScoped(
-      lila.oauth.AccessToken.Id(strToken),
+    env.oAuth.server.auth(
+      Bearer(strToken),
       List(lila.oauth.OAuthScope.Challenge.Write)
     ) flatMap {
       _.fold(
         err => BadRequest(jsonError(err.message)).fuccess,
         scoped =>
-          if (scoped.user is dest) acceptOauthChallenge(dest, challenge)(managedBy, message)
+          if (scoped.user is dest) env.challenge.api.oauthAccept(dest, challenge) flatMap {
+            case None => BadRequest(jsonError("Couldn't create game")).fuccess
+            case Some(g) =>
+              env.challenge.msg.onApiPair(challenge)(managedBy, message) inject Ok(
+                Json.obj(
+                  "game" -> {
+                    env.game.jsonView(g, challenge.initialFen) ++ Json.obj(
+                      "url" -> s"${env.net.baseUrl}${routes.Round.watcher(g.id, "white")}"
+                    )
+                  }
+                )
+              )
+          }
           else BadRequest(jsonError("dest and accept user don't match")).fuccess
       )
     }

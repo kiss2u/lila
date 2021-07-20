@@ -47,10 +47,11 @@ function challenge(ctrl: Ctrl, dir: ChallengeDirection) {
       [
         h('div.content', [
           h('span.head', renderUser(dir === 'in' ? c.challenger : c.destUser)),
-          h(
-            'span.desc',
-            [ctrl.trans()(c.rated ? 'rated' : 'casual'), timeControl(c.timeControl), c.variant.name].join(' • ')
-          ),
+          h('span.desc', [
+            h('span.is.is2.color-icon.' + (c.color || 'random')),
+            ' • ',
+            [ctrl.trans()(c.rated ? 'rated' : 'casual'), timeControl(c.timeControl), c.variant.name].join(' • '),
+          ]),
         ]),
         h('i', {
           attrs: { 'data-icon': c.perf.icon },
@@ -76,7 +77,7 @@ function inButtons(ctrl: Ctrl, c: Challenge): VNode[] {
         h('button.button.accept', {
           attrs: {
             type: 'submit',
-            'data-icon': 'E',
+            'data-icon': '',
             title: trans('accept'),
           },
           hook: onClick(ctrl.onRedirect),
@@ -86,7 +87,7 @@ function inButtons(ctrl: Ctrl, c: Challenge): VNode[] {
     h('button.button.decline', {
       attrs: {
         type: 'submit',
-        'data-icon': 'L',
+        'data-icon': '',
         title: trans('decline'),
       },
       hook: onClick(() => ctrl.decline(c.id, 'generic')),
@@ -115,7 +116,7 @@ function outButtons(ctrl: Ctrl, c: Challenge) {
       h('span.waiting', ctrl.trans()('waiting')),
       h('a.view', {
         attrs: {
-          'data-icon': 'v',
+          'data-icon': '',
           href: '/' + c.id,
           title: trans('viewInFullSize'),
         },
@@ -123,7 +124,7 @@ function outButtons(ctrl: Ctrl, c: Challenge) {
     ]),
     h('button.button.decline', {
       attrs: {
-        'data-icon': 'L',
+        'data-icon': '',
         title: trans('cancel'),
       },
       hook: onClick(() => ctrl.cancel(c.id)),
@@ -175,7 +176,7 @@ function create(): VNode {
   return h('a.create', {
     attrs: {
       href: '/?any#friend',
-      'data-icon': 'O',
+      'data-icon': '',
       title: 'Challenge someone',
     },
   });

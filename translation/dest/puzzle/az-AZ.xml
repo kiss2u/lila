@@ -39,8 +39,16 @@
   <string name="normal">Normal</string>
   <string name="easier">Daha asan</string>
   <string name="easiest">Ən asan</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">Sizin tapmaca reytinqinizdən bir bal aşağı</item>
+    <item quantity="other">Sizin tapmaca reytinqinizdən %s bal aşağı</item>
+  </plurals>
   <string name="harder">Daha çətin</string>
   <string name="hardest">Ən çətin</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">Sizin tapmaca reytinqinizdən bir bal yuxarı</item>
+    <item quantity="other">Sizin tapmaca reytinqinizdən %s bal yuxarı</item>
+  </plurals>
   <string name="example">Nümunə</string>
   <string name="addAnotherTheme">Başqa mövzu artırın</string>
   <string name="jumpToNextPuzzleImmediately">Dərhal növbəti tapmacaya keçin</string>
@@ -53,6 +61,6 @@
   <string name="streakDescription">Getdikcə çətinləşən pazlları yerinə yetir və qələbə seriyası yarat. Zaman məhdudiyyəri yoxdur, odur ki, tələsmə. Bir səhv gediş və oyun bitdi! Amma hər sessiyada bir gedişi buraxa bilərsən.</string>
   <string name="yourStreakX">Qələbə seriyan: %s</string>
   <string name="streakSkipExplanation">Qələbə seriyanı qorumaq üçün bu gedişi keç! Oyun başına yalnız bir dəfə işləyir.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Qələbə seriyanı davam et</string>
+  <string name="continueTheStreak">Qələbə seriyanı davam et</string>
   <string name="newStreak">Yeni qələbə seriyası</string>
 </resources>

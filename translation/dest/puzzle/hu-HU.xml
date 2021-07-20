@@ -14,8 +14,8 @@
   <string name="didYouLikeThisPuzzle">Tetszett ez a feladvány?</string>
   <string name="voteToLoadNextOne">Szavazz egy újért cserébe!</string>
   <string name="yourPuzzleRatingX">Feladvány pontszámod: %s</string>
-  <string name="findTheBestMoveForWhite">Találd meg világos legjobb lépését!</string>
-  <string name="findTheBestMoveForBlack">Találd meg sötét legjobb lépését!</string>
+  <string name="findTheBestMoveForWhite">Találd meg világos legjobb lépését.</string>
+  <string name="findTheBestMoveForBlack">Találd meg sötét legjobb lépését.</string>
   <string name="toGetPersonalizedPuzzles">Személyre szóló feladványok:</string>
   <string name="puzzleId">%s. feladvány</string>
   <string name="puzzleOfTheDay">Napi feladvány</string>
@@ -39,8 +39,16 @@
   <string name="normal">Közepes</string>
   <string name="easier">Könnyű</string>
   <string name="easiest">Nagyon könnyű</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">Egy ponttal az értékszámod alatt</item>
+    <item quantity="other">%s ponttal az értékszámod alatt</item>
+  </plurals>
   <string name="harder">Nehéz</string>
   <string name="hardest">Nagyon nehéz</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">Egy ponttal az értékszámod felett</item>
+    <item quantity="other">%s ponttal az értékszámod felett</item>
+  </plurals>
   <string name="example">Példa</string>
   <string name="addAnotherTheme">Új téma hozzáadása</string>
   <string name="jumpToNextPuzzleImmediately">Rögtön a következő feladányhoz ugrás</string>
@@ -53,6 +61,13 @@
   <string name="streakDescription">Oldj meg egyre nehezedő feladványokat nyerő széria építéséhez. Nincs időkorlát, szánd rá az időt. Egyetlen hibás lépés és a játéknak vége. Viszont mindig egyet átugorhatsz.</string>
   <string name="yourStreakX">Nyerő szériád: %s</string>
   <string name="streakSkipExplanation">Ugord át ezt a lépést a szériád megőrzéséhez! Egy menetben csak egyszer működik.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Széria folytatása</string>
+  <string name="continueTheStreak">Széria folytatása</string>
   <string name="newStreak">Új széria</string>
+  <string name="fromMyGames">Saját játszmáimból</string>
+  <string name="lookupOfPlayer">Feladványok keresése más játszmáiból</string>
+  <string name="fromXGames">Feladványok %s játszmáiból</string>
+  <string name="searchPuzzles">Feladványok keresése</string>
+  <string name="fromMyGamesNone">Nincsenek feladványaid az adatbázisban, de ez semmi rosszat nem jelent.
+Játssz rapid vagy klasszikus partikat, így nagyobb eséllyel szerepelhetnek a te játszmáid feladványai is!</string>
+  <string name="fromXGamesFound">%1$s feladvány található %2$s játszmái között</string>
 </resources>

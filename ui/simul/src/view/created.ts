@@ -42,17 +42,21 @@ export default function (showText: (ctrl: SimulCtrl) => VNode) {
                   {
                     attrs: {
                       disabled: ctrl.teamBlock(),
-                      'data-icon': 'G',
+                      'data-icon': '',
                     },
                     hook: ctrl.teamBlock()
                       ? {}
                       : util.bind('click', () => {
                           if (ctrl.data.variants.length === 1) xhr.join(ctrl.data.id, ctrl.data.variants[0].key);
                           else {
-                            modal($('.simul .continue-with'));
-                            $('#modal-wrap .continue-with a').on('click', function (this: HTMLElement) {
-                              modal.close();
-                              xhr.join(ctrl.data.id, $(this).data('variant'));
+                            modal({
+                              content: $('.simul .continue-with'),
+                              onInsert($wrap) {
+                                $wrap.find('button').on('click', function (this: HTMLElement) {
+                                  modal.close();
+                                  xhr.join(ctrl.data.id, $(this).data('variant'));
+                                });
+                              },
                             });
                           }
                         }),
@@ -65,7 +69,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode) {
                 'a.button.text',
                 {
                   attrs: {
-                    'data-icon': 'G',
+                    'data-icon': '',
                     href: '/login?referrer=' + window.location.pathname,
                   },
                 },
@@ -126,7 +130,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode) {
                           ? [
                               h('a.button', {
                                 attrs: {
-                                  'data-icon': 'E',
+                                  'data-icon': '',
                                   title: 'Accept',
                                 },
                                 hook: util.bind('click', () => xhr.accept(applicant.player.id)(ctrl.data.id)),
@@ -178,7 +182,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode) {
                           ? [
                               h('a.button.button-red', {
                                 attrs: {
-                                  'data-icon': 'L',
+                                  'data-icon': '',
                                 },
                                 hook: util.bind('click', () => xhr.reject(applicant.player.id)(ctrl.data.id)),
                               }),
@@ -200,7 +204,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode) {
         'div.continue-with.none',
         ctrl.data.variants.map(function (variant) {
           return h(
-            'a.button',
+            'button.button',
             {
               attrs: {
                 'data-variant': variant.key,
@@ -222,7 +226,7 @@ const randomButton = (ctrl: SimulCtrl) =>
         'a.button.text',
         {
           attrs: {
-            'data-icon': 'E',
+            'data-icon': '',
           },
           hook: util.bind('click', () => {
             const candidates = ctrl.candidates();
@@ -240,7 +244,7 @@ const startOrCancel = (ctrl: SimulCtrl, accepted: Applicant[]) =>
         'a.button.button-green.text',
         {
           attrs: {
-            'data-icon': 'G',
+            'data-icon': '',
           },
           hook: util.bind('click', () => xhr.start(ctrl.data.id)),
         },
@@ -250,7 +254,7 @@ const startOrCancel = (ctrl: SimulCtrl, accepted: Applicant[]) =>
         'a.button.button-red.text',
         {
           attrs: {
-            'data-icon': 'L',
+            'data-icon': '',
           },
           hook: util.bind('click', () => {
             if (confirm('Delete this simul?')) xhr.abort(ctrl.data.id);

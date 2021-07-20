@@ -91,6 +91,12 @@ final class User(
         status(html.activity(u, as))
       }
 
+  def download(username: String) = OpenBody { implicit ctx =>
+    OptionOk(env.user.repo named username) { user =>
+      html.user.download(user)
+    }
+  }
+
   def gamesAll(username: String, page: Int) = games(username, GameFilter.All.name, page)
 
   def games(username: String, filter: String, page: Int) =
@@ -118,6 +124,9 @@ final class User(
                 _ <- env.tournament.cached.nameCache preloadMany {
                   pag.currentPageResults.flatMap(_.tournamentId).map(_ -> ctxLang)
                 }
+                notes <- ctx.me ?? { me =>
+                  env.round.noteApi.byGameIds(pag.currentPageResults.map(_.id), me.id)
+                }
                 res <-
                   if (HTTPRequest isSynchronousHttp ctx.req) for {
                     info   <- env.userInfo(u, nbs, ctx)
@@ -126,8 +135,8 @@ final class User(
                     searchForm =
                       (filters.current == GameFilter.Search) option
                         GameFilterMenu.searchForm(userGameSearch, filters.current)(ctx.body, formBinding)
-                  } yield html.user.show.page.games(u, info, pag, filters, searchForm, social)
-                  else fuccess(html.user.show.gamesContent(u, nbs, pag, filters, filter))
+                  } yield html.user.show.page.games(u, info, pag, filters, searchForm, social, notes)
+                  else fuccess(html.user.show.gamesContent(u, nbs, pag, filters, filter, notes))
               } yield res,
               api = _ => apiGames(u, filter, page)
             )
@@ -211,7 +220,7 @@ final class User(
         env.history
           .ratingChartApi(u)
           .dmap(_ | "[]") // send an empty JSON array if no history JSON is available
-          .dmap(JsonOk(_))
+          .dmap(jsonStr => Ok(jsonStr) as JSON)
       }
     }
 
@@ -306,7 +315,7 @@ final class User(
         env.user.cached.top200Perf get perfType.id dmap { _ take (nb atLeast 1 atMost 200) } flatMap {
           users =>
             negotiate(
-              html = Ok(html.user.top(perfType, users)).fuccess,
+              html = (nb == 200) ?? Ok(html.user.top(perfType, users)).fuccess,
               api = _ =>
                 fuccess {
                   implicit val lpWrites = OWrites[UserModel.LightPerf](env.user.jsonView.lightPerfIsOnline)
@@ -351,7 +360,7 @@ final class User(
   ): Fu[UserLogins.TableData] = {
     val familyUserIds = user.id :: userLogins.otherUserIds
     (isGranted(_.ModNote) ?? env.user.noteApi
-      .forMod(familyUserIds)
+      .byUsersForMod(familyUserIds)
       .logTimeIfGt(s"${user.username} noteApi.forMod", 2 seconds)) zip
       env.playban.api.bans(familyUserIds).logTimeIfGt(s"${user.username} playban.bans", 2 seconds) zip
       lila.security.UserLogins.withMeSortedWithEmails(env.user.repo, user, userLogins) map {
@@ -376,7 +385,7 @@ final class User(
           appeal  <- isGranted(_.Appeals) ?? env.appeal.api.get(user)
         } yield view.modLog(history, appeal)
 
-        val plan = isGranted(_.Admin) ?? env.plan.api.recentChargesOf(user).map(view.plan).dmap(~_)
+        val plan = isGranted(_.Admin) ?? env.plan.api.recentChargesOf(user).map(view.plan(user)).dmap(~_)
 
         val student = env.clas.api.student.findManaged(user).map2(view.student).dmap(~_)
 
@@ -508,38 +517,22 @@ final class User(
 
   def perfStat(username: String, perfKey: String) =
     Open { implicit ctx =>
-      OptionFuResult(env.user.repo named username) { u =>
-        if ((u.disabled || (u.lame && !ctx.is(u))) && !isGranted(_.UserModView)) notFound
-        else
-          PerfType(perfKey).fold(notFound) { perfType =>
-            for {
-              ranks       <- env.user.cached rankingsOf u.id
-              oldPerfStat <- env.perfStat.get(u, perfType)
-              perfStat = oldPerfStat.copy(playStreak = oldPerfStat.playStreak.checkCurrent)
-              distribution <- u.perfs(perfType).established ?? {
-                env.user.rankingApi.weeklyRatingDistribution(perfType) dmap some
-              }
-              percentile = distribution.map { distrib =>
-                lila.user.Stat.percentile(distrib, u.perfs(perfType).intRating) match {
-                  case (under, sum) => Math.round(under * 1000.0 / sum) / 10.0
+      env.perfStat.api.data(username, perfKey, ctx.me) flatMap {
+        _ ?? { data =>
+          negotiate(
+            html = env.history.ratingChartApi(data.user) map { chart =>
+              Ok(html.user.perfStat(data, chart))
+            },
+            api = _ =>
+              JsonOk {
+                getBool("graph").?? {
+                  env.history.ratingChartApi.singlePerf(data.user, data.stat.perfType) map some
+                } map { graph =>
+                  env.perfStat.jsonView(data).add("graph", graph)
                 }
               }
-              ratingChart <- env.history.ratingChartApi(u)
-              _           <- env.user.lightUserApi preloadMany { u.id :: perfStat.userIds.map(_.value) }
-              response <- negotiate(
-                html = Ok(html.user.perfStat(u, ranks, perfType, percentile, perfStat, ratingChart)).fuccess,
-                api = _ =>
-                  getBool("graph").?? {
-                    env.history.ratingChartApi.singlePerf(u, perfType).map(_.some)
-                  } map {
-                    val data = env.perfStat.jsonView(u, perfStat, ranks get perfType, percentile)
-                    _.fold(data) { graph =>
-                      data + ("graph" -> graph)
-                    }
-                  } map { Ok(_) }
-              )
-            } yield response
-          }
+          )
+        }
       }
     }
 
@@ -595,7 +588,9 @@ final class User(
     }
 
   def tryRedirect(username: String)(implicit ctx: Context): Fu[Option[Result]] =
-    env.user.repo enabledNamed username map2 { user =>
-      Redirect(routes.User.show(user.username))
+    env.user.repo named username map {
+      _.filter(_.enabled || isGranted(_.SeeReport)) map { user =>
+        Redirect(routes.User.show(user.username))
+      }
     }
 }

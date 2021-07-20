@@ -1,6 +1,5 @@
 import * as xhr from './xhr';
 import config from './config';
-import makePromotion from 'puz/promotion';
 import sign from 'puz/sign';
 import { Api as CgApi } from 'chessground/api';
 import { getNow, puzzlePov, sound } from 'puz/util';
@@ -9,10 +8,11 @@ import { parseUci } from 'chessops/util';
 import { prop, Prop } from 'common';
 import { Role } from 'chessground/types';
 import { StormOpts, StormData, StormVm, StormRecap, StormPrefs } from './interfaces';
-import { Promotion, Run } from 'puz/interfaces';
+import { Run } from 'puz/interfaces';
 import { Combo } from 'puz/combo';
 import CurrentPuzzle from 'puz/current';
 import { Clock } from 'puz/clock';
+import { PromotionCtrl } from 'chess/promotion';
 
 export default class StormCtrl {
   private data: StormData;
@@ -21,8 +21,9 @@ export default class StormCtrl {
   run: Run;
   vm: StormVm;
   trans: Trans;
-  promotion: Promotion;
+  promotion: PromotionCtrl;
   ground = prop<CgApi | false>(false) as Prop<CgApi | false>;
+  flipped = false;
 
   constructor(opts: StormOpts, redraw: (data: StormData) => void) {
     this.data = opts.data;
@@ -47,7 +48,11 @@ export default class StormCtrl {
       filterFailed: false,
       filterSlow: false,
     };
-    this.promotion = makePromotion(this.withGround, () => makeCgOpts(this.run, !this.run.endAt), this.redraw);
+    this.promotion = new PromotionCtrl(this.withGround, this.setGround, this.redraw);
+    setTimeout(() => {
+      this.run.current.moveIndex = 0;
+      this.setGround();
+    }, 100);
     this.checkDupTab();
     setTimeout(this.hotkeys, 1000);
     if (this.data.key) setTimeout(() => sign(this.data.key!).then(this.vm.signed), 1000 * 40);
@@ -57,6 +62,14 @@ export default class StormCtrl {
         this.redraw();
       }
     }, config.timeToStart + 1000);
+    lichess.pubsub.on('zen', () => {
+      if (!this.run.endAt) {
+        const zen = $('body').toggleClass('zen').hasClass('zen');
+        window.dispatchEvent(new Event('resize'));
+        xhr.setZen(zen);
+      }
+    });
+    $('#zentog').on('click', this.toggleZen);
   }
 
   end = (): void => {
@@ -69,6 +82,7 @@ export default class StormCtrl {
       this.vm.response = res;
       this.redraw();
     });
+    $('body').toggleClass('playing'); // end zen
     this.redrawSlow();
   };
 
@@ -130,7 +144,11 @@ export default class StormCtrl {
       this.redrawQuick();
       this.redrawSlow();
     }
-    this.withGround(g => g.set(makeCgOpts(this.run, !this.run.endAt)));
+    this.setGround();
+    if (this.run.current.moveIndex < 0) {
+      this.run.current.moveIndex = 0;
+      this.setGround();
+    }
     lichess.pubsub.emit('ply', this.run.moves);
   };
 
@@ -158,6 +176,8 @@ export default class StormCtrl {
     return g && f(g);
   };
 
+  private setGround = () => this.withGround(g => g.set(makeCgOpts(this.run, !this.run.endAt, this.flipped)));
+
   countWins = (): number => this.run.history.reduce((c, r) => c + (r.win ? 1 : 0), 0);
 
   runStats = (): StormRecap => ({
@@ -181,6 +201,12 @@ export default class StormCtrl {
     this.redraw();
   };
 
+  flip = () => {
+    this.flipped = !this.flipped;
+    this.withGround(g => g.toggleOrientation());
+    this.redraw();
+  };
+
   private checkDupTab = () => {
     const dupTabMsg = lichess.storage.make('storm.tab');
     dupTabMsg.fire(this.data.puzzles[0].id);
@@ -192,5 +218,11 @@ export default class StormCtrl {
     });
   };
 
-  private hotkeys = () => window.Mousetrap.bind('space', () => location.reload()).bind('return', this.end);
+  private toggleZen = () => lichess.pubsub.emit('zen');
+
+  private hotkeys = () =>
+    window.Mousetrap.bind('space', () => location.reload())
+      .bind('return', this.end)
+      .bind('f', this.flip)
+      .bind('z', this.toggleZen);
 }

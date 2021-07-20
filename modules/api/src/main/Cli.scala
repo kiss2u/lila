@@ -7,8 +7,6 @@ final private[api] class Cli(
     security: lila.security.Env,
     teamSearch: lila.teamSearch.Env,
     forumSearch: lila.forumSearch.Env,
-    team: lila.team.Env,
-    puzzle: lila.puzzle.Env,
     tournament: lila.tournament.Env,
     explorer: lila.explorer.Env,
     fishnet: lila.fishnet.Env,
@@ -18,7 +16,7 @@ final private[api] class Cli(
     evalCache: lila.evalCache.Env,
     plan: lila.plan.Env,
     msg: lila.msg.Env,
-    slackApi: lila.irc.SlackApi
+    email: lila.mailer.AutomaticEmail
 )(implicit ec: scala.concurrent.ExecutionContext)
     extends lila.common.Cli {
 
@@ -42,8 +40,8 @@ final private[api] class Cli(
         case None                       => "No such user."
         case Some(user) if user.enabled => "That user account is not closed. Can't erase."
         case Some(user) =>
-          slackApi.gdprErase(user)
           userRepo setEraseAt user
+          email gdprErase user
           Bus.publish(lila.user.User.GDPRErase(user), "gdprErase")
           s"Erasing all search data about ${user.username} now"
       }
@@ -61,9 +59,6 @@ final private[api] class Cli(
             "Invalid announce. Format: `announce <length> <unit> <words...>` or just `announce cancel` to cancel it"
           )
       }
-    case "bus" :: "dump" :: Nil =>
-      val keys = Bus.keys
-      fuccess(s"${keys.size}\n ${keys mkString "\n"}")
   }
 
   private def run(args: List[String]): Fu[String] = {
@@ -76,14 +71,11 @@ final private[api] class Cli(
     security.cli.process orElse
       teamSearch.cli.process orElse
       forumSearch.cli.process orElse
-      team.cli.process orElse
-      puzzle.cli.process orElse
       tournament.cli.process orElse
       explorer.cli.process orElse
       fishnet.cli.process orElse
       study.cli.process orElse
       studySearch.cli.process orElse
-      coach.cli.process orElse
       evalCache.cli.process orElse
       plan.cli.process orElse
       msg.cli.process orElse

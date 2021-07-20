@@ -12,6 +12,7 @@ object widgets {
 
   def apply(
       games: Seq[Game],
+      notes: Map[Game.ID, String] = Map(),
       user: Option[lila.user.User] = None,
       ownerLink: Boolean = false
   )(implicit ctx: Context): Frag =
@@ -34,8 +35,7 @@ object widgets {
                       frag(" ", trans.by(userIdLink(user.some, None, withOnline = false)))
                     },
                     separator,
-                    if (g.variant.exotic) bits.variantLink(g.variant, g.variant.name.toUpperCase)
-                    else g.variant.name.toUpperCase
+                    bits.variantLink(g.variant)
                   )
                 else
                   frag(
@@ -60,7 +60,7 @@ object widgets {
           ),
           div(cls := "versus")(
             gamePlayer(g.whitePlayer),
-            div(cls := "swords", dataIcon := "U"),
+            div(cls := "swords", dataIcon := ""),
             gamePlayer(g.blackPlayer)
           ),
           div(cls := "result")(
@@ -95,6 +95,9 @@ object widgets {
               )
             )
           } else frag(br, br),
+          notes get g.id map { note =>
+            div(cls := "notes")(strong("Notes: "), note)
+          },
           g.metadata.analysed option
             div(cls := "metadata text", dataIcon := "")(trans.computerAnalysisAvailable()),
           g.pgnImport.flatMap(_.user).map { user =>

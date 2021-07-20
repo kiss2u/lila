@@ -77,7 +77,7 @@
   <string name="losing">Губитнички</string>
   <string name="drawn">Реми</string>
   <string name="unknown">Непознати</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">База на податоци</string>
+  <string name="database">База на податоци</string>
   <string name="whiteDrawBlack">Бели / Реми / Црни</string>
   <string name="averageRatingX">Просечен пласман %s</string>
   <string name="recentGames">Неодамнешни игри</string>
@@ -244,7 +244,6 @@
   <string name="send">Испрати</string>
   <string name="incrementInSeconds">Зголемување во секунди</string>
   <string name="freeOnlineChess">Бесплатен Онлајн Шах</string>
-  <string name="spectators">Набљудувачи</string>
   <plurals name="nbRated">
     <item quantity="one">%s рангирани игри</item>
     <item quantity="other">%s рангирани игри</item>
@@ -272,7 +271,6 @@
     <item quantity="other">Додај %s секунди</item>
   </plurals>
   <string name="thisAccountViolatedTos">Оваа корисничка сметка ги прекрши корисничките услови на Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Овој играч вештачки го зголемува/намалува рејтинго</string>
   <string name="openingExplorerAndTablebase">Отворање на пребарувач и табела</string>
   <string name="takeback">Повлечете го потегот</string>
   <string name="proposeATakeback">Предложете повлекување на потегот</string>
@@ -441,7 +439,6 @@
   <string name="firstName">Име</string>
   <string name="lastName">Презиме</string>
   <string name="biography">Биографија</string>
-  <string name="country">Држава</string>
   <string name="thankYou">Благодарам!</string>
   <string name="socialMediaLinks">Врски на друштвени мрежи</string>
   <string name="inlineNotation">Подредена нотација</string>
@@ -594,7 +591,7 @@
   <string name="really">навистина</string>
   <string name="contribute">Придонес</string>
   <string name="termsOfService">Услови за користење</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Изворен код</string>
+  <string name="sourceCode">Изворен код</string>
   <string name="simultaneousExhibitions">Симултанка</string>
   <string name="host">Хост</string>
   <string name="hostColorX">Боја на домаќинот: %s</string>
@@ -669,8 +666,6 @@
   <string name="enableKidMode">Вклучи го детскиот режим</string>
   <string name="disableKidMode">Исклучи го детскиот режим</string>
   <string name="security">Безбедност</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Ова е листа на уреди кои се приклучиле на вашата сметка. Избришете ги сесиите кои ви се непознати.</string>
-  <string name="alternativelyYouCanX">Исто така можете да ги %s.</string>
   <string name="revokeAllSessions">избришете сите сесии</string>
   <string name="playChessEverywhere">Играј шах секаде</string>
   <string name="asFreeAsLichess">Бесплатно како lichess</string>

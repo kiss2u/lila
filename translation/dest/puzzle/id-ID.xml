@@ -28,7 +28,7 @@
   <string name="notTheMove">Itu bukan langkahnya!</string>
   <string name="trySomethingElse">Coba lagi lainnya.</string>
   <string name="ratingX">Rating: %s</string>
-  <string name="hidden">sembunyi</string>
+  <string name="hidden">tersembunyi</string>
   <plurals name="playedXTimes">
     <item quantity="other">Dimainkan %s kali</item>
   </plurals>
@@ -38,8 +38,14 @@
   <string name="normal">Normal</string>
   <string name="easier">Lebih mudah</string>
   <string name="easiest">Paling mudah</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="other">%s poin dibawah rating teka-teki Anda</item>
+  </plurals>
   <string name="harder">Lebih sulit</string>
   <string name="hardest">Paling sulit</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="other">%s poin diatas rating teka-teki Anda</item>
+  </plurals>
   <string name="example">Contoh</string>
   <string name="addAnotherTheme">Tambah tema lainnya</string>
   <string name="jumpToNextPuzzleImmediately">Lompat ke teka-teki berikutnya segera</string>
@@ -52,6 +58,13 @@
   <string name="streakDescription">Pecahkan teka-teki yang semakin sulit dan bangun kemenangan beruntun. Tidak ada jam, jadi luangkan waktu Anda. Satu langkah salah, dan permainan berakir! Tapi Anda dapat melewati gerakan per sesi.</string>
   <string name="yourStreakX">Garis Anda: %s</string>
   <string name="streakSkipExplanation">Lewati gerakan ini untuk mempertahankan garis Anda! Hanya bekerja sekali per pertandingan.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Lanjutkan garisnya</string>
+  <string name="continueTheStreak">Lanjutkan garisnya</string>
   <string name="newStreak">Garis baru</string>
+  <string name="fromMyGames">Dari permainan saya</string>
+  <string name="lookupOfPlayer">Cari teka-teki dari sebuah permainan pemain</string>
+  <string name="fromXGames">Teka-teki dari permainan %s</string>
+  <string name="searchPuzzles">Cari teka-teki</string>
+  <string name="fromMyGamesNone">Anda tidak memiliki teka-teki dalam database, tetapi Lichess masih sangat mencintai Anda.
+Mainkan permainan cepat dan klasik untuk meningkatkan kesempatan Anda agar sebuah teka-teki dari Anda dapat ditambahkan!</string>
+  <string name="fromXGamesFound">Teka-teki %1$s ditemukan di permainan %2$s</string>
 </resources>

@@ -24,16 +24,15 @@
   <string name="visibleByBothStudentsAndTeachers">Ορατό από δασκάλους και μαθητές της τάξης</string>
   <string name="teachersOfTheClass">Δάσκαλοι τάξης</string>
   <string name="addLichessUsernames">Προσθήκη χρηστών Lichess για πρόσκλησή τους ως δάσκαλοι. Ένας σε κάθε γραμμή.</string>
-  <string name="theyMustFirstApply">Πρώτα πρέπει να είναι αναγνωρισμένοι δάσκαλοι του Lichess.</string>
   <string name="resetPassword">Επαναφορά κωδικού πρόσβασης</string>
   <string name="makeSureToCopy">Βεβαιωθείτε ότι αντιγράψατε ή σημειώσατε τον κωδικό. Δεν θα μπορέσετε να τον δείτε ξανά!</string>
   <string name="passwordX">Κωδικός: %s</string>
   <string name="generateANewPassword">Δημιουργία νέου κωδικού για τον μαθητή</string>
-  <string name="invitedToXByY" comment="invitedToXByY&#10;&#10;%1$s is the Class name and %2$s is the person who invited">Προσκλήθηκε στην τάξη %1$s από τον χρήστη %2$s</string>
+  <string name="invitedToXByY">Προσκλήθηκε στην τάξη %1$s από τον χρήστη %2$s</string>
   <string name="realName">Αληθινό όνομα</string>
   <string name="privateWillNeverBeShown">Ιδιωτικό. Δεν εμφανίζεται εκτός τάξης. Έτσι αναγνωρίζετε ευκολότερα τον μαθητή.</string>
   <string name="addStudent">Προσθήκη μαθητή</string>
-  <string name="lichessProfileXCreatedForY" comment="lichessProfileXCreatedForY&#10;&#10;%1$s is the created account (nickname) &#10;%2$s is the real name of the student (only visible for the teacher)">Δημιουργήθηκε το Lichess προφίλ %1$s για %2$s.</string>
+  <string name="lichessProfileXCreatedForY">Δημιουργήθηκε το Lichess προφίλ %1$s για %2$s.</string>
   <string name="studentCredentials">Μαθητής: %1$s
 Χρήστης: %2$s
 Κωδικός: %3$s</string>
@@ -53,7 +52,7 @@
 Πατήστε στον σύνδεσμο για να αποκτήσετε πρόσβαση.</string>
   <string name="invitationToClass">Προσκληθήκατε να συμμετάσχετε στην τάξη \"%s\" ως μαθητής.</string>
   <string name="clickToViewInvitation">Κάντε κλικ στον σύνδεσμο για να δείτε την πρόσκληση:</string>
-  <plurals name="nbPendingInvitations" comment="nbPendingInvitations [one] [other]&#10;&#10;Shown to the teacher, in teacher dashboard.">
+  <plurals name="nbPendingInvitations">
     <item quantity="one">Μία πρόσκληση εκκρεμεί</item>
     <item quantity="other">%s προσκλήσεις εκκρεμούν</item>
   </plurals>
@@ -68,6 +67,10 @@
   <string name="releaseDesc1">Ένας αυτόνομος λογαριασμός δεν μπορεί να ξαναγίνει διαχειριζόμενος. Ο μαθητής θα μπορεί να ενεργοποιήσει ή να απενεργοποιήσει την παιδική λειτουργία και να επαναφέρει το κωδικό πρόσβασης.</string>
   <string name="releaseDesc2">Ο μαθητής θα παραμείνει στην τάξη μετά την απελευθέρωση του λογαριασμού του.</string>
   <string name="realUniqueEmail">Πραγματική, μοναδική διεύθυνση ηλεκτρονικού ταχυδρομείου του μαθητή. Θα στείλουμε ένα email επιβεβαίωσης σε αυτήν με ένα σύνδεσμο για ενεργοποίηση του λογαριασμού.</string>
+  <string name="closeStudent">Κλείστε αυτόν τον λογαριασμό</string>
+  <string name="closeTheAccount">Κλείστε μόνιμα αυτόν τον μαθητικό λογαριασμό.</string>
+  <string name="closeDesc1">Ο μαθητής δε θα μπορέσει ποτέ να χρησιμοποιήσει ξανά αυτόν τον λογαριασμό. Η ενέργειά σας αυτή είναι τελική. Βεβαιωθείτε ότι ο μαθητής κατανοεί τις επιπτώσεις και συμφωνεί με την απόφαση.</string>
+  <string name="closeDesc2">Μπορεί εναλλακτικά, αν θέλετε, να δώσετε τον έλεγχο του λογαριασμού στον μαθητή, έτσι ώστε να μπορεί να τον χρησιμοποιεί.</string>
   <string name="teachers">Δάσκαλοι</string>
   <plurals name="nbTeachers">
     <item quantity="one">Δάσκαλος</item>
@@ -81,9 +84,9 @@
   <string name="progress">Πρόοδος</string>
   <string name="noStudents">Κανένας μαθητής δεν υπάρχει στην τάξη ακόμα.</string>
   <string name="noRemovedStudents">Δεν έχουν διαγραφεί μαθητές.</string>
-  <string name="overDays" comment="overDays&#10;&#10;In the &quot;Progress&quot; tab of a Lichess Class dashboard, &quot;Over days&quot; is the title of a selector. This selector offers a choice between various durations, in days, over which the user can view the progress of the class.">Ανά ημέρες</string>
+  <string name="overDays">Ανά ημέρες</string>
   <string name="timePlaying">Χρόνος που διατέθηκε παίζοντας</string>
-  <string name="variantXOverLastY" comment="variantXOverLastY&#10;&#10;The first variable is a game type (Blitz/Bullet, etc).&#10;The second variable is a duration length (in days).&#10;&#10;This is the heading of a column for a table that appears in the &quot;Progress&quot; tab of the Lichess Class dashboard.">%1$s για τις τελευταίες %2$s</string>
+  <string name="variantXOverLastY">%1$s για τις τελευταίες %2$s</string>
   <string name="winrate">Ποσοστό νικών</string>
   <string name="na">Μη διαθέσιμο</string>
   <string name="news">Νέα τάξης</string>
@@ -94,5 +97,4 @@
   <string name="newsEdit2">Προσθήκη πρόσφατων νέων στη κορυφή. Να μη διαγραφούν τα προηγούμενα νέα.</string>
   <string name="newsEdit3">Να διαχωρίζονται τα νέα με ---
 Θα εμφανιστεί μια οριζόντια γραμμή.</string>
-  <string name="markdownAvailable">Η μορφή %s είναι διαθέσιμη για μια πιο προχωρημένη σύνταξη.</string>
 </resources>

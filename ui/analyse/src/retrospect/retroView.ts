@@ -29,7 +29,7 @@ function jumpToNext(ctrl: RetroCtrl) {
     {
       hook: bind('click', ctrl.jumpToNext),
     },
-    [h('i', { attrs: dataIcon('G') }), ctrl.noarg('next')]
+    [h('i', { attrs: dataIcon('') }), ctrl.noarg('next')]
   );
 }
 
@@ -67,7 +67,7 @@ const feedback = {
                     showGlyphs: true,
                     showEval: false,
                   },
-                  ctrl.current().fault.node
+                  ctrl.current()!.fault.node
                 )!
               )
             )
@@ -138,7 +138,7 @@ const feedback = {
                       withDots: true,
                       showEval: false,
                     },
-                    ctrl.current().solution.node
+                    ctrl.current()!.solution.node
                   )!
                 )
               )
@@ -202,7 +202,7 @@ const feedback = {
   },
 };
 
-function renderFeedback(root: AnalyseCtrl, fb) {
+function renderFeedback(root: AnalyseCtrl, fb: Exclude<keyof typeof feedback, 'end'>) {
   const ctrl: RetroCtrl = root.retro!;
   const current = ctrl.current();
   if (ctrl.isSolving() && current && root.path !== current.prev.path) return feedback.offTrack(ctrl);

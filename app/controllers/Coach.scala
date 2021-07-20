@@ -6,21 +6,25 @@ import lila.api.Context
 import lila.app._
 import lila.coach.{ Coach => CoachModel, CoachProfileForm, CoachPager }
 import views._
+import lila.user.Countries
 
 final class Coach(env: Env) extends LilaController(env) {
 
   private def api = env.coach.api
 
-  def all(page: Int) = search("all", CoachPager.Order.Login.key, page)
+  def all(page: Int) = search("all", CoachPager.Order.Login.key, "all", page)
 
-  def search(l: String, o: String, page: Int) =
+  def search(l: String, o: String, c: String, page: Int) =
     Open { implicit ctx =>
       pageHit
-      val order = CoachPager.Order(o)
-      val lang  = (l != "all") ?? play.api.i18n.Lang.get(l)
+      val order   = CoachPager.Order(o)
+      val lang    = (l != "all") ?? play.api.i18n.Lang.get(l)
+      val country = (c != "all") ?? Countries.info(c)
       env.coach.api.allLanguages flatMap { langCodes =>
-        env.coach.pager(lang, order, page) map { pager =>
-          Ok(html.coach.index(pager, lang, order, langCodes))
+        env.coach.api.allCountries flatMap { countryCodes =>
+          env.coach.pager(lang, order, country, page) map { pager =>
+            Ok(html.coach.index(pager, lang, order, langCodes, countryCodes, country))
+          }
         }
       }
     }
@@ -91,15 +95,16 @@ final class Coach(env: Env) extends LilaController(env) {
     }
 
   private def WithVisibleCoach(c: CoachModel.WithUser)(f: Fu[Result])(implicit ctx: Context) =
-    if (c.coach.isListed || ctx.me.??(c.coach.is) || isGranted(_.Admin)) f
+    if (c.isListed || ctx.me.??(c.coach.is) || isGranted(_.Admin)) f
     else notFound
 
   def edit =
     Secure(_.Coach) { implicit ctx => me =>
       OptionFuResult(api findOrInit me) { c =>
-        api.reviews.pendingByCoach(c.coach) map { reviews =>
-          NoCache(Ok(html.coach.edit(c, CoachProfileForm edit c.coach, reviews)))
-        }
+        env.msg.twoFactorReminder(me.id) >>
+          api.reviews.pendingByCoach(c.coach) map { reviews =>
+            NoCache(Ok(html.coach.edit(c, CoachProfileForm edit c.coach, reviews)))
+          }
       }
     }
 

@@ -11,7 +11,7 @@ import lila.user.User
 final class GarbageCollector(
     userLogins: UserLoginsApi,
     ipTrust: IpTrust,
-    slack: lila.irc.SlackApi,
+    irc: lila.irc.IrcApi,
     noteApi: lila.user.NoteApi,
     isArmed: () => Boolean
 )(implicit
@@ -68,7 +68,7 @@ final class GarbageCollector(
               "userSignup"
             )
             printOpt.filter(_.banned).map(_.fp.value) match {
-              case Some(print) => collect(user, email, msg = s"Print ban: ${print.value}")
+              case Some(print) => collect(user, email, msg = s"Print ban: `${print.value}`")
               case _ =>
                 badOtherAccounts(spy.otherUsers.map(_.user)) ?? { others =>
                   logger.debug(s"other ${data.user.username} others=${others.map(_.username)}")
@@ -105,7 +105,7 @@ final class GarbageCollector(
         s"Will dispose of @${user.username} in $wait. Email: ${email.value}. $msg${!armed ?? " [SIMULATION]"}"
       logger.info(message)
       noteApi.lichessWrite(user, s"Garbage collected because of $msg")
-      slack.garbageCollector(message) >>- {
+      irc.garbageCollector(message) >>- {
         if (armed) {
           doInitialSb(user)
           system.scheduler

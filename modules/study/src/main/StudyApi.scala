@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 
 import lila.chat.{ Chat, ChatApi }
 import lila.common.Bus
-import lila.hub.actorApi.timeline.{ Propagate, StudyCreate, StudyLike }
+import lila.hub.actorApi.timeline.{ Propagate, StudyLike }
 import lila.socket.Socket.Sri
 import lila.tree.Node.{ Comment, Gamebook, Shapes }
 import lila.user.{ Holder, User }
@@ -76,9 +76,18 @@ final class StudyApi(
     }
 
   def byIdWithFirstChapter(id: Study.Id): Fu[Option[Study.WithChapter]] =
+    byIdWithChapterFinder(id, chapterRepo firstByStudy id)
+
+  private[study] def byIdWithLastChapter(id: Study.Id): Fu[Option[Study.WithChapter]] =
+    byIdWithChapterFinder(id, chapterRepo lastByStudy id)
+
+  private def byIdWithChapterFinder(
+      id: Study.Id,
+      chapterFinder: => Fu[Option[Chapter]]
+  ): Fu[Option[Study.WithChapter]] =
     byId(id) flatMap {
       _ ?? { study =>
-        chapterRepo.firstByStudy(study.id) map {
+        chapterFinder map {
           _ ?? { Study.WithChapter(study, _).some }
         } orElse byIdWithChapter(id)
       }
@@ -104,13 +113,7 @@ final class StudyApi(
 
   def importGame(data: StudyMaker.ImportGame, user: User): Fu[Option[Study.WithChapter]] =
     (data.form.as match {
-      case StudyForm.importGame.AsNewStudy =>
-        studyMaker(data, user) flatMap { res =>
-          studyRepo.insert(res.study) >>
-            chapterRepo.insert(res.chapter) >>-
-            indexStudy(res.study) >>-
-            scheduleTimeline(res.study.id) inject res.some
-        }
+      case StudyForm.importGame.AsNewStudy => create(data, user)
       case StudyForm.importGame.AsChapterOf(studyId) =>
         byId(studyId) flatMap {
           case Some(study) if study.canContribute(user.id) =>
@@ -118,13 +121,26 @@ final class StudyApi(
               studyId = study.id,
               data = data.form.toChapterData,
               sticky = study.settings.sticky
-            )(Who(user.id, Sri(""))) >> byIdWithChapter(studyId)
+            )(Who(user.id, Sri(""))) >> byIdWithLastChapter(studyId)
           case _ => fuccess(none)
         } orElse importGame(data.copy(form = data.form.copy(asStr = none)), user)
     }) addEffect {
       _ ?? { sc =>
         Bus.publish(actorApi.StartStudy(sc.study.id), "startStudy")
       }
+    }
+
+  def create(
+      data: StudyMaker.ImportGame,
+      user: User,
+      transform: Study => Study = identity
+  ): Fu[Option[Study.WithChapter]] =
+    studyMaker(data, user) map { sc =>
+      sc.copy(study = transform(sc.study))
+    } flatMap { sc =>
+      studyRepo.insert(sc.study) >>
+        chapterRepo.insert(sc.chapter) >>-
+        indexStudy(sc.study) inject sc.some
     }
 
   def clone(me: User, prev: Study): Fu[Option[Study]] =
@@ -158,19 +174,6 @@ final class StudyApi(
         }
       case _ => fuccess(study -> none)
     }
-
-  private def scheduleTimeline(studyId: Study.Id): Unit =
-    scheduler
-      .scheduleOnce(1 minute) {
-        byId(studyId) foreach {
-          _.withFilter(_.isPublic) foreach { study =>
-            timeline ! (Propagate(
-              StudyCreate(study.ownerId, study.id.value, study.name.value)
-            ) toFollowersOf study.ownerId)
-          }
-        }
-      }
-      .unit
 
   def talk(userId: User.ID, studyId: Study.Id, text: String) =
     byId(studyId) foreach {
@@ -801,11 +804,9 @@ final class StudyApi(
   def like(studyId: Study.Id, v: Boolean)(who: Who): Funit =
     studyRepo.like(studyId, who.u, v) map { likes =>
       sendTo(studyId)(_.setLiking(Study.Liking(likes, v), who))
-      Bus.publish(actorApi.StudyLikes(studyId, likes), "studyLikes")
       if (v) studyRepo byId studyId foreach {
-        _ foreach { study =>
-          if (who.u != study.ownerId && study.isPublic)
-            timeline ! (Propagate(StudyLike(who.u, study.id.value, study.name.value)) toFollowersOf who.u)
+        _.filter(_.isPublic) foreach { study =>
+          timeline ! (Propagate(StudyLike(who.u, study.id.value, study.name.value)) toFollowersOf who.u)
         }
       }
     }

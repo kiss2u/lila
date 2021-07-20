@@ -3,8 +3,11 @@ var stages = require('../stage/list');
 var makeLevel = require('../level');
 var makeProgress = require('../progress').ctrl;
 var sound = require('../sound');
+const timeouts = require('../timeouts');
 
 module.exports = function (opts, trans) {
+  timeouts.clearTimeouts();
+
   var stage = stages.byId[m.route.param('stage')];
   if (!stage) m.route('/');
   opts.side.ctrl.setStage(stage);
@@ -21,9 +24,12 @@ module.exports = function (opts, trans) {
 
   var level = makeLevel(stage.levels[levelId - 1], {
     stage: stage,
-    onComplete: function () {
+    onCompleteImmediate() {
       opts.storage.saveScore(stage, level.blueprint, level.vm.score);
+    },
+    onComplete() {
       if (level.blueprint.id < stage.levels.length) m.route('/' + stage.id + '/' + (level.blueprint.id + 1));
+      else if (vm.stageCompleted()) return;
       else {
         vm.stageCompleted(true);
         sound.stageEnd();
@@ -44,10 +50,14 @@ module.exports = function (opts, trans) {
   opts.route = 'run';
   opts.stageId = stage.id;
 
+  const isRestarting = lichess.tempStorage.makeBoolean('learn.restarting');
+
   var vm = {
-    stageStarting: m.prop(level.blueprint.id === 1 && stageScore() === 0),
+    stageStarting: m.prop(level.blueprint.id === 1 && stageScore() === 0 && !isRestarting.get()),
     stageCompleted: m.prop(false),
   };
+
+  isRestarting.set(false);
 
   var getNext = function () {
     return stages.byId[stage.id + 1];
@@ -77,6 +87,7 @@ module.exports = function (opts, trans) {
       level.start();
     },
     restart: function () {
+      isRestarting.set(true);
       m.route('/' + stage.id + '/' + level.blueprint.id);
     },
     trans: trans,

@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Ağlarla oynayırsınız</string>
   <string name="youPlayTheBlackPieces">Qaralarla oynayırsınız</string>
   <string name="itsYourTurn">Sizin növbənizdir!</string>
+  <string name="cheatDetected">\"Cheat\" aşkarlandı</string>
   <string name="kingInTheCenter">Şah mərkəzdə</string>
   <string name="threeChecks">Üç şah</string>
   <string name="raceFinished">Yarış bitdi</string>
@@ -78,7 +79,7 @@
   <string name="losing">Uduzduran</string>
   <string name="drawn">Heç-heçə</string>
   <string name="unknown">Bilinməyən</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Verilənlər bazası</string>
+  <string name="database">Verilənlər bazası</string>
   <string name="whiteDrawBlack">Ağlar / Heç-heçə / Qaralar</string>
   <string name="averageRatingX">Ortalama reytinq: %s</string>
   <string name="recentGames">Son oyunlar</string>
@@ -259,7 +260,6 @@
   <string name="send">Göndər</string>
   <string name="incrementInSeconds">Gediş başına saniyə</string>
   <string name="freeOnlineChess">Pulsuz Onlayn Şahmat</string>
-  <string name="spectators">Tamaşaçılar:</string>
   <plurals name="nbRated">
     <item quantity="one">%s reytinqli</item>
     <item quantity="other">%s reytinqli</item>
@@ -287,7 +287,6 @@
     <item quantity="other">%s saniyə ver</item>
   </plurals>
   <string name="thisAccountViolatedTos">Bu hesab Lichess İstifadə Şərtlərini pozmuşdur</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Bu oyunçu öz reytinqini süni şəklidə artırıb azaldır</string>
   <string name="openingExplorerAndTablebase">Debüt &amp; endşpil bazası</string>
   <string name="takeback">Dala qaytarma</string>
   <string name="proposeATakeback">Dala qaytarma təklif et</string>
@@ -455,7 +454,7 @@
   <string name="firstName">Ad</string>
   <string name="lastName">Soyad</string>
   <string name="biography">Özü haqqında</string>
-  <string name="country">Ölkə</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Ölkə və ya bayraq</string>
   <string name="thankYou">Təşəkkürlər!</string>
   <string name="socialMediaLinks">Sosial media linkləri</string>
   <string name="inlineNotation">Sətirarası notasiya</string>
@@ -615,7 +614,7 @@
   <string name="really">həqiqətən</string>
   <string name="contribute">Töhfə ver</string>
   <string name="termsOfService">Xidmət şərtləri</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Mənbə kodu</string>
+  <string name="sourceCode">Mənbə kodu</string>
   <string name="simultaneousExhibitions">Sinxron seanslar</string>
   <string name="host">Ev sahibi</string>
   <string name="hostColorX">Ev sahibi rəngi: %s</string>
@@ -678,6 +677,7 @@
   <string name="printFriendlyPDF">Printerə uyğun PDF</string>
   <string name="crosstable">Çarpaz cədvəl</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Bundan başqa mouse təkəri vasitəsilə də gediş etmək olar.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Kompüter variantlarına baxmaq üçün yuxarı sürüşdür.</string>
   <string name="analysisShapesHowTo">Lövhədə çevrə və ya oxlar çəkmək üçün shift+sol klik və ya sağ klikə toxunun.</string>
   <string name="letOtherPlayersMessageYou">Digər oyunçuların sizə mesaj göndərməsinə icazə ver</string>
   <string name="shareYourInsightsData">Şahmat oyun məlumatlarınızı paylaşın</string>
@@ -691,8 +691,6 @@
   <string name="enableKidMode">Uşaq rejimini aktivləşdir</string>
   <string name="disableKidMode">Uşaq rejimini deaktiv et</string>
   <string name="security">Təhlükəsizlik</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Bu hesabınıza daxil olan cihazların siyahısıdır. Tanımadığınız sessiyaları ləğv edin.</string>
-  <string name="alternativelyYouCanX">Həmçinin %s də edə bilərsiniz.</string>
   <string name="revokeAllSessions">bütün sessiyaları ləğv et</string>
   <string name="playChessEverywhere">Şahmatı hər yerdə oyna</string>
   <string name="asFreeAsLichess">Lichess kimi azad</string>
@@ -847,9 +845,9 @@
   <string name="youCannotPostYetPlaySomeGames">Hələ forumlarda yazı göndərə bilməzsiniz. Biraz oyun oynayın!</string>
   <string name="subscribe">Abunə ol</string>
   <string name="unsubscribe">Abunəlikdən çıxın</string>
-  <string name="mentionedYouInX"> \"%1$s\"-da səni qeyd etdi.</string>
-  <string name="xMentionedYouInY"> %1$s səni \"%2$s\"-da səni qeyd etdi.</string>
-  <string name="invitedYouToX"> səni \"%1$s\"-ə dəvət etdi.</string>
+  <string name="mentionedYouInX">erwähnte dich in \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s səni \"%2$s\"-da səni qeyd etdi.</string>
+  <string name="invitedYouToX">səni \"%1$s\"-ə dəvət etdi.</string>
   <string name="xInvitedYouToY">%1$s səni \"%2$s\"-ə dəvət etdi.</string>
   <string name="youAreNowPartOfTeam">Siz artıq komandanın üzvüsünüz.</string>
   <string name="youHaveJoinedTeamX">\"%1$s\"-yə qatıldın.</string>
@@ -857,12 +855,12 @@
   <string name="congratsYouWon">Təbriklər, siz qalib gəldiniz!</string>
   <string name="gameVsX">%1$s-ya qarşı oyun</string>
   <string name="resVsX">%1$s vs %2$s</string>
-  <string name="youJustBecamePatron">Lichess patronları siyahısına siz də qoşuldunuz.</string>
-  <string name="patronAccountExpired">Patron hesabınızın müddəti bitmişdir</string>
-  <string name="pleaseReconsiderRenewIt">Zəhmət olmasa, bunu yeniləyin!</string>
   <string name="someoneReviewedYourCoachProfile">Kimsə məşqçi profilinə baxdı.</string>
   <string name="newPendingReview">Yeni gözləyən rəy</string>
   <string name="lostAgainstTOSViolator">\"Liches\" xidmət şərtlərini pozana qarşı uduzdun</string>
   <string name="refundXpointsTimeControlY">Geri qaytarma: \"%2$s\"-də %1$s reytinq xalı.</string>
   <string name="timeAlmostUp">Vaxt bitmək üzrədir!</string>
+  <string name="clickToRevealEmailAddress">[E-poçt ünvanını görmək üçün klikləyin]</string>
+  <string name="download">Endir</string>
+  <string name="welcome">Xoş Gəldiniz!</string>
 </resources>

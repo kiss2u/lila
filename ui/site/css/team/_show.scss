@@ -11,7 +11,7 @@ $section-margin-more: 5vh;
   }
 
   h1 {
-    @extend %break-word-hard;
+    @extend %break-word-hard, %zalgoverflow;
   }
 
   .mchat {
@@ -122,6 +122,10 @@ $section-margin-more: 5vh;
     margin-bottom: 1rem;
   }
 
+  img {
+    max-width: 100%;
+  }
+
   .userlist > li,
   .userlist > div.paginated {
     padding: 5px 0 5px 25px;
@@ -156,16 +160,18 @@ $section-margin-more: 5vh;
     }
 
     .meta {
-      @extend %flex-between;
+      @extend %flex-between, %zalgoverflow;
 
       margin-bottom: 0.5rem;
     }
 
     p {
+      @extend %zalgoverflow;
       color: $c-font-dim;
     }
 
     a.more {
+      @extend %zalgoverflow;
       display: block;
       text-align: right;
       margin: 10px 10px 0 0;

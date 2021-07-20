@@ -44,7 +44,8 @@ final class Env(
   val lightUserSync              = lightUserApi.sync
   val isBotSync                  = new LightUser.IsBotSync(id => lightUserApi.sync(id).exists(_.isBot))
 
-  lazy val botIds = new GetBotIds(() => cached.botIds.get {})
+  lazy val botIds     = new GetBotIds(() => cached.botIds.get {})
+  lazy val rankingsOf = new RankingsOf(cached.rankingsOf)
 
   lazy val jsonView = wire[JsonView]
 
@@ -78,7 +79,8 @@ final class Env(
       repo.setRoles(userId, Nil).unit
     },
     "adjustBooster" -> { case lila.hub.actorApi.mod.MarkBooster(userId) =>
-      rankingApi.remove(userId).unit
+      rankingApi remove userId
+      repo.setRoles(userId, Nil).unit
     },
     "kickFromRankings" -> { case lila.hub.actorApi.mod.KickFromRankings(userId) =>
       rankingApi.remove(userId).unit

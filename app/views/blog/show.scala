@@ -48,11 +48,12 @@ object show {
                   .exists(
                     _.value.toDateTimeAtStartOfDay isAfter org.joda.time.DateTime.now.minusWeeks(2)
                   )) option
-                  a(href := routes.Blog.discuss(doc.id), cls := "button text discuss", dataIcon := "d")(
+                  a(href := routes.Blog.discuss(doc.id), cls := "button text discuss", dataIcon := "")(
                     "Discuss this blog post in the forum"
                   )
               } else p("This is a preview."),
-              views.html.base.bits.connectLinks
+              views.html.base.bits.connectLinks,
+              p(cls := "patron-info")(a(href := routes.Plan.index)(trans.lichessPatronInfo()))
             )
         )
       )

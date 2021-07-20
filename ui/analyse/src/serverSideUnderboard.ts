@@ -1,9 +1,15 @@
+import type Highcharts from 'highcharts';
+
 import AnalyseCtrl from './ctrl';
 import { baseUrl } from './util';
-import { defined } from 'common';
 import modal from 'common/modal';
 import { formToXhr } from 'common/xhr';
 import { AnalyseData } from './interfaces';
+
+interface PlyChart extends Highcharts.ChartObject {
+  lastPly?: Ply | false;
+  selectPly(ply: number): void;
+}
 
 export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
   $(element).replaceWith(ctrl.opts.$underboard!);
@@ -15,11 +21,7 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
     $menu = $('.analyse__underboard__menu'),
     $timeChart = $('#movetimes-chart'),
     inputFen = document.querySelector('.analyse__underboard__fen') as HTMLInputElement,
-    unselect = chart => {
-      chart.getSelectedPoints().forEach(function (point) {
-        point.select(false);
-      });
-    };
+    unselect = (chart: Highcharts.ChartObject) => chart.getSelectedPoints().forEach(point => point.select(false));
   let lastFen: string;
 
   if (!lichess.AnalyseNVUI) {
@@ -27,6 +29,7 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
       setTimeout(function () {
         (v ? $menu.find('[data-panel="computer-analysis"]') : $menu.find('span:eq(1)')).trigger('mousedown');
       }, 50);
+      if (v) $('#acpl-chart').each((_, e) => (e as HighchartsHTMLElement).highcharts.reflow());
     });
     lichess.pubsub.on('analysis.change', (fen: Fen, _, mainlinePly: Ply | false) => {
       const $chart = $('#acpl-chart');
@@ -35,32 +38,21 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
         lastFen = fen;
       }
       if ($chart.length) {
-        const chart = $chart[0]!['highcharts'];
+        const chart = ($chart[0] as HighchartsHTMLElement).highcharts as PlyChart;
         if (chart) {
           if (mainlinePly != chart.lastPly) {
             if (mainlinePly === false) unselect(chart);
-            else {
-              const point = chart.series[0].data[mainlinePly - 1 - data.game.startedAtTurn];
-              if (defined(point)) point.select();
-              else unselect(chart);
-            }
+            else chart.selectPly(mainlinePly);
           }
           chart.lastPly = mainlinePly;
         }
       }
       if ($timeChart.length) {
-        const chart = $timeChart[0]!['highcharts'];
+        const chart = ($timeChart[0] as HighchartsHTMLElement).highcharts as PlyChart;
         if (chart) {
           if (mainlinePly != chart.lastPly) {
             if (mainlinePly === false) unselect(chart);
-            else {
-              const white = mainlinePly % 2 !== 0;
-              const serie = white ? 0 : 1;
-              const turn = Math.floor((mainlinePly - 1 - data.game.startedAtTurn) / 2);
-              const point = chart.series[serie].data[turn];
-              if (defined(point)) point.select();
-              else unselect(chart);
-            }
+            else chart.selectPly(mainlinePly);
           }
           chart.lastPly = mainlinePly;
         }
@@ -74,7 +66,7 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
   }
 
   function chartLoader() {
-    return `<div id="acpl-chart-loader"><span>Stockfish 13+<br>server analysis</span>${lichess.spinnerHtml}</div>`;
+    return `<div id="acpl-chart-loader"><span>Stockfish 14+<br>server analysis</span>${lichess.spinnerHtml}</div>`;
   }
   function startAdvantageChart() {
     if (lichess.advantageChart || lichess.AnalyseNVUI) return;
@@ -96,7 +88,9 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
       .filter('.' + panel)
       .addClass('active');
     if ((panel == 'move-times' || ctrl.opts.hunter) && !lichess.movetimeChart)
-      lichess.loadScript('javascripts/chart/movetime.js').then(() => lichess.movetimeChart(data, ctrl.trans));
+      lichess
+        .loadScript('javascripts/chart/movetime.js')
+        .then(() => lichess.movetimeChart(data, ctrl.trans, ctrl.opts.hunter));
     if ((panel == 'computer-analysis' || ctrl.opts.hunter) && $('#acpl-chart').length)
       setTimeout(startAdvantageChart, 200);
   };
@@ -138,8 +132,8 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
   $panels.on('click', '.embed-howto', function (this: HTMLElement) {
     const url = `${baseUrl()}/embed/${data.game.id}${location.hash}`;
     const iframe = '<iframe src="' + url + '?theme=auto&bg=auto"\nwidth=600 height=397 frameborder=0></iframe>';
-    modal(
-      $(
+    modal({
+      content: $(
         '<strong style="font-size:1.5em">' +
           $(this).html() +
           '</strong><br /><br />' +
@@ -149,7 +143,7 @@ export default function (element: HTMLElement, ctrl: AnalyseCtrl) {
           iframe +
           '<br /><br />' +
           '<a class="text" data-icon="" href="/developers#embed-game">Read more about embedding games</a>'
-      )
-    );
+      ),
+    });
   });
 }

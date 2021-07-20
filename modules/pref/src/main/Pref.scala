@@ -32,6 +32,7 @@ case class Pref(
     coordColor: Int,
     submitMove: Int,
     confirmResign: Int,
+    mention: Boolean,
     insightShare: Int,
     keyboardMove: Int,
     zen: Int,
@@ -96,6 +97,15 @@ case class Pref(
       case Animation.NORMAL => 250
       case Animation.SLOW   => 500
       case _                => 250
+    }
+
+  def animationMillisForSpeedPuzzles: Int =
+    animation match {
+      case Animation.NONE   => 0
+      case Animation.FAST   => 70
+      case Animation.NORMAL => 100
+      case Animation.SLOW   => 160
+      case _                => 100
     }
 
   def isBlindfold = blindfold == Pref.Blindfold.YES
@@ -210,6 +220,8 @@ object Pref {
       EVERYBODY -> "With everybody"
     )
   }
+
+  object Mention extends BooleanPref
 
   object KeyboardMove extends BooleanPref
 
@@ -433,6 +445,7 @@ object Pref {
     coordColor = Color.RANDOM,
     submitMove = SubmitMove.CORRESPONDENCE_ONLY,
     confirmResign = ConfirmResign.YES,
+    mention = true,
     insightShare = InsightShare.FRIENDS,
     keyboardMove = KeyboardMove.NO,
     zen = Zen.NO,

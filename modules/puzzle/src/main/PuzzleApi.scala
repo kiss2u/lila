@@ -24,9 +24,6 @@ final class PuzzleApi(
     def find(id: Puzzle.Id): Fu[Option[Puzzle]] =
       colls.puzzle(_.byId[Puzzle](id.value))
 
-    def delete(id: Puzzle.Id): Funit =
-      colls.puzzle(_.delete.one($id(id.value))).void
-
     def of(user: User, page: Int): Fu[Paginator[Puzzle]] =
       colls.puzzle { coll =>
         Paginator(
@@ -42,12 +39,12 @@ final class PuzzleApi(
       }
   }
 
-  object round {
+  private[puzzle] object round {
 
     def find(user: User, puzzleId: Puzzle.Id): Fu[Option[PuzzleRound]] =
       colls.round(_.byId[PuzzleRound](PuzzleRound.Id(user.id, puzzleId).toString))
 
-    def exists(user: User, puzzleId: Puzzle.Id): Fu[Boolean] =
+    private[PuzzleApi] def exists(user: User, puzzleId: Puzzle.Id): Fu[Boolean] =
       colls.round(_.exists($id(PuzzleRound.Id(user.id, puzzleId).toString)))
 
     def upsert(r: PuzzleRound, theme: PuzzleTheme.Key): Funit = {
@@ -176,7 +173,10 @@ final class PuzzleApi(
 
     private def key(user: User, id: Puzzle.Id) = s"${user.id}:${id}"
 
-    def set(user: User, id: Puzzle.Id) = store.put(key(user, id))
+    def setCasualIfNotYetPlayed(user: User, puzzle: Puzzle): Funit =
+      !round.exists(user, puzzle.id) map {
+        _ ?? store.put(key(user, puzzle.id))
+      }
 
     def apply(user: User, id: Puzzle.Id) = store.get(key(user, id))
   }

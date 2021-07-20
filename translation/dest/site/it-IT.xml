@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Sei il Bianco</string>
   <string name="youPlayTheBlackPieces">Sei il Nero</string>
   <string name="itsYourTurn">Tocca a te!</string>
+  <string name="cheatDetected">Cheat Rilevato</string>
   <string name="kingInTheCenter">Re al centro</string>
   <string name="threeChecks">Tre scacchi</string>
   <string name="raceFinished">Corsa terminata</string>
@@ -78,7 +79,7 @@
   <string name="losing">Mosse perdenti</string>
   <string name="drawn">Patta</string>
   <string name="unknown">Posizioni sconosciute</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Database</string>
+  <string name="database">Database</string>
   <string name="whiteDrawBlack">Bianco / Patta / Nero</string>
   <string name="averageRatingX">Punteggio medio: %s</string>
   <string name="recentGames">Partite recenti</string>
@@ -95,6 +96,7 @@
   <string name="noGameFound">Nessun partita trovata</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Prova a includere più partite dal menu Preferenze.</string>
   <string name="openingExplorer">Esplora aperture</string>
+  <string name="openingEndgameExplorer">Esploratore aperture/chiusure</string>
   <string name="xOpeningExplorer">Explorer delle aperture %s</string>
   <string name="winPreventedBy50MoveRule">Vittoria non possibile a causa della \"regola delle 50 mosse\"</string>
   <string name="lossSavedBy50MoveRule">Sconfitta evitata per la regola delle 50 mosse</string>
@@ -196,7 +198,7 @@
   <string name="rank">Posizione</string>
   <string name="rankX">Posizione: %s</string>
   <plurals name="rankIsUpdatedEveryNbMinutes">
-    <item quantity="one">La classifica è aggiornata ogni minuto</item>
+    <item quantity="one">Il ranking viene aggiornato ogni minuto</item>
     <item quantity="other">La posizione è aggiornata ogni %s minuti</item>
   </plurals>
   <plurals name="nbPuzzles">
@@ -209,8 +211,8 @@
     <item quantity="other">%s giocate con te</item>
   </plurals>
   <string name="cancel">Annulla</string>
-  <string name="whiteTimeOut">Timeout bianco</string>
-  <string name="blackTimeOut">Timeout nero</string>
+  <string name="whiteTimeOut">Il bianco ha esaurito il tempo</string>
+  <string name="blackTimeOut">Il nero ha esaurito il tempo</string>
   <string name="drawOfferSent">Offerta di patta inviata</string>
   <string name="drawOfferDeclined">Offerta di patta rifiutata</string>
   <string name="drawOfferAccepted">Offerta di patta accettata</string>
@@ -259,7 +261,6 @@
   <string name="send">Invia</string>
   <string name="incrementInSeconds">Incremento in secondi</string>
   <string name="freeOnlineChess">Scacchi Online Gratis</string>
-  <string name="spectators">Spettatori:</string>
   <plurals name="nbRated">
     <item quantity="one">%s classificata</item>
     <item quantity="other">%s classificate</item>
@@ -287,7 +288,6 @@
     <item quantity="other">Concedi %s secondi</item>
   </plurals>
   <string name="thisAccountViolatedTos">Questo account ha violato i termini di servizio di Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Questo giocatore modifica il proprio punteggio irregolarmente</string>
   <string name="openingExplorerAndTablebase">Esplora le aperture e finali</string>
   <string name="takeback">Ritira la mossa</string>
   <string name="proposeATakeback">Chiedi di ritirare la mossa</string>
@@ -441,6 +441,8 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="boardEditor">Editor scacchiera</string>
   <string name="setTheBoard">Imposta la scacchiera</string>
   <string name="popularOpenings">Aperture popolari</string>
+  <string name="endgamePositions">Poizioni di chiusura</string>
+  <string name="chess960StartPosition">Posizione iniziale di Chess960: %s</string>
   <string name="startPosition">Posizione iniziale</string>
   <string name="clearBoard">Svuota scacchiera</string>
   <string name="savePosition">Salva la posizione</string>
@@ -456,7 +458,7 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="firstName">Nome</string>
   <string name="lastName">Cognome</string>
   <string name="biography">Biografia</string>
-  <string name="country">Paese</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Paese o bandiera</string>
   <string name="thankYou">Grazie!</string>
   <string name="socialMediaLinks">Collegamenti ai social media</string>
   <string name="inlineNotation">Notazione in linea</string>
@@ -616,7 +618,7 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="really">completamente gratuito</string>
   <string name="contribute">Contribuisci</string>
   <string name="termsOfService">Termini di servizio</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Codice sorgente</string>
+  <string name="sourceCode">Codice sorgente</string>
   <string name="simultaneousExhibitions">Esibizioni simultanee</string>
   <string name="host">Simultaneista</string>
   <string name="hostColorX">Colore del simultaneista: %s</string>
@@ -679,8 +681,10 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="printFriendlyPDF">Stampa in PDF</string>
   <string name="crosstable">Crosstable</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">È inoltre possibile scorrere sopra il bordo per entrare nel gioco.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Scorri sulle varianti del computer per vederle in anteprima.</string>
   <string name="analysisShapesHowTo">Premere MAIUSC+click o tasto destro del mouse per disegnare cerchi e frecce sulla scacchiera.</string>
   <string name="letOtherPlayersMessageYou">Lascia che gli altri giocatori ti inviino messaggi</string>
+  <string name="receiveForumNotifications">Ricevi notifiche quando vieni menzionato nel forum</string>
   <string name="shareYourInsightsData">Condividi i tuoi dati Insights</string>
   <string name="withNobody">Con nessuno</string>
   <string name="withFriends">Con gli amici</string>
@@ -692,8 +696,7 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="enableKidMode">Attiva \"modalità bambino\"</string>
   <string name="disableKidMode">Disattiva \"modalità bambino\"</string>
   <string name="security">Sicurezza</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Questa è la lista di dispositivi collegata al tuo account. Rimuovi ogni istanza che non riconosci.</string>
-  <string name="alternativelyYouCanX">In alternativa è possibile %s.</string>
+  <string name="sessions">Sessioni</string>
   <string name="revokeAllSessions">rimuovi tutte le sessioni</string>
   <string name="playChessEverywhere">Gioca a scacchi ovunque</string>
   <string name="asFreeAsLichess">Gratuita, proprio come Lichess</string>
@@ -848,9 +851,9 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="youCannotPostYetPlaySomeGames">Non puoi ancora postare nei forum. Gioca qualche partita!</string>
   <string name="subscribe">Iscriviti</string>
   <string name="unsubscribe">Annullare l\'iscrizione</string>
-  <string name="mentionedYouInX"> ti ha menzionato in \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s ti ha citato in \"%2$s\".</string>
-  <string name="invitedYouToX"> ti ha invitato a \"%1$s\".</string>
+  <string name="mentionedYouInX">ti ha menzionato in \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s ti ha citato in \"%2$s\".</string>
+  <string name="invitedYouToX">ti ha invitato a \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s ti ha invitato a \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Ora fai parte del team.</string>
   <string name="youHaveJoinedTeamX">Ti sei unito a \"%1$s\".</string>
@@ -858,12 +861,53 @@ analizzarla con il computer, commentarla in chat, e condividerla tramite un indi
   <string name="congratsYouWon">Complimenti, hai vinto!</string>
   <string name="gameVsX">Partita contro %1$s</string>
   <string name="resVsX">%1$s contro %2$s</string>
-  <string name="youJustBecamePatron">Sei appena diventato un mecenate di lichess.</string>
-  <string name="patronAccountExpired">Lo stato di mecenate è scaduto</string>
-  <string name="pleaseReconsiderRenewIt">Per favore considera di rinnovarlo!</string>
   <string name="someoneReviewedYourCoachProfile">Qualcuno ha esaminato il tuo profilo di allenatore.</string>
   <string name="newPendingReview">In attesa di verifica</string>
   <string name="lostAgainstTOSViolator">Hai perso con qualcuno che ha violato i termini di servizio lichess</string>
   <string name="refundXpointsTimeControlY">Rimborso: %1$s %2$s punti di valutazione.</string>
   <string name="timeAlmostUp">Il tempo è quasi finito!</string>
+  <string name="clickToRevealEmailAddress">[Clicca per mostrare l\'indirizzo email]</string>
+  <string name="download">Download</string>
+  <string name="welcome">Benvenuto!</string>
+  <string name="lichessPatronInfo">Lichess è un software open source completamente gratuito e libero
+Tutti i costi operativi, lo sviluppo e i contenuti sono finanziati esclusivamente dalle donazioni degli utenti.</string>
+  <string name="coachManager">Gestore allenatore</string>
+  <string name="streamerManager">Gestore streamer</string>
+  <string name="cancelTournament">Annulla il torneo</string>
+  <string name="tournDescription">Descrizione del torneo</string>
+  <string name="tournDescriptionHelp">Qualcosa di speciale che vuoi dire ai partecipanti? Prova a mantenerla breve. I link di markdown sono disponibili: [name](https://url)</string>
+  <string name="ratedFormHelp">Le partite sono valutate
+e impattano le valutazioni dei giocatori</string>
+  <string name="onlyMembersOfTeam">Solo i membri della squadra</string>
+  <string name="noRestriction">Nessuna restrizione</string>
+  <string name="minimumRatedGames">Giochi votati al minimo</string>
+  <string name="minimumRating">Valutazione minima</string>
+  <string name="maximumWeeklyRating">Valutazione settimanale massima</string>
+  <string name="onlyTitled">Solo giocatori intitolati</string>
+  <string name="onlyTitledHelp">Richiedi un titolo ufficiale per partecipare al torneo</string>
+  <string name="positionInputHelp">Incolla un FEN valido per avviare ogni partita da una data posizione.
+Funziona solo per le partite standard, non con le varianti.
+Puoi usare %s per generare una posizione FEN, poi incollala qui.
+Lascia vuoto per avviare le partite dalla posizione iniziale normale.</string>
+  <string name="cancelSimul">Annulla simulazione</string>
+  <string name="simulHostcolor">Colore host per ogni partita</string>
+  <string name="estimatedStart">Tempo di avvio stimato</string>
+  <string name="simulFeatured">Mostra su %s</string>
+  <string name="simulFeaturedHelp">Mostra la tua simulazione a tutti su %s. Disabilita per le simulazioni private.</string>
+  <string name="simulDescription">Descrizione della simulazione</string>
+  <string name="simulDescriptionHelp">Vuoi dire qualcosa ai partecipanti?</string>
+  <string name="markdownAvailable">%s è disponibile per la sintassi più avanzata.</string>
+  <string name="inYourLocalTimezone">Nel tuo fuso orario locale</string>
+  <string name="tournChat">Chat del torneo</string>
+  <string name="noChat">Nessuna chat</string>
+  <string name="onlyTeamLeaders">Solo leader della squadra</string>
+  <string name="onlyTeamMembers">Solo membri della squadra</string>
+  <string name="navigateMoveTree">Sfoglia l\'albero delle mosse</string>
+  <string name="mouseTricks">Trucchi del mouse</string>
+  <string name="toggleLocalAnalysis">Abilita/Disabilita le analisi del computer locali</string>
+  <string name="toggleAllAnalysis">Abilita/Disabilita tutte le analisi del computer</string>
+  <string name="playComputerMove">Gioca la migliore mossa del computer</string>
+  <string name="analysisOptions">Opzioni d\'analisi</string>
+  <string name="focusChat">Focalizza chat</string>
+  <string name="showHelpDialog">Mostra questa finestra d\'aiuto</string>
 </resources>

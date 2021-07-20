@@ -54,16 +54,7 @@ object side {
               separator,
               (if (game.rated) trans.rated else trans.casual).txt(),
               separator,
-              if (game.variant.exotic)
-                views.html.game.bits.variantLink(
-                  game.variant,
-                  (if (game.variant == chess.variant.KingOfTheHill) game.variant.shortName
-                   else game.variant.name).toUpperCase
-                )
-              else
-                game.perfType.map { pt =>
-                  span(title := pt.desc)(pt.trans)
-                }
+              views.html.game.bits.variantLink(game.variant, game.perfType, shortName = true)
             )
           )
         ),
@@ -77,7 +68,7 @@ object side {
       ),
       game.tournamentId map { tourId =>
         st.section(cls := "game__tournament-link")(
-          a(href := routes.Tournament.show(tourId), dataIcon := "g", cls := "text")(
+          a(href := routes.Tournament.show(tourId), dataIcon := "", cls := "text")(
             tournamentIdToName(tourId)
           )
         )

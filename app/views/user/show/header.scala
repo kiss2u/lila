@@ -76,13 +76,13 @@ object header {
               cls := "btn-rack__btn",
               href := routes.Account.profile,
               titleOrText(trans.editProfile.txt()),
-              dataIcon := "%"
+              dataIcon := ""
             ),
             a(
               cls := "btn-rack__btn",
               href := routes.Relation.blocks(),
               titleOrText(trans.listBlockedPlayers.txt()),
-              dataIcon := "k"
+              dataIcon := ""
             )
           ),
           isGranted(_.UserModView) option
@@ -96,7 +96,7 @@ object header {
             cls := "btn-rack__btn",
             href := routes.User.tv(u.username),
             titleOrText(trans.watchGames.txt()),
-            dataIcon := "1"
+            dataIcon := ""
           ),
           (ctx.isAuth && !ctx.is(u)) option
             views.html.relation.actions(
@@ -105,21 +105,18 @@ object header {
               followable = social.followable,
               blocked = social.blocked
             ),
-          if (ctx is u)
-            a(
-              cls := "btn-rack__btn",
-              href := routes.Game.exportByUser(u.username),
-              titleOrText(trans.exportGames.txt()),
-              dataIcon := "x",
-              downloadAttr
-            )
-          else
-            (ctx.isAuth && ctx.noKid) option a(
-              titleOrText(trans.reportXToModerators.txt(u.username)),
-              cls := "btn-rack__btn",
-              href := s"${routes.Report.form}?username=${u.username}",
-              dataIcon := "!"
-            )
+          a(
+            cls := "btn-rack__btn",
+            href := routes.User.download(u.username),
+            titleOrText(trans.exportGames.txt()),
+            dataIcon := ""
+          ),
+          (ctx.isAuth && ctx.noKid && !ctx.is(u)) option a(
+            titleOrText(trans.reportXToModerators.txt(u.username)),
+            cls := "btn-rack__btn",
+            href := s"${routes.Report.form}?username=${u.username}",
+            dataIcon := ""
+          )
         )
       ),
       (ctx.noKid && !ctx.is(u)) option div(cls := "note-zone")(
@@ -167,7 +164,7 @@ object header {
                     submitButton(
                       cls := "button-empty button-red confirm button text",
                       style := "float:right",
-                      dataIcon := "q"
+                      dataIcon := ""
                     )("Delete")
                   )
                 )
@@ -175,7 +172,7 @@ object header {
             )
           }
       ),
-      isGranted(_.UserModView) option div(cls := "mod-zone none"),
+      isGranted(_.UserModView) option div(cls := "mod-zone mod-zone-full none"),
       standardFlash(),
       angle match {
         case Angle.Games(Some(searchForm)) => views.html.search.user(u, searchForm)
@@ -190,19 +187,9 @@ object header {
             div(cls := "profile-side")(
               div(cls := "user-infos")(
                 !ctx.is(u) option frag(
-                  u.marks.engine option div(cls := "warning tos_warning")(
-                    span(dataIcon := "j", cls := "is4"),
+                  u.lame option div(cls := "warning tos_warning")(
+                    span(dataIcon := "", cls := "is4"),
                     trans.thisAccountViolatedTos()
-                  ),
-                  (u.marks.boost && (u.count.game > 0 || isGranted(_.Hunter))) option div(
-                    cls := "warning tos_warning"
-                  )(
-                    span(dataIcon := "j", cls := "is4"),
-                    trans.thisPlayerArtificiallyIncreasesTheirRating(),
-                    (u.count.game == 0) option """
-Only visible to mods. A booster mark without any games is a way to
-prevent a player from ever playing (except against boosters/cheaters).
-It's useful against spambots. These marks are not visible to the public."""
                   )
                 ),
                 ctx.noKid && !hideTroll option frag(
@@ -262,7 +249,7 @@ It's useful against spambots. These marks are not visible to the public."""
                 )
               ),
               info.insightVisible option
-                a(cls := "insight", href := routes.Insight.index(u.username), dataIcon := "7")(
+                a(cls := "insight", href := routes.Insight.index(u.username), dataIcon := "")(
                   span(
                     strong("Chess Insights"),
                     em("Analytics from ", if (ctx.is(u)) "your" else s"${u.username}'s", " games")

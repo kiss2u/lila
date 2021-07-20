@@ -78,7 +78,7 @@
   <string name="losing">Yo\'qotish</string>
   <string name="drawn">Durrang</string>
   <string name="unknown">Noaniq</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Ma\'lumotlar ombori</string>
+  <string name="database">Ma\'lumotlar ombori</string>
   <string name="whiteDrawBlack">Oq/ Durrang / Qora</string>
   <string name="averageRatingX">O\'rtacha reyting: %s</string>
   <string name="recentGames">So\'nggi o\'yinlar</string>
@@ -247,7 +247,6 @@
   <string name="send">Jo\'natish</string>
   <string name="incrementInSeconds">Sekundlarda oshirish</string>
   <string name="freeOnlineChess">Bepul online shahmat</string>
-  <string name="spectators">Kuzatuvchilar:</string>
   <plurals name="nbRated">
     <item quantity="one">%s reytingda</item>
     <item quantity="other">%s reytingda</item>
@@ -275,7 +274,6 @@
     <item quantity="other">%s sekundlar berish</item>
   </plurals>
   <string name="thisAccountViolatedTos">Ushbu hisob Lichess xizmatlari shartlarini buzgan</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Ushbu o\'yinchi o\'zinining reytingini suniy holda oshirayabdi/kamaytirayabdi</string>
   <string name="openingExplorerAndTablebase">Sharhni ochish</string>
   <string name="takeback">Ortga yurish</string>
   <string name="proposeATakeback">Ortga qaytishni taklif qilish</string>
@@ -443,7 +441,6 @@
   <string name="firstName">Berilgan nom</string>
   <string name="lastName">Familiya</string>
   <string name="biography">Biografiya</string>
-  <string name="country">Mamlakat</string>
   <string name="thankYou">Rahmat!</string>
   <string name="socialMediaLinks">Ijtimoiy media linklari</string>
   <string name="inlineNotation">Ichki yozuv</string>
@@ -599,7 +596,7 @@
   <string name="really">haqiqatda ham</string>
   <string name="contribute">Hissa qo‘shish</string>
   <string name="termsOfService">Xizmatlar terminlari</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Dastur kodi</string>
+  <string name="sourceCode">Dastur kodi</string>
   <string name="simultaneousExhibitions">Sinxron ko\'rinishlar</string>
   <string name="host">Xost</string>
   <string name="hostColorX">Xost rangi: %s</string>
@@ -675,8 +672,6 @@
   <string name="enableKidMode">Bola rejimini yoqish</string>
   <string name="disableKidMode">Bola rejimini o\'chirish</string>
   <string name="security">Xavfsizlik</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Sizning akkauntingiz bilan kirilgan qurilmalaringiz ro\'yhati. O\'zingizga tanimagan seanslarni bekor qilishingiz mumkin.</string>
-  <string name="alternativelyYouCanX">Yoki siz %s ni qilishingiz mumkin.</string>
   <string name="revokeAllSessions">barcha sessiyalarni bekor qilish</string>
   <string name="playChessEverywhere">Shahmatni xamma joyda o\'ynash</string>
   <string name="asFreeAsLichess">Lichess kabi bepul</string>

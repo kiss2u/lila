@@ -41,4 +41,18 @@ Graj szybko i wracaj do poczekalni, by rozegrać więcej partii i zdobyć więce
   <string name="shareUrl">Udostępnij ten URL innym aby dołączyli do: %s</string>
   <string name="drawStreak">Seria remisów: gdy gracz ciągle remisuje na arenie, tylko pierwszy remis da punkt lub remisy trwające więcej niż %s ruchów. Seria remisów może zostać przerwana tylko przez zwycięstwo, a nie przez przegraną czy remis.</string>
   <string name="history">Historyczne areny</string>
+  <plurals name="viewAllXTeams" comment="viewAllXTeams [one] [other]&#10;&#10;%s is the number of teams that can be viewed">
+    <item quantity="one">Zobacz zespół</item>
+    <item quantity="few">Zobacz wszystkie %s zespoły</item>
+    <item quantity="many">Zobacz wszystkie %s zespołów</item>
+    <item quantity="other">Zobacz wszystkie %s zespołów</item>
+  </plurals>
+  <string name="newTeamBattle">Nowa bitwa klubów</string>
+  <string name="customStartDate">Niestandardowa data rozpoczęcia</string>
+  <string name="customStartDateHelp">W Twojej lokalnej strefie czasowej. Nadpisuje ustawienie \"Czas przed rozpoczęciem turnieju\"</string>
+  <string name="allowBerserk">Zezwalaj na Berserk</string>
+  <string name="allowBerserkHelp">Pozwól graczom na zmniejszenie o połowę czasu pozwalając na zdobycie dodatkowego punktu</string>
+  <string name="allowChatHelp">Pozwól graczom dyskutować na czacie</string>
+  <string name="arenaStreaks">Serie aren</string>
+  <string name="arenaStreaksHelp">Po dwóch zwycięstwach, kolejne zwycięstwa dają 4 punkty zamiast 2.</string>
 </resources>

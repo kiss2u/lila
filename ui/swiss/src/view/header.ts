@@ -27,7 +27,7 @@ function clock(ctrl: SwissCtrl): VNode | undefined {
       }),
     ]);
   return h(`div.clock.clock-created.time-cache-${next.at}`, [
-    h('span.shy', ctrl.data.status == 'created' ? 'Starting in' : 'Next round'),
+    h('span.shy', ctrl.data.status == 'created' ? ctrl.trans.noarg('startingIn') : ctrl.trans.noarg('nextRound')),
     h('span.time.text', {
       hook: startClock(next.in + 1),
     }),
@@ -36,13 +36,13 @@ function clock(ctrl: SwissCtrl): VNode | undefined {
 
 function ongoing(ctrl: SwissCtrl): VNode | undefined {
   const nb = ctrl.data.nbOngoing;
-  return nb ? h('div.ongoing', [h('span.nb', [nb]), h('span.shy', 'Ongoing games')]) : undefined;
+  return nb ? h('div.ongoing', [h('span.nb', [nb]), h('span.shy', ctrl.trans.plural('ongoingGames', nb))]) : undefined;
 }
 
 export default function (ctrl: SwissCtrl): VNode {
   const greatPlayer = ctrl.data.greatPlayer;
   return h('div.swiss__main__header', [
-    h('i.img', dataIcon('g')),
+    h('i.img', dataIcon('')),
     h(
       'h1',
       greatPlayer

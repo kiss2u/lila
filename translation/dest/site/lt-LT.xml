@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Žaidžiate baltomis figūromis</string>
   <string name="youPlayTheBlackPieces">Žaidžiate juodomis figūromis</string>
   <string name="itsYourTurn">Jūsų ėjimas!</string>
+  <string name="cheatDetected">Aptiktas sukčiavimas</string>
   <string name="kingInTheCenter">Karalius centre</string>
   <string name="threeChecks">Trys šachai</string>
   <string name="raceFinished">Lenktynės baigėsi</string>
@@ -80,7 +81,7 @@
   <string name="losing">Pralaimintis</string>
   <string name="drawn">Lygiosios</string>
   <string name="unknown">Nežinomas</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Duomenų bazė</string>
+  <string name="database">Duomenų bazė</string>
   <string name="whiteDrawBlack">Baltieji / Lygiosios / Juodieji</string>
   <string name="averageRatingX">Vidutinis reitingas: %s</string>
   <string name="recentGames">Paskiausios partijos</string>
@@ -101,6 +102,7 @@
   <string name="noGameFound">Partijų nerasta</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Galbūt įtraukti daugiau partijų iš parinkčių meniu?</string>
   <string name="openingExplorer">Debiutų naršyklė</string>
+  <string name="openingEndgameExplorer">Debiutų/endšpilių naršyklė</string>
   <string name="xOpeningExplorer">%s debiutų naršyklė</string>
   <string name="winPreventedBy50MoveRule">Pergalei sukliudė 50-ies ėjimų taisyklė</string>
   <string name="lossSavedBy50MoveRule">Pralaimėjimo išvengta dėl 50-ies ėjimų taisyklės</string>
@@ -287,7 +289,6 @@
   <string name="send">Siųsti</string>
   <string name="incrementInSeconds">Sekundžių prieaugis</string>
   <string name="freeOnlineChess">Nemokami šachmatai internete</string>
-  <string name="spectators">Žiūrovai:</string>
   <plurals name="nbRated">
     <item quantity="one">%s vertinama</item>
     <item quantity="few">%s vertinamos</item>
@@ -327,7 +328,6 @@
     <item quantity="other">Duoti %s sekundžių</item>
   </plurals>
   <string name="thisAccountViolatedTos">Ši paskyra pažeidė „Lichess“ naudojimo sąlygas</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Šis žaidėjas dirbtinai padidina/sumažina savo reitingą</string>
   <string name="openingExplorerAndTablebase">Debiutų naršyklė ir pozicijų duomenų bazė</string>
   <string name="takeback">Atsiimti ėjimą</string>
   <string name="proposeATakeback">Prašyti leidimo atšaukti ėjimą</string>
@@ -503,6 +503,8 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="boardEditor">Lentos rengyklė</string>
   <string name="setTheBoard">Paruošti lentą</string>
   <string name="popularOpenings">Populiarūs debiutai</string>
+  <string name="endgamePositions">Endšpilio pozicijos</string>
+  <string name="chess960StartPosition">Chess960 pradinė pozicija: %s</string>
   <string name="startPosition">Pradinė pozicija</string>
   <string name="clearBoard">Išvalyti lentą</string>
   <string name="savePosition">Išsaugoti poziciją</string>
@@ -518,7 +520,7 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="firstName">Vardas</string>
   <string name="lastName">Pavardė</string>
   <string name="biography">Aprašymas</string>
-  <string name="country">Šalis</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Šalis arba vėliava</string>
   <string name="thankYou">Ačiū!</string>
   <string name="socialMediaLinks">Socialinių tinklų nuorodos</string>
   <string name="inlineNotation">Įterptas žymėjimas</string>
@@ -686,7 +688,7 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="really">tikrai</string>
   <string name="contribute">Prisidėkite</string>
   <string name="termsOfService">Naudojimosi sąlygos</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Pirminis kodas</string>
+  <string name="sourceCode">Pirminis kodas</string>
   <string name="simultaneousExhibitions">Simulai</string>
   <string name="host">Šeimininkas</string>
   <string name="hostColorX">Šeimininko spalva: %s</string>
@@ -751,8 +753,10 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="printFriendlyPDF">PDF failas spausdinimui</string>
   <string name="crosstable">Susitikimai</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Judėti partijoje taip pat galite naudodamiesi pelės ratuku virš lentos.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Užveskite ant kompiuterio variacijų norėdami jas peržiūrėti.</string>
   <string name="analysisShapesHowTo">Spustelėkite Shift + kairįjį pelės klavišą arba dešinįjį pelės klavišą norėdami piešti ant lentos.</string>
   <string name="letOtherPlayersMessageYou">Leisti kitiems žaidėjams jums parašyti</string>
+  <string name="receiveForumNotifications">Gaukite pranešimus, kai esate paminėti forume</string>
   <string name="shareYourInsightsData">Bendrinti jūsų statistiką</string>
   <string name="withNobody">Su niekuo</string>
   <string name="withFriends">Su draugais</string>
@@ -764,8 +768,7 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="enableKidMode">Įjungti vaiko veikseną</string>
   <string name="disableKidMode">Išjungti vaiko veikseną</string>
   <string name="security">Saugumas</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Toliau pateikiamas sąrašas įrenginių, kurie yra prisijungę prie jūsų paskyros. Panaikinkite visus seansus, kurių neatpažįstate.</string>
-  <string name="alternativelyYouCanX">Arba galite %s.</string>
+  <string name="sessions">Sesijos</string>
   <string name="revokeAllSessions">atšaukti visus seansus</string>
   <string name="playChessEverywhere">Žaiskite šachmatais visur</string>
   <string name="asFreeAsLichess">Nemokama, kaip ir „lichess“</string>
@@ -928,9 +931,9 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="youCannotPostYetPlaySomeGames">Diskutuoti forume dar negalite. Sužaiskite keletą partijų!</string>
   <string name="subscribe">Prenumeruoti</string>
   <string name="unsubscribe">Atsisakyti prenumeratos</string>
-  <string name="mentionedYouInX"> paminėjo jus \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s paminėjo jus \"%2$s\".</string>
-  <string name="invitedYouToX"> pakvietė jus į \"%1$s\".</string>
+  <string name="mentionedYouInX">paminėjo jus \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s paminėjo jus \"%2$s\".</string>
+  <string name="invitedYouToX">pakvietė jus į \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s pakvietė jus į \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Jūs jau esate komandos dalis.</string>
   <string name="youHaveJoinedTeamX">Jūs prisijungėte prie \"%1$s\".</string>
@@ -938,12 +941,59 @@ kompiuterinę analizę, partijos pokalbį bei URL dalinimuisi.</string>
   <string name="congratsYouWon">Sveikiname, jūs laimėjote!</string>
   <string name="gameVsX">Žaidimas prieš %1$s</string>
   <string name="resVsX">%1$s prieš %2$s</string>
-  <string name="youJustBecamePatron">Jūs ką tik tapote lichess rėmėju.</string>
-  <string name="patronAccountExpired">Rėmėjo paskyra pasibaigė</string>
-  <string name="pleaseReconsiderRenewIt">Pagalvokite apie jo atnaujinimą!</string>
   <string name="someoneReviewedYourCoachProfile">Kažkas peržvelgė jūsų trenerio profilį.</string>
   <string name="newPendingReview">Nauja laukianti peržvalga</string>
   <string name="lostAgainstTOSViolator">Jūs pralaimėjote prieš žmogų, kuris pažeidė Lichess taisykles</string>
   <string name="refundXpointsTimeControlY">Grąžinimas: %1$s %2$s reitingo taškų.</string>
   <string name="timeAlmostUp">Laikas beveik baigėsi!</string>
+  <string name="clickToRevealEmailAddress">[spustelėkite norėdami pamatyti el. pašto adresą]</string>
+  <string name="download">Atsisiųsti</string>
+  <string name="welcome">Sveiki atvykę!</string>
+  <string name="lichessPatronInfo">Lichess yra labdara ir pilnai atviro kodo/libre projektas.
+Visos veikimo išlaidos, programavimas ir turinys yra padengti išskirtinai tik vartotojų parama.</string>
+  <string name="coachManager">Trenerių valdymas</string>
+  <string name="streamerManager">Transliuotojų valdymas</string>
+  <string name="cancelTournament">Atšaukti turnyrą</string>
+  <string name="tournDescription">Turnyro aprašymas</string>
+  <string name="tournDescriptionHelp">Yra kažkas, ką turi žinoti dalyviai? Stenkitės perteikti trumpai. Galimos Markdown nuorodos: [pavadinimas](https://url)</string>
+  <string name="ratedFormHelp">Partijos reitinguotos
+ir daro įtaką žaidėjų reitingams</string>
+  <string name="onlyMembersOfTeam">Tik komandos nariai</string>
+  <string name="noRestriction">Jokių apribojimų</string>
+  <string name="minimumRatedGames">Mažiausiai įvertintos partijos</string>
+  <string name="minimumRating">Minimalus reitingas</string>
+  <string name="maximumWeeklyRating">Maksimalus savaitinis reitingas</string>
+  <string name="onlyTitled">Tik tituluoti žaidėjai</string>
+  <string name="onlyTitledHelp">Jungiantis prie turnyro reikalauti oficialaus titulo</string>
+  <string name="positionInputHelp">Norėdami pradėti žaidimą nuo specifinės pozicijos, įklijuokite teisingą FEN.
+Veikia tik standartiniams žaidimams, ne variantams.
+Norėdami sugeneruoti FEN poziciją galite naudotis %s, tada ją įklijuokite čia.
+Palikite tuščią norėdami pradėti žaidimą nuo įprastos pradinės pozicijos.</string>
+  <string name="cancelSimul">Atšaukti simulą</string>
+  <string name="simulHostcolor">Šeimininko spalva kiekvienam žaidimui</string>
+  <string name="estimatedStart">Numatytas pradžios laikas</string>
+  <string name="simulFeatured">Rodyti %s</string>
+  <string name="simulFeaturedHelp">Rodyti simulą visiems %s. Neįjungta privatiems simulams.</string>
+  <string name="simulDescription">Simulo aprašymas</string>
+  <string name="simulDescriptionHelp">Ar norite ką nors pranešti dalyviams?</string>
+  <string name="markdownAvailable">%s prieinama norint naudoti sudėtingesnę sintaksę.</string>
+  <string name="inYourLocalTimezone">Jūsų laiko zonoje</string>
+  <string name="tournChat">Turnyro pokalbis</string>
+  <string name="noChat">Jokio pokalbio</string>
+  <string name="onlyTeamLeaders">Tik komandų vadovams</string>
+  <string name="onlyTeamMembers">Tik komandos nariams</string>
+  <string name="navigateMoveTree">Keliauti per ėjimų medį</string>
+  <string name="mouseTricks">Triukai pele</string>
+  <string name="toggleLocalAnalysis">Įjungti/išjungti vietinę kompiuterio analizę</string>
+  <string name="toggleAllAnalysis">Įjungti/išjungti visą kompiuterio analizę</string>
+  <string name="playComputerMove">Žaisti geriausią kompiuterio ėjimą</string>
+  <string name="analysisOptions">Analizės nustatymai</string>
+  <string name="focusChat">Perjungti į pokalbį</string>
+  <string name="showHelpDialog">Rodyti šį pagalbos dialogą</string>
+  <string name="reopenYourAccount">Atidaryti uždarytą paskyrą</string>
+  <string name="closedAccountChangedMind">Jei uždarėte savo paskyrą, tačiau apsigalvojote, turite vieną šansą ją atgauti.</string>
+  <string name="onlyWorksOnce" comment="onlyWorksOnce&#10;&#10;In relation to reopening a closed account - reopening is only allowed once if you choose to close your account.">Tai suveiks tik kartą.</string>
+  <string name="cantDoThisTwice">Jei uždarysite savo paskyrą antrą kartą nebebus jokio būdo ją atkurti.</string>
+  <string name="emailAssociatedToaccount">Elektroninio pašto adresas susietas su paskyra</string>
+  <string name="sentEmailWithLink">Меs jums išsiuntėme laišką su nuoroda.</string>
 </resources>

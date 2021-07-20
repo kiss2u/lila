@@ -63,6 +63,7 @@ final class GameApiV2(
     }
 
   private val fileR = """[\s,]""".r
+
   def filename(game: Game, format: Format): Fu[String] =
     gameLightUsers(game) map { case (wu, bu) =>
       fileR.replaceAllIn(
@@ -76,23 +77,31 @@ final class GameApiV2(
         "_"
       )
     }
+
   def filename(tour: Tournament, format: Format): String =
+    filename(tour, format.toString.toLowerCase)
+
+  def filename(tour: Tournament, format: String): String =
     fileR.replaceAllIn(
       "lichess_tournament_%s_%s_%s.%s".format(
         Tag.UTCDate.format.print(tour.startsAt),
         tour.id,
         lila.common.String.slugify(tour.name),
-        format.toString.toLowerCase
+        format
       ),
       "_"
     )
+
   def filename(swiss: lila.swiss.Swiss, format: Format): String =
+    filename(swiss, format.toString.toLowerCase)
+
+  def filename(swiss: lila.swiss.Swiss, format: String): String =
     fileR.replaceAllIn(
       "lichess_swiss_%s_%s_%s.%s".format(
         Tag.UTCDate.format.print(swiss.startsAt),
         swiss.id,
         lila.common.String.slugify(swiss.name),
-        format.toString.toLowerCase
+        format
       ),
       "_"
     )
@@ -103,8 +112,7 @@ final class GameApiV2(
         gameRepo
           .sortedCursor(
             config.vs.fold(Query.user(config.user.id)) { Query.opponents(config.user, _) } ++
-              Query.createdBetween(config.since, config.until) ++
-              (!config.ongoing).??(Query.finished),
+              Query.createdBetween(config.since, config.until) ++ Query.finished,
             Query.sortCreated,
             batchSize = config.perSecond.value
           )
@@ -302,6 +310,7 @@ final class GameApiV2(
       .add("daysPerTurn" -> g.daysPerTurn)
       .add("analysis" -> analysisOption.ifTrue(withFlags.evals).map(analysisJson.moves(_, withGlyph = false)))
       .add("tournament" -> g.tournamentId)
+      .add("swiss" -> g.swissId)
       .add("clock" -> g.clock.map { clock =>
         Json.obj(
           "initial"   -> clock.limitSeconds,
@@ -345,7 +354,6 @@ object GameApiV2 {
       rated: Option[Boolean] = None,
       perfType: Set[lila.rating.PerfType],
       analysed: Option[Boolean] = None,
-      ongoing: Boolean = false,
       color: Option[chess.Color],
       flags: WithFlags,
       perSecond: MaxPerSecond,
@@ -364,7 +372,7 @@ object GameApiV2 {
       format: Format,
       flags: WithFlags,
       perSecond: MaxPerSecond,
-      playerFile: Option[String]
+      playerFile: Option[String] = None
   ) extends Config
 
   case class ByTournamentConfig(

@@ -2,8 +2,9 @@ const resolve = require('@rollup/plugin-node-resolve').default;
 const commonjs = require('@rollup/plugin-commonjs');
 const typescript = require('@rollup/plugin-typescript');
 const terser = require('rollup-plugin-terser').terser;
+const analyze = require('rollup-plugin-analyzer');
 
-exports.rollupProject = targets => {
+module.exports = targets => {
   return args => {
     const prod = args['config-prod'];
     const target = targets[args['config-plugin'] || 'main'];
@@ -17,9 +18,11 @@ exports.rollupProject = targets => {
               name: target.name,
               plugins: [
                 terser({
+                  safari10: true,
                   output: {
                     comments: false,
                   },
+                  numWorkers: 1,
                 }),
               ],
             }
@@ -34,8 +37,11 @@ exports.rollupProject = targets => {
         resolve(),
         ...(target.js ? [] : [typescript()]),
         commonjs({
-          extensions: ['.js', '.ts'],
+          extensions: ['.js'],
         }),
+        // analyze({
+        //   summaryOnly: true,
+        // }),
       ],
     };
   };

@@ -1,4 +1,4 @@
-import * as enhance from './enhance';
+import * as enhance from 'common/richText';
 import * as spam from './spam';
 import { Ctrl, Line } from './interfaces';
 import { flag } from './xhr';
@@ -29,7 +29,7 @@ export default function (ctrl: Ctrl): Array<VNode | undefined> {
         attrs: {
           role: 'log',
           'aria-live': 'polite',
-          'aria-atomic': false,
+          'aria-atomic': 'false',
         },
         hook: {
           insert(vnode) {
@@ -208,17 +208,24 @@ function renderLine(ctrl: Ctrl, line: Line): VNode {
 
   if (line.c) return h('li', [h('span.color', '[' + line.c + ']'), textNode]);
 
-  const userNode = thunk('a', line.u, userLink, [line.u, line.title]);
+  const userNode = thunk('a', line.u, userLink, [line.u, line.title, line.p]);
+  const userId = line.u?.toLowerCase();
 
   return h(
     'li',
+    {
+      class: {
+        me: userId === ctrl.data.userId,
+        host: userId === ctrl.data.hostId,
+      },
+    },
     ctrl.moderation()
       ? [line.u ? modLineAction() : null, userNode, ' ', textNode]
       : [
           ctrl.data.userId && line.u && ctrl.data.userId != line.u
             ? h('i.flag', {
                 attrs: {
-                  'data-icon': '!',
+                  'data-icon': '',
                   title: 'Report',
                 },
               })

@@ -35,7 +35,7 @@ final class UserForm(authenticator: Authenticator) {
     mapping(
       "country"    -> optional(text.verifying(Countries.codeSet contains _)),
       "location"   -> optional(cleanNonEmptyText(maxLength = 80)),
-      "bio"        -> optional(cleanNonEmptyText(maxLength = 600)),
+      "bio"        -> optional(cleanNonEmptyText(maxLength = 400)),
       "firstName"  -> nameField,
       "lastName"   -> nameField,
       "fideRating" -> optional(number(min = 600, max = 3000)),
@@ -43,6 +43,7 @@ final class UserForm(authenticator: Authenticator) {
       "ecfRating"  -> optional(number(min = 0, max = 3000)),
       "rcfRating"  -> optional(number(min = 0, max = 3000)),
       "cfcRating"  -> optional(number(min = 0, max = 3000)),
+      "dsbRating"  -> optional(number(min = 0, max = 3000)),
       "links"      -> optional(cleanNonEmptyText(maxLength = 3000))
     )(Profile.apply)(Profile.unapply)
   )

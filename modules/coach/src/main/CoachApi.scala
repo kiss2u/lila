@@ -41,7 +41,7 @@ final class CoachApi(
     }
 
   def isListedCoach(user: User): Fu[Boolean] =
-    Granter(_.Coach)(user) ?? coachColl.exists($id(user.id) ++ $doc("listed" -> true))
+    Granter(_.Coach)(user) ?? user.enabled ?? user.marks.clean ?? coachColl.exists($id(user.id))
 
   def setSeenAt(user: User): Funit =
     Granter(_.Coach)(user) ?? coachColl.update.one($id(user.id), $set("user.seenAt" -> DateTime.now)).void
@@ -67,17 +67,6 @@ final class CoachApi(
   def setNbReviews(id: Coach.Id, nb: Int): Funit =
     coachColl.update.one($id(id), $set("nbReviews" -> nb)).void
 
-  private[coach] def toggleApproved(username: String, value: Boolean): Fu[String] =
-    coachColl.update.one(
-      $id(User.normalize(username)),
-      $set("approved" -> value)
-    ) dmap { result =>
-      if (result.n > 0) "Done!"
-      else "No such coach"
-    }
-
-  def remove(userId: User.ID): Funit = coachColl.updateField($id(userId), "listed", false).void
-
   def uploadPicture(c: Coach.WithUser, picture: Photographer.Uploaded, by: User): Funit =
     photographer(c.coach.id.value, picture, createdBy = by.id).flatMap { pic =>
       coachColl.update.one($id(c.coach.id), $set("picturePath" -> pic.path)).void
@@ -93,6 +82,18 @@ final class CoachApi(
       }
   }
   def allLanguages: Fu[Set[String]] = languagesCache.get {}
+
+  private val countriesCache = cacheApi.unit[Set[String]] {
+    _.refreshAfterWrite(1 hour)
+      .buildAsyncFuture { _ =>
+        userRepo.coll.secondaryPreferred
+          .distinctEasy[String, Set](
+            "profile.country",
+            $doc("roles" -> lila.security.Permission.Coach.dbKey, "enabled" -> true)
+          )
+      }
+  }
+  def allCountries: Fu[Set[String]] = countriesCache.get {}
 
   private def withUser(user: User)(coach: Coach) = Coach.WithUser(coach, user)
 

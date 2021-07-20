@@ -2,7 +2,6 @@ function loadShepherd(f) {
   if (typeof Shepherd === 'undefined' || Shepherd.activeTour === null) {
     var theme = 'shepherd-theme-' + ($('body').hasClass('dark') ? 'default' : 'dark');
     lichess.loadCss('vendor/shepherd/dist/css/' + theme + '.css');
-    lichess.loadCss('stylesheets/shepherd.css');
     lichess.loadScript('vendor/shepherd/dist/js/tether.js', { noVersion: true }).then(function () {
       lichess.loadScript('vendor/shepherd/dist/js/shepherd.min.js', { noVersion: true }).then(function () {
         f(theme);
@@ -28,7 +27,7 @@ lichess.studyTour = function (study) {
     });
     [
       {
-        title: 'Welcome to lichess study!',
+        title: 'Welcome to Lichess Study!',
         text:
           'This is a shared analysis board.<br><br>' +
           'Use it to analyse and annotate games,<br>' +
@@ -45,15 +44,15 @@ lichess.studyTour = function (study) {
       {
         title: 'Study members',
         text:
-          "<i data-icon='v'></i> Spectators can view the study and talk in the chat.<br>" +
-          "<br><i data-icon='r'></i> Contributors can make moves and update the study.",
+          "<i data-icon=''></i> Spectators can view the study and talk in the chat.<br>" +
+          "<br><i data-icon=''></i> Contributors can make moves and update the study.",
         attachTo: '.study__members right',
         when: onTab('members'),
       },
       study.isOwner
         ? {
             title: 'Invite members',
-            text: "By clicking the <i data-icon='O'></i> button.<br>" + 'Then decide who can contribute or not.',
+            text: "By clicking the <i data-icon=''></i> button.<br>" + 'Then decide who can contribute or not.',
             attachTo: '.study__members .add right',
             when: onTab('members'),
           }
@@ -68,7 +67,7 @@ lichess.studyTour = function (study) {
       study.isContrib
         ? {
             title: 'Create new chapters',
-            text: "By clicking the <i data-icon='O'></i> button.",
+            text: "By clicking the <i data-icon=''></i> button.",
             attachTo: '.study__chapters .add right',
             when: onTab('chapters'),
           }
@@ -77,7 +76,7 @@ lichess.studyTour = function (study) {
         ? {
             title: 'Comment on a position',
             text:
-              "With the <i data-icon='c'></i> button, or a right click on the move list on the right.<br>" +
+              "With the <i data-icon=''></i> button, or a right click on the move list on the right.<br>" +
               'Comments are shared and persisted.',
             attachTo: '.study__buttons .left-buttons .comments top',
           }

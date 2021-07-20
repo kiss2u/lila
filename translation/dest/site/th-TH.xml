@@ -9,6 +9,7 @@
   <string name="yourTurn">ตาคุณ</string>
   <string name="aiNameLevelAiLevel">%1$s ระดับ %2$s</string>
   <string name="level">ระดับ</string>
+  <string name="strength">ความแข็งแกร่ง</string>
   <string name="toggleTheChat">เปิด/ปิดการสนทนา</string>
   <string name="toggleSound">เปิด/ปิดเสียง</string>
   <string name="chat">สนทนา</string>
@@ -24,6 +25,7 @@
   <string name="youPlayTheWhitePieces">คุณเล่นหมากสีขาว</string>
   <string name="youPlayTheBlackPieces">คุณเล่นหมากสีดำ</string>
   <string name="itsYourTurn">ตาคุณ!</string>
+  <string name="cheatDetected">ตรวจพบการโกง</string>
   <string name="kingInTheCenter">คิงเข้าศูนย์กลาง</string>
   <string name="threeChecks">รุกสามครั้ง</string>
   <string name="raceFinished">แข่งจบแล้ว</string>
@@ -76,7 +78,7 @@
   <string name="losing">การแพ้</string>
   <string name="drawn">การเสมอ</string>
   <string name="unknown">ไม่แน่ชัด</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">ฐานข้อมูล</string>
+  <string name="database">ฐานข้อมูล</string>
   <string name="whiteDrawBlack">ขาวชนะ / เสมอ / ดำชนะ</string>
   <string name="averageRatingX">แต้มเฉลี่ยอยู่ที่ %s แต้ม</string>
   <string name="recentGames">เกมเมื่อเร็ว ๆ นี้</string>
@@ -115,6 +117,12 @@
   <string name="inaccuracy">ไม่แม่นยำ</string>
   <plurals name="nbBlunders">
     <item quantity="other">%s พลาดมหันต์</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="other">%s พลาด</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="other">%s ไม่แม่นยำ</item>
   </plurals>
   <string name="moveTimes">เวลาที่ใช้ในการเดิน</string>
   <string name="flipBoard">หมุนกระดาน</string>
@@ -238,7 +246,6 @@
   <string name="send">ส่ง</string>
   <string name="incrementInSeconds">วินาทีที่บวกเพิ่ม</string>
   <string name="freeOnlineChess">หมากรุกสากลออนไลน์ฟรี</string>
-  <string name="spectators">ผู้สังเกตการณ์:</string>
   <plurals name="nbRated">
     <item quantity="other">%s เกมที่คิดคะแนน</item>
   </plurals>
@@ -260,7 +267,6 @@
     <item quantity="other">ให้ %s วินาที</item>
   </plurals>
   <string name="thisAccountViolatedTos">This account violated the Lichess Terms of Service</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">ผู้เล่นรายนี้เพิ่ม/ลดระดับคะแนนตัวเองโดยทุจริต</string>
   <string name="openingExplorerAndTablebase">ตัวสำรวจการเปิด &amp; ฐานตาราง</string>
   <string name="takeback">เดินใหม่</string>
   <string name="proposeATakeback">ขอเดินใหม่</string>
@@ -417,7 +423,7 @@
   <string name="firstName">ชื่อจริง</string>
   <string name="lastName">นามสกุล</string>
   <string name="biography">ชีวประวัติ</string>
-  <string name="country">ประเทศ</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">ประเทศหรือธง</string>
   <string name="thankYou">ขอบคุณ!</string>
   <string name="socialMediaLinks">ลิงก์สื่อโซเชียล</string>
   <string name="inlineNotation">สัญกรณ์ในบรรทัด</string>
@@ -438,6 +444,7 @@
   <string name="tournamentWinners">ผู้ชนะทัวร์นาเมนต์</string>
   <string name="name">ชื่อ</string>
   <string name="description">คำอธิบาย</string>
+  <string name="descPrivate">คำบรรยายส่วนตัว</string>
   <string name="no">ไม่</string>
   <string name="yes">ใช่</string>
   <string name="help">ช่วยเหลือ:</string>
@@ -476,9 +483,11 @@
   <string name="newPassword">รหัสผ่านใหม่</string>
   <string name="newPasswordAgain">รหัสผ่านใหม่ (อีกครั้ง)</string>
   <string name="newPasswordsDontMatch">รหัสผ่านใหม่ที่ระบุไม่ตรงกัน</string>
+  <string name="newPasswordStrength">ความยากของรหัสผ่าน</string>
   <string name="clockInitialTime">เวลาเริ่มต้นนาฬิกา</string>
   <string name="clockIncrement">การเพิ่มเวลานาฬิกา</string>
   <string name="privacy">ความเป็นส่วนตัว</string>
+  <string name="privacyPolicy">นโยบายความเป็นส่วนตัว</string>
   <string name="letOtherPlayersFollowYou">อนุญาตให้ผู้อื่นติดตามคุณได้</string>
   <string name="letOtherPlayersChallengeYou">อนุญาตให้ผู้อื่นท้าดวลเกมกับคุณได้</string>
   <string name="letOtherPlayersInviteYouToStudy">อนุญาตให้ผู้เล่นคนอื่นเชิญคุณเพื่อศึกษา</string>
@@ -567,7 +576,7 @@
   <string name="really">จริง ๆ</string>
   <string name="contribute">เอื้อเฟื้อ</string>
   <string name="termsOfService">ข้อกำหนดการใช้</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">ซอร์สโค้ด</string>
+  <string name="sourceCode">ซอร์สโค้ด</string>
   <string name="simultaneousExhibitions">มหกรรมไซมัลเทเนียส</string>
   <string name="host">โฮสต์</string>
   <string name="hostColorX">สีโฮสต์: %s</string>
@@ -610,6 +619,7 @@
   </plurals>
   <string name="yourPerfTypeRatingIsRating">ระดับคะแนน %1$s ของคุณคือ %2$s</string>
   <string name="youAreBetterThanPercentOfPerfTypePlayers">คุณทำได้ดีกว่า %1$s ของผู้เล่น %2$s</string>
+  <string name="userIsBetterThanPercentOfPerfTypePlayers">%1$s เก่งกว่า %2$s ของผู้เล่น %3$s ทั้งหมด</string>
   <string name="youDoNotHaveAnEstablishedPerfTypeRating">คุณยังไม่มีระดับคะแนน %s ที่แท้จริง</string>
   <string name="yourRating">ระดับคะแนนของคุณ</string>
   <string name="cumulative">สะสม</string>
@@ -640,8 +650,6 @@
   <string name="enableKidMode">เปิดใช้งานโหมดสำหรับเด็ก</string>
   <string name="disableKidMode">ปิดใช้งานโหมดสำหรับเด็ก</string>
   <string name="security">ความปลอดภัย</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">นี่คือรายการอุปกรณ์ที่ได้เข้าสู่บัญชีของคุณ จงยกเลิกวาระที่คุณไม่รู้จัก</string>
-  <string name="alternativelyYouCanX">อีกวิธีหนึ่งคือคุณสามารถ %s</string>
   <string name="revokeAllSessions">ยกเลิกวาระทั้งหมด</string>
   <string name="playChessEverywhere">เล่นหมากรุกได้ทุกที่</string>
   <string name="asFreeAsLichess">อิสระเหมือนดั่ง lichess</string>
@@ -774,6 +782,12 @@
   <string name="classical">คลาสสิก</string>
   <string name="important">สำคัญ</string>
   <string name="yourQuestionMayHaveBeenAnswered">คำถามของคุณอาจจะมีคำตอบแล้ว%1$s</string>
+  <string name="subscribe">ติดตาม</string>
+  <string name="unsubscribe">เลิกติดตาม</string>
+  <string name="mentionedYouInX">กล่าวถึงคุณใน \"%1$s\"</string>
+  <string name="xMentionedYouInY">%1$s ได้กล่าวถึงคุณใน \"%2$s\"</string>
   <string name="someoneYouReportedWasBanned">ผู้เล่นที่คุณรายงานถูกแบนแล้ว</string>
+  <string name="congratsYouWon">ยินดีด้วย คุณชนะแล้ว</string>
   <string name="timeAlmostUp">เวลาใกล้จะหมดแล้ว</string>
+  <string name="download">ดาวน์โหลด</string>
 </resources>

@@ -62,18 +62,13 @@ object list {
                 td(
                   r.inquiry match {
                     case None =>
-                      if (r.processedBy.isDefined)
+                      if (r.done.isDefined)
                         postForm(action := routes.Report.inquiry(r.id), cls := "reopen")(
-                          submitButton(dataIcon := "G", cls := "text button button-metal")("Reopen")
+                          submitButton(dataIcon := "", cls := "text button button-metal")("Reopen")
                         )
                       else
-                        frag(
-                          postForm(action := routes.Report.inquiry(r.id), cls := "inquiry")(
-                            submitButton(dataIcon := "G", cls := "button button-metal")
-                          ),
-                          postForm(action := routes.Report.process(r.id), cls := "cancel")(
-                            submitButton(cls := "button button-thin button-empty")("Dismiss")
-                          )
+                        postForm(action := routes.Report.inquiry(r.id), cls := "inquiry")(
+                          submitButton(dataIcon := "", cls := "button button-metal")
                         )
                     case Some(inquiry) =>
                       frag(
@@ -121,7 +116,7 @@ object list {
                     )
                   )(
                     room.name,
-                    scoreTag(scores get room)
+                    scores.get(room).filter(20 <=).map(scoreTag(_))
                   )
                 }
               },

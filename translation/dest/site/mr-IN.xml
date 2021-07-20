@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">तुम्ही पांढऱ्या सोंगट्यानी खेळा</string>
   <string name="youPlayTheBlackPieces">तुम्ही काळ्या सोंगट्यानी खेळा</string>
   <string name="itsYourTurn">तुमची चाल!</string>
+  <string name="cheatDetected">फसवणूक आढळली</string>
   <string name="kingInTheCenter">मध्यस्थानी राजा</string>
   <string name="threeChecks">तीन शह</string>
   <string name="raceFinished">शर्यंत समाप्त</string>
@@ -78,7 +79,7 @@
   <string name="losing">तोट्याचा</string>
   <string name="drawn">अनिर्णीत</string>
   <string name="unknown">अज्ञात</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">माहितीसंच</string>
+  <string name="database">माहितीसंच</string>
   <string name="whiteDrawBlack">पांढरा / बरोबरी / काळा</string>
   <string name="averageRatingX">सरासरी दर्जा: %s</string>
   <string name="recentGames">अलीकडचे खेळ</string>
@@ -117,6 +118,18 @@
   <string name="blunder">घोडचूक</string>
   <string name="mistake">चुक</string>
   <string name="inaccuracy">अयोग्य चाल</string>
+  <plurals name="nbBlunders">
+    <item quantity="one">%s घोडचूक</item>
+    <item quantity="other">%s घोडचूका</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="one">%s चुक</item>
+    <item quantity="other">%s चुका</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="one">%s अयोग्य चाल</item>
+    <item quantity="other">%s अयोग्य चाली</item>
+  </plurals>
   <string name="moveTimes">चालीसाठी लागलेला वेळ</string>
   <string name="flipBoard">पटाला पलटा</string>
   <string name="threefoldRepetition">तीनदा पुनरावृत्ती</string>
@@ -247,7 +260,6 @@
   <string name="send">पाठवा</string>
   <string name="incrementInSeconds">सेकंदांमध्ये वाढ</string>
   <string name="freeOnlineChess">विनामूल्य ऑनलाइन बुद्धिबळ</string>
-  <string name="spectators">प्रेक्षक</string>
   <plurals name="nbRated">
     <item quantity="one">%s गुणांकित</item>
     <item quantity="other">%s औपचारिक</item>
@@ -275,7 +287,6 @@
     <item quantity="other">%s सेकंद द्या</item>
   </plurals>
   <string name="thisAccountViolatedTos">या खात्याने Lichess अटींचे उल्लंघन केले</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">हा खेळाडू कृत्रिमरित्या गुणांकन वाढवितो / कमी करतो</string>
   <string name="openingExplorerAndTablebase">उघडणी अन्वेषक नि साठा</string>
   <string name="takeback">चाल परत घ्या</string>
   <string name="proposeATakeback">चाल मागे घेण्यास विनंती करा</string>
@@ -443,7 +454,7 @@
   <string name="firstName">नाव</string>
   <string name="lastName">आडनाव</string>
   <string name="biography">चरित्र</string>
-  <string name="country">देश</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">देश किंवा झेंडा</string>
   <string name="thankYou">आभारी आहे</string>
   <string name="socialMediaLinks">सोशल मीडिया दुवे</string>
   <string name="inlineNotation">इनलाइन संकेत</string>
@@ -465,6 +476,8 @@
   <string name="tournamentWinners">क्रीडासत्रातील विजेते</string>
   <string name="name">नाव</string>
   <string name="description">माहिती</string>
+  <string name="descPrivate">खाजगी वर्णन</string>
+  <string name="descPrivateHelp">मजकूर जो केवळ कार्यसंघ सदस्य पाहू शकतील. सेट केल्यास, कार्यसंघ सदस्यांसाठी सार्वजनिक वर्णन पुनर्स्थित करते.</string>
   <string name="no">नाही</string>
   <string name="yes">हो</string>
   <string name="help">मदत</string>
@@ -485,6 +498,7 @@
   <string name="cheat">फसवणूक</string>
   <string name="insult">अपमान</string>
   <string name="troll">थट्टा</string>
+  <string name="ratingManipulation">रेटिंग मॅनिपुलेशन</string>
   <string name="other">इतर</string>
   <string name="reportDescriptionHelp">खेळाचा दुवा पेस्ट करा आणि या वापरकर्त्याच्या वर्तनाबद्दल काय चुकीचे आहे ते सांगा. फक्त \"ते फसवतात\" असे म्हणू नका, परंतु आपण या निष्कर्षावर कसे आलात ते सांगा. इंग्रजीमध्ये लिहिले असल्यास आपल्या अहवालावर वेगवान प्रक्रिया केली जाईल.</string>
   <string name="error.provideOneCheatedGameLink">कृपया फसवणूक झालेल्या खेळासाठी किमान एक दुवा प्रदान करा.</string>
@@ -580,7 +594,7 @@
   <string name="onlyFriends">फक्त मित्र</string>
   <string name="menu">मेनू</string>
   <string name="castling">किल्ल्यात</string>
-  <string name="whiteCastlingKingside">पांढरा 0-0</string>
+  <string name="whiteCastlingKingside">पांढरा O-O</string>
   <string name="blackCastlingKingside">काळा O-O</string>
   <plurals name="nbForumPosts">
     <item quantity="one">%s मंचातील प्रतिक्रिया</item>
@@ -600,7 +614,7 @@
   <string name="really">खरंच</string>
   <string name="contribute">हातभार लावा</string>
   <string name="termsOfService">सेवा अटी</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">सोर्स कोड</string>
+  <string name="sourceCode">सोर्स कोड</string>
   <string name="simultaneousExhibitions">एकाचवेळी प्रदर्शन</string>
   <string name="host">यजमान</string>
   <string name="hostColorX">यजमानाचा रंग: %s</string>
@@ -643,8 +657,8 @@
     <item quantity="other">%1$s %2$s या आठवड्यातील खेळाडू.</item>
   </plurals>
   <string name="yourPerfTypeRatingIsRating">तुमची %1$s रेटिंग %2$s आहे.</string>
-  <string name="youAreBetterThanPercentOfPerfTypePlayers">तुम्ही %1$s पेक्षा उत्तम आहात %2$s खेळाडूंमध्ये.</string>
-  <string name="userIsBetterThanPercentOfPerfTypePlayers">%1$s %2$s उत्तम आहे %3$s खेळाडूंमध्ये.</string>
+  <string name="youAreBetterThanPercentOfPerfTypePlayers">तुम्ही %1$s %2$s खेळाडूंपेक्षा उत्तम आहात.</string>
+  <string name="userIsBetterThanPercentOfPerfTypePlayers">%1$s %2$s %3$s खेळाडूंपेक्षा उत्तम आहे.</string>
   <string name="youDoNotHaveAnEstablishedPerfTypeRating">आपल्याकडे %s रेटिंग नाही.</string>
   <string name="yourRating">आपले गुणांकन</string>
   <string name="cumulative">एकत्रित</string>
@@ -663,8 +677,10 @@
   <string name="printFriendlyPDF">प्रिंट-friendly PDF</string>
   <string name="crosstable">अभिलेख</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">गेममध्ये जाण्यासाठी आपण बोर्डवर स्क्रोल देखील करू शकता.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">संगणक बदलांचे पूर्वावलोकन करण्यासाठी त्यांचेवर स्क्रोल करा.</string>
   <string name="analysisShapesHowTo">पटावर वर्तुळे आणि बाण काढण्यासाठी शिफ्ट + क्लिक दाबा किंवा उजवे-क्लिक दाबा.</string>
   <string name="letOtherPlayersMessageYou">इतर खेळाडूंना संदेश पाठवू द्या</string>
+  <string name="receiveForumNotifications">फोरममध्ये नमूद केल्यावर सूचना प्राप्त करा</string>
   <string name="shareYourInsightsData">आपला बुद्धिबळ अंतर्गत डेटा सामायिक करा</string>
   <string name="withNobody">कोणासोबाही नाही</string>
   <string name="withFriends">मित्रांसोबत</string>
@@ -676,8 +692,7 @@
   <string name="enableKidMode">Kid Mode सुरू करा</string>
   <string name="disableKidMode">Kid Mode बंद करा</string>
   <string name="security">सुरक्षितता</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">ही आपल्या खात्यात लॉग इन केलेल्या उपकरणांची सूची आहे. आपण ओळखत नसलेली कोणतीही सत्रे मागे घ्या.</string>
-  <string name="alternativelyYouCanX">याव्यतिरिक्त आपण हे करू शकता %s.</string>
+  <string name="sessions">सत्र</string>
   <string name="revokeAllSessions">सर्व सत्र रद्द करा</string>
   <string name="playChessEverywhere">सगळीकडे बुद्धिबळ खेळा</string>
   <string name="asFreeAsLichess">लिचेस सारखे निशुल्क</string>
@@ -740,7 +755,7 @@
   </plurals>
   <string name="practiceWithComputer">संगणकासोबत सराव करा</string>
   <string name="anotherWasX">इतर %s</string>
-  <string name="bestWasX">उत्तम %s</string>
+  <string name="bestWasX">उत्तम चाल %s</string>
   <string name="youBrowsedAway">आपण पुनर्वलोकण पूर्ण केले</string>
   <string name="resumePractice">अभ्यास पुन्हा सुरू करा</string>
   <string name="theGameIsADraw">खेळ बरोबरीत सुटला आहे.</string>
@@ -832,4 +847,26 @@
   <string name="youCannotPostYetPlaySomeGames">तुम्ही मंचावर लिहू शकत नाही. काही डाव खेळा!</string>
   <string name="subscribe">सदस्यता घ्या</string>
   <string name="unsubscribe">सदस्यता रद्द करा</string>
+  <string name="mentionedYouInX">%1$s मध्ये तुमचा उल्लेख केला.</string>
+  <string name="xMentionedYouInY">%1$s ने तुमचा उल्लेख %2$s मध्ये केला आहे.</string>
+  <string name="invitedYouToX">%1$s मध्ये तुम्ही आमंत्रित आहात.</string>
+  <string name="xInvitedYouToY">%1$s ने तुम्हाला %2$s मध्ये आमंत्रित केले आहे.</string>
+  <string name="youAreNowPartOfTeam">तुम्ही संघात नाही.</string>
+  <string name="youHaveJoinedTeamX">तुम्ही %1$s मध्ये सामील झालात.</string>
+  <string name="someoneYouReportedWasBanned">आपण नोंदविलेल्या एखाद्यावर बंदी घातली आहे</string>
+  <string name="congratsYouWon">अभिनंदन, तुम्ही जिंकलात!</string>
+  <string name="gameVsX">खेळ विरुद्ध %1$s</string>
+  <string name="resVsX">%1$s विरुद्ध %2$s</string>
+  <string name="someoneReviewedYourCoachProfile">कोणीतरी आपल्या कोच प्रोफाइलचे पुनरावलोकन केले.</string>
+  <string name="newPendingReview">नवीन प्रलंबित पुनरावलोकन</string>
+  <string name="lostAgainstTOSViolator">आपला Lichess TOS चे नियम भंग करणार्‍या खेळाडुकडून पराभव झाला</string>
+  <string name="refundXpointsTimeControlY">परतावा: %2$s चे %1$s रेटिंग गुण.</string>
+  <string name="timeAlmostUp">वेळ संपत आलेली आहे!</string>
+  <string name="clickToRevealEmailAddress">[ईमेल पाहण्यासाठी क्लिक करा]</string>
+  <string name="download">डाउनलोड करा</string>
+  <string name="welcome">सुस्वागतम!</string>
+  <string name="lichessPatronInfo">Lichess एक चॅरिटी आहे आणि संपूर्णपणे मुक्त / नि: शुल्क मुक्त स्रोत सॉफ्टवेअर आहे.
+सर्व ऑपरेटिंग खर्च, विकास आणि सामग्री केवळ वापरकर्त्याच्या देणग्याद्वारे अनुदानित केली जाते.</string>
+  <string name="coachManager">प्रशिक्षक व्यवस्थापक</string>
+  <string name="streamerManager">स्ट्रीमर व्यवस्थापक</string>
 </resources>

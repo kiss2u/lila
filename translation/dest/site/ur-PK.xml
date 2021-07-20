@@ -77,7 +77,7 @@
   <string name="losing">شکست</string>
   <string name="drawn">برابر</string>
   <string name="unknown">نامعلوم</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">ڈیٹا بیس</string>
+  <string name="database">ڈیٹا بیس</string>
   <string name="whiteDrawBlack">سفید/برابر/سیاہ</string>
   <string name="averageRatingX">اوسط درجہ%s</string>
   <string name="recentGames">حالیہ بازیاں</string>
@@ -246,7 +246,6 @@
   <string name="send">ارسال کریں</string>
   <string name="incrementInSeconds">اضافہ سیکنڈوں میں</string>
   <string name="freeOnlineChess">مفت آن لائن شطرنج</string>
-  <string name="spectators">ناظرین:</string>
   <plurals name="nbRated">
     <item quantity="one">%s سنجیدہ</item>
     <item quantity="other">%s سنجیدہ</item>
@@ -274,7 +273,6 @@
     <item quantity="other">%s سیکنڈ دیں</item>
   </plurals>
   <string name="thisAccountViolatedTos">اس اکاؤنٹ نے لی چیس کے ضابطہ کار کی خلاف ورزی کی ہے</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">یہ کھلاڑی اپنے میعار کو مصنوعی طور پر متاثر کرتا ہے</string>
   <string name="openingExplorerAndTablebase">ابتدائیوں کی کلید &amp; ٹیبل بیس</string>
   <string name="takeback">چال واپس لیں</string>
   <string name="proposeATakeback">چال واپس لینے کی درخواست کریں</string>
@@ -442,7 +440,6 @@
   <string name="firstName">پہلا نام</string>
   <string name="lastName">آخری نام</string>
   <string name="biography">سوانح حیات</string>
-  <string name="country">ملک</string>
   <string name="thankYou">آپ کا شکریہ!</string>
   <string name="socialMediaLinks">سوشل میڈیا کے لنکس</string>
   <string name="inlineNotation">ان لائن نوٹیشن</string>
@@ -596,7 +593,7 @@
   <string name="really">واقعی</string>
   <string name="contribute">حصہ ڈالیں</string>
   <string name="termsOfService">شرائط و ضوابط</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">سورس کوڈ</string>
+  <string name="sourceCode">سورس کوڈ</string>
   <string name="simultaneousExhibitions">نمائشی مقابلے</string>
   <string name="host">میزبان</string>
   <string name="hostColorX">میزبان کا رنگ: %s</string>
@@ -671,8 +668,6 @@
   <string name="enableKidMode">کڈز موڈ آن کریں</string>
   <string name="disableKidMode">کڈز موڈ آف کریں</string>
   <string name="security">سیکورٹی</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">یہ ان آلات کی فہرست ہے جنہوں نے آپ کے اکاؤنٹ میں لاگ ان کیا ہے۔ کسی بھی سیشن کو کالعدم کریں جسے آپ نہیں پہچانتے ہیں۔.</string>
-  <string name="alternativelyYouCanX">اس کے بجائے آپ %s کر سکتے ہیں.</string>
   <string name="revokeAllSessions">تمام سیشنز کالعدم قرار دے دیں</string>
   <string name="playChessEverywhere">شطرنج کھلیں ہر جگا</string>
   <string name="asFreeAsLichess">لی چیس کی طرح مفت</string>

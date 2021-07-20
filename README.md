@@ -22,7 +22,7 @@ The UI is available in more than [130 languages](https://crowdin.com/project/lic
 
 Lichess is written in [Scala 2.13](https://www.scala-lang.org/),
 and relies on the [Play 2.8](https://www.playframework.com/) framework.
-[scalatags](https://www.lihaoyi.com/scalatags/) is used for templating.
+[scalatags](https://com-lihaoyi.github.io/scalatags/) is used for templating.
 Pure chess logic is contained in the [scalachess](https://github.com/ornicar/scalachess) submodule.
 The server is fully asynchronous, making heavy use of Scala Futures and [Akka streams](https://akka.io).
 WebSocket connections are handled by a [separate server](https://github.com/ornicar/lila-ws) that communicates using [redis](https://redis.io/).
@@ -32,13 +32,13 @@ HTTP requests and WebSocket connections can be proxied by [nginx](https://nginx.
 The web client is written in [TypeScript](https://www.typescriptlang.org/) and [snabbdom](https://github.com/snabbdom/snabbdom), using [Sass](https://sass-lang.com/) to generate CSS.
 The [blog](https://lichess.org/blog) uses a free open content plan from [prismic.io](https://prismic.io).
 All rated games are published in a [free PGN database](https://database.lichess.org).
-Browser testing done with [![Browserstack](https://raw.githubusercontent.com/ornicar/lila/master/public/images/browserstack.png)](https://www.browserstack.com).
+Browser testing done with [Browserstack](https://www.browserstack.com).
 Proxy detection done with [IP2Proxy database](https://www.ip2location.com/database/ip2proxy).
 Please help us [translate Lichess with Crowdin](https://crowdin.com/project/lichess).
 
 See [lichess.org/source](https://lichess.org/source) for a list of repositories.
 
-[Join us on discord](https://discord.gg/hy5jqSs) or in the `#lichess` freenode IRC channel for more info.
+[Join us on Discord](https://discord.gg/lichess) for more info.
 Use [GitHub issues](https://github.com/ornicar/lila/issues) for bug reports and feature requests.
 
 ## Installation
@@ -53,10 +53,6 @@ The Wiki describes [how to setup a development environment](https://github.com/o
 ## HTTP API
 
 Feel free to use the [Lichess API](https://lichess.org/api) in your applications and websites.
-
-## Credits
-
-See the [contributors](https://github.com/ornicar/lila/graphs/contributors) on this repository and [lichess.org/thanks](https://lichess.org/thanks).
 
 ## Supported browsers
 
@@ -74,5 +70,11 @@ For your own sake, please upgrade. Security and performance, think about it!
 ## License
 
 Lila is licensed under the GNU Affero General Public License 3 or any later
-version at your choice with an exception for Highcharts. See COPYING for
+version at your choice with an exception for Highcharts. See [copying](https://github.com/ornicar/lila/blob/master/COPYING.md) for
 details.
+
+## Credits
+
+See [lichess.org/thanks](https://lichess.org/thanks) and the contributors here:
+
+[![GitHub contributors](https://contrib.rocks/image?repo=ornicar/lila)](https://github.com/ornicar/lila/graphs/contributors)

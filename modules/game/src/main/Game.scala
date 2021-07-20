@@ -456,7 +456,7 @@ case class Game(
 
   private def outoftimeClock(withGrace: Boolean): Boolean =
     clock ?? { c =>
-      started && playable && (bothPlayersHaveMoved || isSimul || isSwiss || fromFriend || fromApi) && {
+      started && playable && {
         c.outOfTime(turnColor, withGrace) || {
           !c.isRunning && c.players.exists(_.elapsed.centis > 0)
         }
@@ -670,7 +670,11 @@ object Game {
     chess.variant.Chess960,
     chess.variant.KingOfTheHill,
     chess.variant.ThreeCheck,
-    chess.variant.FromPosition
+    chess.variant.FromPosition,
+    chess.variant.Antichess,
+    chess.variant.Atomic,
+    chess.variant.RacingKings,
+    chess.variant.Horde
   )
 
   val hordeWhitePawnsSince = new DateTime(2015, 4, 11, 10, 0)
@@ -709,7 +713,9 @@ object Game {
 
   def isBoardCompatible(game: Game): Boolean =
     game.clock.fold(true) { c =>
-      isBoardCompatible(c.config)
+      isBoardCompatible(c.config) || {
+        (game.hasAi || game.fromFriend) && chess.Speed(c.config) >= Speed.Bullet
+      }
     }
 
   def isBoardCompatible(clock: Clock.Config): Boolean =

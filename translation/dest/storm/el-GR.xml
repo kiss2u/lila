@@ -15,8 +15,8 @@
     <item quantity="other">%s γύροι</item>
   </plurals>
   <plurals name="playedNbRunsOfPuzzleStorm">
-    <item quantity="one">Παίχθηκε ένας γύρος από %2$s</item>
-    <item quantity="other">Παίχθηκαν %1$s γύροι από %2$s</item>
+    <item quantity="one">Έπαιξε έναν γύρο %2$s</item>
+    <item quantity="other">Έπαιξε %1$s γύρους %2$s</item>
   </plurals>
   <string name="highscoreX">Ρεκόρ: %s</string>
   <string name="score">Βαθμολογία</string>
@@ -38,12 +38,13 @@
   <string name="raceComplete">Ο αγώνας ολοκληρώθηκε!</string>
   <string name="spectating">Παρακολούθηση</string>
   <string name="joinTheRace">Λάβετε μέρος στον αγώνα!</string>
+  <string name="startTheRace">Εκκίνηση αγώνα</string>
   <string name="yourRankX">Κατάταξη: %s</string>
   <string name="waitForRematch">Αναμονή για ρεβάνς</string>
   <string name="nextRace">Επόμενος αγώνας</string>
   <string name="joinRematch">Συμμετοχή στη ρεβάνς</string>
   <string name="waitingToStart">Αναμονή για έναρξη</string>
-  <string name="createNewGame">Δημιουργία νέου αγώνα</string>
+  <string name="createNewGame">Δημιουργία νέου παιχνιδιού</string>
   <string name="joinPublicRace">Συμμετοχή σε δημόσιο αγώνα</string>
   <string name="raceYourFriends">Συμμετοχή σε αγώνα με φίλους</string>
   <string name="skip">παράλειψη</string>

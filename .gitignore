@@ -11,7 +11,6 @@ project/metals.sbt
 project/project
 project/target
 public/compiled
-public/vendor/bar-rating
 public/vendor/highcharts-4.2.5
 public/vendor/hopscotch
 public/vendor/tagify
@@ -27,6 +26,8 @@ node_modules/
 local/
 ui/common/**/*.js
 ui/common/**/*.d.ts
+ui/chess/**/*.js
+ui/chess/**/*.d.ts
 ui/game/**/*.js
 ui/game/**/*.d.ts
 ui/nvui/**/*.js

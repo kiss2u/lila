@@ -62,10 +62,10 @@ function controls(ctrl: Controller): VNode {
     },
     [
       h('div.jumps', [
-        jumpButton('W', 'first', !node.ply),
-        jumpButton('Y', 'prev', !node.ply),
-        jumpButton('X', 'next', !nextNode, goNext),
-        jumpButton('V', 'last', !nextNode, goNext),
+        jumpButton('', 'first', !node.ply),
+        jumpButton('', 'prev', !node.ply),
+        jumpButton('', 'next', !nextNode, goNext),
+        jumpButton('', 'last', !nextNode, goNext),
       ]),
     ]
   );
@@ -74,6 +74,7 @@ function controls(ctrl: Controller): VNode {
 let cevalShown = false;
 
 export default function (ctrl: Controller): VNode {
+  if (ctrl.nvui) return ctrl.nvui.render(ctrl);
   const showCeval = ctrl.vm.showComputer(),
     gaugeOn = ctrl.showEvalGauge();
   if (cevalShown !== showCeval) {
@@ -87,7 +88,7 @@ export default function (ctrl: Controller): VNode {
       hook: {
         postpatch(old, vnode) {
           if (old.data!.gaugeOn !== gaugeOn) {
-            if (ctrl.pref.coords == 2) {
+            if (ctrl.pref.coords === Prefs.Coords.Outside) {
               $('body').toggleClass('coords-in', gaugeOn).toggleClass('coords-out', !gaugeOn);
               changeColorHandle();
             }
@@ -108,7 +109,10 @@ export default function (ctrl: Controller): VNode {
       h(
         'div.puzzle__board.main-board' + (ctrl.pref.blindfold ? '.blindfold' : ''),
         {
-          hook: 'ontouchstart' in window ? undefined : bind('wheel', e => wheel(ctrl, e as WheelEvent)),
+          hook:
+            'ontouchstart' in window || lichess.storage.get('scrollMoves') == '0'
+              ? undefined
+              : bind('wheel', e => wheel(ctrl, e as WheelEvent)),
         },
         [chessground(ctrl), ctrl.promotion.view()]
       ),
@@ -147,7 +151,7 @@ function session(ctrl: Controller) {
           },
           attrs: {
             href: `/training/${ctrl.session.theme}/${round.id}`,
-            ...(ctrl.streak ? { target: '_blank' } : {}),
+            ...(ctrl.streak ? { target: '_blank', rel: 'noopener' } : {}),
           },
         },
         rd

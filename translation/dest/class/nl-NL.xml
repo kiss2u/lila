@@ -24,16 +24,15 @@
   <string name="visibleByBothStudentsAndTeachers">Zichtbaar voor zowel leraren als leerlingen van de groep</string>
   <string name="teachersOfTheClass">Leraren binnen de groep</string>
   <string name="addLichessUsernames">Voeg Lichess gebruikersnamen toe om ze als leraar uit te nodigen. Eén per regel.</string>
-  <string name="theyMustFirstApply">Ze moeten zich eerst aanmelden om Lichess leraren te worden.</string>
   <string name="resetPassword">Reset wachtwoord</string>
   <string name="makeSureToCopy">Zorg ervoor dat je het wachtwoord nu kopieert of opschrijft. Je kunt het later niet meer zien!</string>
   <string name="passwordX">Wachtwoord: %s</string>
   <string name="generateANewPassword">Genereer een nieuw wachtwoord voor de leerling</string>
-  <string name="invitedToXByY" comment="invitedToXByY&#10;&#10;%1$s is the Class name and %2$s is the person who invited">Uitgenodigd tot %1$s door %2$s</string>
+  <string name="invitedToXByY">Uitgenodigd tot %1$s door %2$s</string>
   <string name="realName">Echte naam</string>
   <string name="privateWillNeverBeShown">Privé. Wordt nooit getoond buiten de groep. Helpt onthouden wie de leerling is.</string>
   <string name="addStudent">Voeg een student toe</string>
-  <string name="lichessProfileXCreatedForY" comment="lichessProfileXCreatedForY&#10;&#10;%1$s is the created account (nickname) &#10;%2$s is the real name of the student (only visible for the teacher)">Lichess profiel %1$s gemaakt voor %2$s.</string>
+  <string name="lichessProfileXCreatedForY">Lichess profiel %1$s gemaakt voor %2$s.</string>
   <string name="studentCredentials">Student:  %1$s
 Gebruikersnaam: %2$s
 Wachtwoord: %3$s</string>
@@ -53,7 +52,7 @@ Wachtwoord: %3$s</string>
 Hier is de link om toegang te krijgen tot de groep.</string>
   <string name="invitationToClass">Je bent uitgenodigd om als leerling deel te nemen aan klas \"%s\".</string>
   <string name="clickToViewInvitation">Klik op de link om de uitnodiging te bekijken:</string>
-  <plurals name="nbPendingInvitations" comment="nbPendingInvitations [one] [other]&#10;&#10;Shown to the teacher, in teacher dashboard.">
+  <plurals name="nbPendingInvitations">
     <item quantity="one">Eén openstaande uitnodiging</item>
     <item quantity="other">%s openstaande uitnodigingen</item>
   </plurals>
@@ -68,6 +67,10 @@ Hier is de link om toegang te krijgen tot de groep.</string>
   <string name="releaseDesc1">Een vrijgegeven account kan niet opnieuw worden beheerd. De student kan dan zelf de kind-modus veranderen of het wachtwoord resetten.</string>
   <string name="releaseDesc2">De leerling blijft in de groep nadat zijn account is vrijgegeven.</string>
   <string name="realUniqueEmail">Echt, unieke e-mailadres van de student. We sturen een bevestigingsmail met een link om het account vrij te geven.</string>
+  <string name="closeStudent">Account sluiten</string>
+  <string name="closeTheAccount">Sluit het leerlingaccount zonder dat ongedaan maken mogelijk is.</string>
+  <string name="closeDesc1">De leerling zal dit dit account nooit meer kunnen gebruiken. Sluiten is definitief. Zorg ervoor dat de leerling dit begrijpt en ermee instemt.</string>
+  <string name="closeDesc2">Je kunt de leerling in plaats daarvan controle over het account geven, zodat de leerling het account kan blijven gebruiken.</string>
   <string name="teachers">Leraren</string>
   <plurals name="nbTeachers">
     <item quantity="one">Leraar</item>
@@ -81,9 +84,9 @@ Hier is de link om toegang te krijgen tot de groep.</string>
   <string name="progress">Voortgang</string>
   <string name="noStudents">Nog geen studenten in de groep.</string>
   <string name="noRemovedStudents">Geen verwijderde studenten.</string>
-  <string name="overDays" comment="overDays&#10;&#10;In the &quot;Progress&quot; tab of a Lichess Class dashboard, &quot;Over days&quot; is the title of a selector. This selector offers a choice between various durations, in days, over which the user can view the progress of the class.">Over dagen</string>
+  <string name="overDays">Over dagen</string>
   <string name="timePlaying">Tijd gespeeld</string>
-  <string name="variantXOverLastY" comment="variantXOverLastY&#10;&#10;The first variable is a game type (Blitz/Bullet, etc).&#10;The second variable is a duration length (in days).&#10;&#10;This is the heading of a column for a table that appears in the &quot;Progress&quot; tab of the Lichess Class dashboard.">%1$s over laatste %2$s</string>
+  <string name="variantXOverLastY">%1$s over laatste %2$s</string>
   <string name="winrate">Winratio</string>
   <string name="na">N.v.t.</string>
   <string name="news">Nieuws voor de groep</string>
@@ -93,5 +96,4 @@ Hier is de link om toegang te krijgen tot de groep.</string>
   <string name="newsEdit1">Alle groepsnieuws in een enkel veld.</string>
   <string name="newsEdit2">Voeg het laatste nieuws toe aan de top. Verwijder vorig nieuws niet.</string>
   <string name="newsEdit3">Scheid het nieuws met --- het zal als een horizontale lijn worden weergeven.</string>
-  <string name="markdownAvailable">%s is beschikbaar voor meer geavanceerde syntaxis.</string>
 </resources>

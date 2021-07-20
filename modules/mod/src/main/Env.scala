@@ -9,21 +9,12 @@ import lila.common.config._
 import lila.user.User
 
 @Module
-private class ModConfig(
-    @ConfigName("collection.player_assessment") val assessmentColl: CollName,
-    @ConfigName("collection.modlog") val modlogColl: CollName,
-    @ConfigName("collection.gaming_history") val gamingHistoryColl: CollName,
-    @ConfigName("boosting.nb_games_to_mark") val boostingNbGamesToMark: Int,
-    @ConfigName("boosting.ratio_games_to_mark") val boostingRatioToMark: Int
-)
-
-@Module
 final class Env(
     appConfig: Configuration,
     db: lila.db.Db,
     reporter: lila.hub.actors.Report,
     fishnet: lila.hub.actors.Fishnet,
-    perfStat: lila.perfStat.Env,
+    perfStat: lila.perfStat.PerfStatApi,
     settingStore: lila.memo.SettingStore.Builder,
     reportApi: lila.report.ReportApi,
     lightUserApi: lila.user.LightUserApi,
@@ -39,20 +30,17 @@ final class Env(
     rankingApi: lila.user.RankingApi,
     noteApi: lila.user.NoteApi,
     cacheApi: lila.memo.CacheApi,
-    slackApi: lila.irc.SlackApi,
+    ircApi: lila.irc.IrcApi,
     msgApi: lila.msg.MsgApi
 )(implicit
     ec: scala.concurrent.ExecutionContext,
-    system: ActorSystem
+    system: ActorSystem,
+    scheduler: Scheduler
 ) {
-
-  private val config = appConfig.get[ModConfig]("mod")(AutoConfig.loader)
-
-  private def scheduler = system.scheduler
-
-  private lazy val logRepo        = new ModlogRepo(db(config.modlogColl))
-  private lazy val assessmentRepo = new AssessmentRepo(db(config.assessmentColl))
-  private lazy val historyRepo    = new HistoryRepo(db(config.gamingHistoryColl))
+  private lazy val logRepo        = new ModlogRepo(db(CollName("modlog")))
+  private lazy val assessmentRepo = new AssessmentRepo(db(CollName("player_assessment")))
+  private lazy val historyRepo    = new HistoryRepo(db(CollName("mod_gaming_history")))
+  private lazy val queueStatsRepo = new ModQueueStatsRepo(db(CollName("mod_queue_stat")))
 
   lazy val logApi = wire[ModlogApi]
 
@@ -69,6 +57,10 @@ final class Env(
   lazy val assessApi = wire[AssessApi]
 
   lazy val gamify = wire[Gamify]
+
+  lazy val activity = wire[ModActivity]
+
+  lazy val queueStats = wire[ModQueueStats]
 
   lazy val search = wire[UserSearch]
 

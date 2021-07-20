@@ -49,7 +49,7 @@ final class Env(
     remoteSocketApi: lila.socket.RemoteSocket,
     isBotSync: lila.common.LightUser.IsBotSync,
     lightUserSync: lila.common.LightUser.GetterSync,
-    slackApi: lila.irc.SlackApi,
+    ircApi: lila.irc.IrcApi,
     ratingFactors: () => lila.rating.RatingFactors,
     shutdown: akka.actor.CoordinatedShutdown
 )(implicit
@@ -178,6 +178,8 @@ final class Env(
   val playing = wire[PlayingUsers]
 
   val tvBroadcast = system.actorOf(Props(wire[TvBroadcast]))
+
+  val apiMoveStream = wire[ApiMoveStream]
 
   def resign(pov: Pov): Unit =
     if (pov.game.abortable) tellRound(pov.gameId, Abort(pov.playerId))

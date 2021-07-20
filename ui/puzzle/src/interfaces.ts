@@ -3,12 +3,13 @@ import { Api as CgApi } from 'chessground/api';
 import { CevalCtrl, NodeEvals } from 'ceval';
 import { Config as CgConfig } from 'chessground/config';
 import { Deferred } from 'common/defer';
-import { Outcome, Role, Move } from 'chessops/types';
+import { Outcome, Move } from 'chessops/types';
 import { Prop } from 'common';
 import { StoredBooleanProp } from 'common/storage';
 import { TreeWrapper } from 'tree';
 import { VNode } from 'snabbdom';
 import PuzzleStreak from './streak';
+import { PromotionCtrl } from 'chess/promotion';
 
 export type MaybeVNode = VNode | string | null | undefined;
 export type MaybeVNodes = MaybeVNode[];
@@ -24,6 +25,8 @@ export interface KeyboardController {
   toggleCeval(): void;
   toggleThreatMode(): void;
   playBestMove(): void;
+  flip(): void;
+  flipped(): boolean;
 }
 
 export type ThemeKey = string;
@@ -43,6 +46,7 @@ export interface Controller extends KeyboardController {
   currentEvals(): NodeEvals;
   ongoing: boolean;
   playUci(uci: string): void;
+  playUciList(uciList: string[]): void;
   getOrientation(): Color;
   threatMode: Prop<boolean>;
   getNode(): Tree.Node;
@@ -59,7 +63,7 @@ export interface Controller extends KeyboardController {
   pref: PuzzlePrefs;
   difficulty?: PuzzleDifficulty;
   userMove(orig: Key, dest: Key): void;
-  promotion: any;
+  promotion: PromotionCtrl;
   autoNext: StoredBooleanProp;
   autoNexting: () => boolean;
   session: PuzzleSession;
@@ -70,6 +74,12 @@ export interface Controller extends KeyboardController {
 
   path?: Tree.Path;
   autoScrollRequested?: boolean;
+
+  nvui?: NvuiPlugin;
+}
+
+export interface NvuiPlugin {
+  render(ctrl: Controller): VNode;
 }
 
 export interface Vm {
@@ -107,7 +117,7 @@ export interface PuzzleOpts {
 }
 
 export interface PuzzlePrefs {
-  coords: 0 | 1 | 2;
+  coords: Prefs.Coords;
   is3d: boolean;
   destination: boolean;
   rookCastle: boolean;
@@ -189,12 +199,6 @@ export interface PuzzleRound {
   win: boolean;
   ratingDiff: number;
   themes?: RoundThemes;
-}
-
-export interface Promotion {
-  start(orig: Key, dest: Key, callback: (orig: Key, dest: Key, prom: Role) => void): boolean;
-  cancel(): void;
-  view(): MaybeVNode;
 }
 
 export interface MoveTest {

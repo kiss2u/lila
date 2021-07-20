@@ -5,6 +5,7 @@ import { MaybeVNodes } from '../../interfaces';
 import { StudyPracticeData, StudyPracticeCtrl } from './interfaces';
 import { boolSetting } from '../../boolSetting';
 import { view as descView } from '../description';
+import { bindNonPassive } from 'common/snabbdom';
 
 function selector(data: StudyPracticeData) {
   return h(
@@ -70,7 +71,7 @@ export function underboard(ctrl: StudyCtrl): MaybeVNodes {
           'a.feedback.win',
           ctrl.nextChapter()
             ? {
-                hook: bind('click', p.goToNext),
+                hook: bind('click', ctrl.goToNextChapter),
               }
             : {
                 attrs: { href: '/practice' },
@@ -120,7 +121,7 @@ export function side(ctrl: StudyCtrl): VNode {
     h(
       'div.practice__side__chapters',
       {
-        hook: bind('click', e => {
+        hook: bindNonPassive('click', e => {
           e.preventDefault();
           const target = e.target as HTMLElement,
             id = (target.parentNode as HTMLElement).getAttribute('data-id') || target.getAttribute('data-id');
@@ -148,7 +149,7 @@ export function side(ctrl: StudyCtrl): VNode {
               [
                 h('span.status.' + completion, {
                   attrs: {
-                    'data-icon': (loading || active) && completion === 'ongoing' ? 'G' : 'E',
+                    'data-icon': (loading || active) && completion === 'ongoing' ? '' : '',
                   },
                 }),
                 h('h3', chapter.name),
@@ -161,7 +162,7 @@ export function side(ctrl: StudyCtrl): VNode {
     h('div.finally', [
       h('a.back', {
         attrs: {
-          'data-icon': 'I',
+          'data-icon': '',
           href: '/practice',
           title: 'More practice',
         },

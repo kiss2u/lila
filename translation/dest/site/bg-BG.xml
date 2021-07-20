@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Вие играете с белите фигури</string>
   <string name="youPlayTheBlackPieces">Вие играете с черните фигури</string>
   <string name="itsYourTurn">Ваш ред е!</string>
+  <string name="cheatDetected">Открита е измама</string>
   <string name="kingInTheCenter">Царят е в центъра</string>
   <string name="threeChecks">Три шаха</string>
   <string name="raceFinished">Надпреварата завърши</string>
@@ -63,10 +64,10 @@
   <string name="showThreat">Покажи заплаха</string>
   <string name="inLocalBrowser">в локалния браузър</string>
   <string name="toggleLocalEvaluation">Превключване на локална оценка</string>
-  <string name="promoteVariation">Промотиране на вариация</string>
+  <string name="promoteVariation">Повиши вариацията</string>
   <string name="makeMainLine">Направи основна линия</string>
   <string name="deleteFromHere">Изтриване от тук</string>
-  <string name="forceVariation">Покажи като вариант</string>
+  <string name="forceVariation">Покажи като вариация</string>
   <string name="move">Ход</string>
   <string name="variantLoss">Вариант на загуба</string>
   <string name="variantWin">Вариант на победа</string>
@@ -78,7 +79,7 @@
   <string name="losing">Губещ</string>
   <string name="drawn">Реми</string>
   <string name="unknown">Неизвестно</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">База данни</string>
+  <string name="database">База данни</string>
   <string name="whiteDrawBlack">Бели / Реми / Черни</string>
   <string name="averageRatingX">Среден рейтинг: %s</string>
   <string name="recentGames">Скорошни игри</string>
@@ -95,6 +96,7 @@
   <string name="noGameFound">Няма намерени игри</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Защо не включите повече игри в датабазата от менюто?</string>
   <string name="openingExplorer">Изследовател на дебютите</string>
+  <string name="openingEndgameExplorer">Изследовател на дебюти/ендшпили</string>
   <string name="xOpeningExplorer">%s датабаза</string>
   <string name="winPreventedBy50MoveRule">Победата е предотвратена от 50-ходовото правило</string>
   <string name="lossSavedBy50MoveRule">Загубата е преодоляна от правилото за 50 хода</string>
@@ -259,7 +261,6 @@
   <string name="send">Изпрати</string>
   <string name="incrementInSeconds">Добавка в секунди</string>
   <string name="freeOnlineChess">Безплатен онлайн шах</string>
-  <string name="spectators">Зрители:</string>
   <plurals name="nbRated">
     <item quantity="one">%s оценена</item>
     <item quantity="other">%s оценени</item>
@@ -287,7 +288,6 @@
     <item quantity="other">Дай %s sec</item>
   </plurals>
   <string name="thisAccountViolatedTos">Този профил е нарушил Условията за Ползване на Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Този играч изкуствено увеличава/намалява своята оценка</string>
   <string name="openingExplorerAndTablebase">&amp; - Изследовател на дебютите</string>
   <string name="takeback">Върни ход</string>
   <string name="proposeATakeback">Предложи връщане на ход</string>
@@ -360,7 +360,7 @@
     <item quantity="other">%s Добавени игри</item>
   </plurals>
   <string name="thisIsAChessCaptcha">Това е шахматна CAPTCHA.</string>
-  <string name="clickOnTheBoardToMakeYourMove">Играйте хода си на дъската и докажете че сте човек</string>
+  <string name="clickOnTheBoardToMakeYourMove">Играйте хода си на дъската и докажете че сте човек.</string>
   <string name="captcha.fail">Моля решете шахматната captcha</string>
   <string name="notACheckmate">Не е шах-и-мат</string>
   <string name="whiteCheckmatesInOneMove">Белите на ход, мат в един ход</string>
@@ -441,6 +441,8 @@
   <string name="boardEditor">Шахматен редактор</string>
   <string name="setTheBoard">Подреди дъската</string>
   <string name="popularOpenings">Популярни дебюти</string>
+  <string name="endgamePositions">Ендшпилни позиции</string>
+  <string name="chess960StartPosition">Начална позиция в Chess960: %s</string>
   <string name="startPosition">Начална позиция</string>
   <string name="clearBoard">Празна дъска</string>
   <string name="savePosition">Запази позицията</string>
@@ -456,7 +458,7 @@
   <string name="firstName">Име</string>
   <string name="lastName">Презиме</string>
   <string name="biography">Животопис</string>
-  <string name="country">Страна</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Държава или знаме</string>
   <string name="thankYou">Благодаря!</string>
   <string name="socialMediaLinks">Връзки към социални медии</string>
   <string name="inlineNotation">Вградена нотация</string>
@@ -616,7 +618,7 @@
   <string name="really">наистина</string>
   <string name="contribute">Принос</string>
   <string name="termsOfService">Условия</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Програмен Код</string>
+  <string name="sourceCode">Програмен Код</string>
   <string name="simultaneousExhibitions">Сеанси</string>
   <string name="host">Домакин</string>
   <string name="hostColorX">Домакин: %s</string>
@@ -679,8 +681,10 @@
   <string name="printFriendlyPDF">PDF за принтиране</string>
   <string name="crosstable">Таблица</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Може още да скролираш върху дъската, за да местиш ходовете.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Задръжте курсора над компютърните вариации за да ги прегледате.</string>
   <string name="analysisShapesHowTo">Натисни shift едновременно с ляво или дясно копче за да рисуваш кръгове и стрелки върху дъската.</string>
   <string name="letOtherPlayersMessageYou">Разреши на другите да ви пишат</string>
+  <string name="receiveForumNotifications">Получаване на съобщения когато сте споменати във форума</string>
   <string name="shareYourInsightsData">Споделете измерванията върху вашата игра</string>
   <string name="withNobody">С никой</string>
   <string name="withFriends">С приятели</string>
@@ -692,8 +696,7 @@
   <string name="enableKidMode">Включване на детски режим</string>
   <string name="disableKidMode">Изключване на детски режим</string>
   <string name="security">Сигурност</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Това е списъкът на устройствата, които са логнати във вашия акаунт. Отменете всички сесии, които не разпознавате.</string>
-  <string name="alternativelyYouCanX">Като алтернатива можете да %s.</string>
+  <string name="sessions">Сесии</string>
   <string name="revokeAllSessions">отмени всички сесии</string>
   <string name="playChessEverywhere">Играй шах навсякъде</string>
   <string name="asFreeAsLichess">Така безплатно, както lichess</string>
@@ -796,7 +799,7 @@
   <string name="middlegame">Мителшпил</string>
   <string name="endgame">Ендшпил</string>
   <string name="conditionalPremoves">Предварителен ход под условие</string>
-  <string name="addCurrentVariation">Добавяне на настоящата линия</string>
+  <string name="addCurrentVariation">Добавяне на настоящата вариация</string>
   <string name="playVariationToCreateConditionalPremoves">Изиграйте вариация за да създадете предварителни ходове под условие</string>
   <string name="noConditionalPremoves">Без предварителни ходове под условие</string>
   <string name="playX">Играй %s</string>
@@ -826,7 +829,7 @@
   <string name="agreementPolicy">Съгласявам се, че ше спазвам всички правила на Lichess.</string>
   <string name="searchOrStartNewDiscussion">Търси или започни нов разговор</string>
   <string name="edit">Промени</string>
-  <string name="rapid">Скоростен</string>
+  <string name="rapid">Бърз</string>
   <string name="classical">Класически</string>
   <string name="ultraBulletDesc">Изключително бързи игри: под 30 секунди</string>
   <string name="bulletDesc">Много бързи игри: под 3 минути</string>
@@ -848,9 +851,9 @@
   <string name="youCannotPostYetPlaySomeGames">Все още не можете да публикувате във форумите. Изиграйте няколко игри!</string>
   <string name="subscribe">Абонирай се</string>
   <string name="unsubscribe">Отпиши ме</string>
-  <string name="mentionedYouInX"> Ви спомена в \"%1$s\".</string>
+  <string name="mentionedYouInX">Ви спомена в \"%1$s\".</string>
   <string name="xMentionedYouInY">%1$s Ви спомена в \"%2$s\".</string>
-  <string name="invitedYouToX"> Ви покани на \"%1$s\".</string>
+  <string name="invitedYouToX">Ви покани на \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s Ви покани на \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Сега сте в отбора.</string>
   <string name="youHaveJoinedTeamX">Присъединихте се към \"%1$s\".</string>
@@ -858,12 +861,47 @@
   <string name="congratsYouWon">Поздравления, спечелихте!</string>
   <string name="gameVsX">Партия срещу %1$s</string>
   <string name="resVsX">%1$s срещу %2$s</string>
-  <string name="youJustBecamePatron">Станахте Lichess Дарител.</string>
-  <string name="patronAccountExpired">Дарителският Ви статус изтече</string>
-  <string name="pleaseReconsiderRenewIt">Моля подновете подкрепата си!</string>
   <string name="someoneReviewedYourCoachProfile">Някой прегледа Вашия треньорски профил.</string>
   <string name="newPendingReview">В очакване на преглед</string>
   <string name="lostAgainstTOSViolator">Изгубили сте партия срещу някой който е нарушил правилата за ползване на Lichess</string>
   <string name="refundXpointsTimeControlY">Възстановяване: %1$s %2$s точки.</string>
   <string name="timeAlmostUp">Времето почти изтече!</string>
+  <string name="clickToRevealEmailAddress">[Щракнете, за да видите имейл адреса]</string>
+  <string name="download">Изтегли</string>
+  <string name="welcome">Добре дошли!</string>
+  <string name="lichessPatronInfo">Lichess е благотворителна организация и работи с напълно безплатен софтуер и отворен код. Всички разходи за опериране, разработка и съдържание са финансирани единствено от дарения от потребителите ни.</string>
+  <string name="coachManager">Настройки за треньори</string>
+  <string name="streamerManager">Настройки за стриймъри</string>
+  <string name="cancelTournament">Отмени турнира</string>
+  <string name="tournDescription">Описание на турнира</string>
+  <string name="tournDescriptionHelp">Искате да кажете нещо специално на участниците? Моля бъдете кратки. За връзки можете да използвате Markdown: [name](https://url)</string>
+  <string name="ratedFormHelp">Игрите са с рейтинг и влияят на рейтинга на играчите</string>
+  <string name="onlyMembersOfTeam">Само членове на отбора</string>
+  <string name="noRestriction">Без ограничение</string>
+  <string name="minimumRatedGames">Минимален брой игри с рейтинг</string>
+  <string name="minimumRating">Минимален рейтинг</string>
+  <string name="maximumWeeklyRating">Максимален седмичен рейтинг</string>
+  <string name="onlyTitled">Само титулувани играчи</string>
+  <string name="onlyTitledHelp">Изискване на официална титла за участие в турнира</string>
+  <string name="positionInputHelp">За започва всяка игра от зададена позиция, въведете валиден FEN код. 
+Това работи само за стандартни игри, но не с варианти. Можете да използвате %s за да създадете FEN позиция и след това да копирате кода тук.
+За да започват игрите от обичайната позиция, оставете полето празно.</string>
+  <string name="cancelSimul">Отмени сеанса</string>
+  <string name="simulHostcolor">Цвят на домакина във всяка игра</string>
+  <string name="estimatedStart">Очаквано време на започване</string>
+  <string name="simulFeatured">Показва се на %s</string>
+  <string name="simulFeaturedHelp">Показвайте сеанса си всички на %s. Изключете за частни сеанси.</string>
+  <string name="simulDescription">Описание на сеанса</string>
+  <string name="simulDescriptionHelp">Има ли нещо което искате да кажете на участниците?</string>
+  <string name="markdownAvailable">%s е достъпен за разширено форматиране.</string>
+  <string name="inYourLocalTimezone">Във Вашата часова зона</string>
+  <string name="tournChat">Чат в турнира</string>
+  <string name="noChat">Без чат</string>
+  <string name="onlyTeamLeaders">Само организаторите на отбора</string>
+  <string name="onlyTeamMembers">Само членовете на отбора</string>
+  <string name="toggleLocalAnalysis">Включи/изключи локалния компютърен анализ</string>
+  <string name="toggleAllAnalysis">Включи/изключи целия компютърен анализ</string>
+  <string name="playComputerMove">Изиграй най-добрия компютърен ход</string>
+  <string name="analysisOptions">Параметри на анализа</string>
+  <string name="focusChat">Фокусирай текста</string>
 </resources>

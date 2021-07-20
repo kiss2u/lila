@@ -67,7 +67,7 @@ function renderLines(ctx: Ctx, nodes: Tree.Node[], opts: Opts): VNode {
     'lines',
     nodes.map(n => {
       return (
-        retroLine(ctx, n, opts) ||
+        retroLine(ctx, n) ||
         h(
           'line',
           renderMoveAndChildrenOf(ctx, n, {
@@ -100,6 +100,8 @@ function renderMoveAndChildrenOf(ctx: Ctx, node: Tree.Node, opts: Opts): MaybeVN
 }
 
 function renderInline(ctx: Ctx, node: Tree.Node, opts: Opts): VNode {
+  const retro = retroLine(ctx, node);
+  if (retro) return h('interrupt', h('lines', retro));
   return h(
     'inline',
     renderMoveAndChildrenOf(ctx, node, {

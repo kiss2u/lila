@@ -51,7 +51,7 @@ final class ClasApi(
 
     def update(from: Clas, data: ClasForm.ClasData): Fu[Clas] = {
       val clas = data update from
-      userRepo.filterByRole(clas.teachers.toList, Permission.Teacher.dbKey) flatMap { filtered =>
+      userRepo.filterEnabled(clas.teachers.toList) flatMap { filtered =>
         val checked = clas.copy(
           teachers = clas.teachers.toList.filter(filtered.contains).toNel | from.teachers
         )
@@ -272,6 +272,9 @@ final class ClasApi(
             else $unset("archived"),
           fetchNewObject = true
         )
+
+    def closeAccount(s: Student.WithUser): Funit =
+      coll.delete.one($id(s.student.id)).void
 
     private[ClasApi] def sendWelcomeMessage(teacherId: User.ID, student: User, clas: Clas): Funit =
       msgApi

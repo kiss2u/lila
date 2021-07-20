@@ -13,7 +13,7 @@ function puzzleInfos(ctrl: Controller, puzzle: Puzzle): VNode {
   return h(
     'div.infos.puzzle',
     {
-      attrs: dataIcon('-'),
+      attrs: dataIcon(''),
     },
     [
       h('div', [
@@ -28,7 +28,7 @@ function puzzleInfos(ctrl: Controller, puzzle: Puzzle): VNode {
                   {
                     attrs: {
                       href: `/training/${puzzle.id}`,
-                      ...(ctrl.streak ? { target: '_blank' } : {}),
+                      ...(ctrl.streak ? { target: '_blank', rel: 'noopener' } : {}),
                     },
                   },
                   '#' + puzzle.id
@@ -104,7 +104,7 @@ const renderStreak = (streak: PuzzleStreak, noarg: TransNoArg) =>
           h(
             'h1.text',
             {
-              attrs: dataIcon('}'),
+              attrs: dataIcon(''),
             },
             'Puzzle Streak'
           ),
@@ -113,7 +113,7 @@ const renderStreak = (streak: PuzzleStreak, noarg: TransNoArg) =>
       : h(
           'div.puzzle__side__streak__score.text',
           {
-            attrs: dataIcon('}'),
+            attrs: dataIcon(''),
           },
           streak.data.index
         )
@@ -145,7 +145,13 @@ export const userBox = (ctrl: Controller): VNode => {
 export const streakBox = (ctrl: Controller) =>
   h('div.puzzle__side__user', renderStreak(ctrl.streak!, ctrl.trans.noarg));
 
-const difficulties: PuzzleDifficulty[] = ['easiest', 'easier', 'normal', 'harder', 'hardest'];
+const difficulties: [PuzzleDifficulty, number][] = [
+  ['easiest', -600],
+  ['easier', -300],
+  ['normal', 0],
+  ['harder', 300],
+  ['hardest', 600],
+];
 
 export function replay(ctrl: Controller): MaybeVNode {
   const replay = ctrl.getData().replay;
@@ -189,56 +195,75 @@ export function config(ctrl: Controller): MaybeVNode {
       ]),
       h('label', { attrs: { for: id } }, ctrl.trans.noarg('jumpToNextPuzzleImmediately')),
     ]),
-    !ctrl.getData().replay && !ctrl.streak && ctrl.difficulty
-      ? h(
-          'form.puzzle__side__config__difficulty',
-          {
-            attrs: {
-              action: `/training/difficulty/${ctrl.getData().theme.key}`,
-              method: 'post',
-            },
+    !ctrl.getData().replay && !ctrl.streak && ctrl.difficulty ? renderDifficultyForm(ctrl) : null,
+    h('div.puzzle__side__config__toggles', [
+      h(
+        'a.puzzle__side__config__zen.button.button-empty',
+        {
+          hook: bind('click', () => lichess.pubsub.emit('zen')),
+          attrs: {
+            title: 'Keyboard: z',
           },
-          [
-            h(
-              'label',
-              {
-                attrs: { for: 'puzzle-difficulty' },
-              },
-              ctrl.trans.noarg('difficultyLevel')
-            ),
-            h(
-              'select#puzzle-difficulty.puzzle__difficulty__selector',
-              {
-                attrs: { name: 'difficulty' },
-                hook: onInsert(elm =>
-                  elm.addEventListener('change', () => (elm.parentNode as HTMLFormElement).submit())
-                ),
-              },
-              difficulties.map(diff =>
-                h(
-                  'option',
-                  {
-                    attrs: {
-                      value: diff,
-                      selected: diff == ctrl.difficulty,
-                    },
-                  },
-                  ctrl.trans.noarg(diff)
-                )
-              )
-            ),
-          ]
-        )
-      : null,
-    h(
-      'a.puzzle__side__config__zen',
-      {
-        hook: bind('click', () => lichess.pubsub.emit('zen')),
-        attrs: {
-          title: 'Keyboard: z',
         },
-      },
-      ctrl.trans.noarg('zenMode')
-    ),
+        ctrl.trans.noarg('zenMode')
+      ),
+      h(
+        'a.puzzle__side__config__flip.button',
+        {
+          class: { active: ctrl.flipped(), 'button-empty': !ctrl.flipped() },
+          hook: bind('click', ctrl.flip),
+          attrs: {
+            title: 'Keyboard: f',
+          },
+        },
+        ctrl.trans.noarg('flipBoard')
+      ),
+    ]),
   ]);
+}
+
+export function renderDifficultyForm(ctrl: Controller): VNode {
+  return h(
+    'form.puzzle__side__config__difficulty',
+    {
+      attrs: {
+        action: `/training/difficulty/${ctrl.getData().theme.key}`,
+        method: 'post',
+      },
+    },
+    [
+      h(
+        'label',
+        {
+          attrs: { for: 'puzzle-difficulty' },
+        },
+        ctrl.trans.noarg('difficultyLevel')
+      ),
+      h(
+        'select#puzzle-difficulty.puzzle__difficulty__selector',
+        {
+          attrs: { name: 'difficulty' },
+          hook: onInsert(elm => elm.addEventListener('change', () => (elm.parentNode as HTMLFormElement).submit())),
+        },
+        difficulties.map(([key, delta]) =>
+          h(
+            'option',
+            {
+              attrs: {
+                value: key,
+                selected: key == ctrl.difficulty,
+                title:
+                  !!delta &&
+                  ctrl.trans.plural(
+                    delta < 0 ? 'nbPointsBelowYourPuzzleRating' : 'nbPointsAboveYourPuzzleRating',
+                    Math.abs(delta)
+                  ),
+              },
+            },
+            [ctrl.trans.noarg(key), delta ? ` (${delta > 0 ? '+' : ''}${delta})` : '']
+          )
+        )
+      ),
+    ]
+  );
 }

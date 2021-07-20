@@ -86,7 +86,7 @@ object layout {
 
   private def zenToggle(implicit ctx: Context) =
     spaceless(s"""
-  <a data-icon="E" id="zentog" class="text fbt active">
+  <a data-icon="" id="zentog" class="text fbt active">
     ${trans.preferences.zenMode.txt()}
   </a>""")
 
@@ -100,7 +100,7 @@ object layout {
     spaceless(s"""<div>
   <a id="challenge-toggle" class="toggle link">
     <span title="${trans.challenge.challenges
-      .txt()}" class="data-count" data-count="${ctx.nbChallenges}" data-icon="U"></span>
+      .txt()}" class="data-count" data-count="${ctx.nbChallenges}" data-icon=""></span>
   </a>
   <div id="challenge-app" class="dropdown"></div>
 </div>
@@ -115,14 +115,14 @@ object layout {
   private def anonDasher(playing: Boolean)(implicit ctx: Context) =
     spaceless(s"""<div class="dasher">
   <a class="toggle link anon">
-    <span title="${trans.preferences.preferences.txt()}" data-icon="%"></span>
+    <span title="${trans.preferences.preferences.txt()}" data-icon=""></span>
   </a>
   <div id="dasher_app" class="dropdown" data-playing="$playing"></div>
 </div>
 <a href="${routes.Auth.login}?referrer=${ctx.req.path}" class="signin button button-empty">${trans.signIn
       .txt()}</a>""")
 
-  private val clinputLink = a(cls := "link")(span(dataIcon := "y"))
+  private val clinputLink = a(cls := "link")(span(dataIcon := ""))
 
   private def clinput(implicit ctx: Context) =
     div(id := "clinput")(
@@ -175,15 +175,16 @@ object layout {
 
   private val dataVapid         = attr("data-vapid")
   private val dataUser          = attr("data-user")
-  private val dataSocketDomains = attr("data-socket-domains")
+  private val dataSocketDomains = attr("data-socket-domains") := netConfig.socketDomains.mkString(",")
   private val dataI18n          = attr("data-i18n")
   private val dataNonce         = attr("data-nonce")
   private val dataAnnounce      = attr("data-announce")
   val dataSoundSet              = attr("data-sound-set")
   val dataTheme                 = attr("data-theme")
-  val dataAssetUrl              = attr("data-asset-url")
+  val dataPieceSet              = attr("data-piece-set")
+  val dataAssetUrl              = attr("data-asset-url") := netConfig.assetBaseUrl
   val dataAssetVersion          = attr("data-asset-version")
-  val dataDev                   = attr("data-dev")
+  val dataDev                   = attr("data-dev") := (!netConfig.minifiedAssets).option("true")
 
   def apply(
       title: String,
@@ -245,25 +246,30 @@ object layout {
           jsLicense
         ),
         st.body(
-          cls := List(
-            s"${ctx.currentBg} ${current2dTheme.cssClass} ${ctx.currentTheme3d.cssClass} ${ctx.currentPieceSet3d.toString} coords-${ctx.pref.coordsClass}" -> true,
-            "dark-board"                                                                                                                                   -> (ctx.pref.bg == lila.pref.Pref.Bg.DARKBOARD),
-            "piece-letter"                                                                                                                                 -> ctx.pref.pieceNotationIsLetter,
-            "zen"                                                                                                                                          -> ctx.pref.isZen,
-            "blind-mode"                                                                                                                                   -> ctx.blind,
-            "kid"                                                                                                                                          -> ctx.kid,
-            "mobile"                                                                                                                                       -> ctx.isMobileBrowser,
-            "playing fixed-scroll"                                                                                                                         -> playing
-          ),
-          dataDev := (!netConfig.minifiedAssets).option("true"),
+          cls := {
+            val baseClass =
+              s"${ctx.currentBg} ${current2dTheme.cssClass} ${ctx.currentTheme3d.cssClass} ${ctx.currentPieceSet3d.toString} coords-${ctx.pref.coordsClass}"
+            List(
+              baseClass              -> true,
+              "dark-board"           -> (ctx.pref.bg == lila.pref.Pref.Bg.DARKBOARD),
+              "piece-letter"         -> ctx.pref.pieceNotationIsLetter,
+              "zen"                  -> ctx.pref.isZen,
+              "blind-mode"           -> ctx.blind,
+              "kid"                  -> ctx.kid,
+              "mobile"               -> ctx.isMobileBrowser,
+              "playing fixed-scroll" -> playing
+            )
+          },
+          dataDev,
           dataVapid := vapidPublicKey,
           dataUser := ctx.userId,
           dataSoundSet := ctx.currentSoundSet.toString,
-          dataSocketDomains := netConfig.socketDomains.mkString(","),
-          dataAssetUrl := netConfig.assetBaseUrl,
+          dataSocketDomains,
+          dataAssetUrl,
           dataAssetVersion := assetVersion.value,
           dataNonce := ctx.nonce.ifTrue(sameAssetDomain).map(_.value),
           dataTheme := ctx.currentBg,
+          dataPieceSet := ctx.currentPieceSet.name,
           dataAnnounce := AnnounceStore.get.map(a => safeJsonValue(a.json)),
           style := zoomable option s"--zoom:${ctx.zoom}"
         )(
@@ -289,12 +295,12 @@ object layout {
             id := "friend_box",
             dataI18n := safeJsonValue(i18nJsObject(i18nKeys))
           )(
-            div(cls := "friend_box_title")(trans.nbFriendsOnline.plural(0, iconTag("S"))),
+            div(cls := "friend_box_title")(trans.nbFriendsOnline.plural(0, iconTag(""))),
             div(cls := "content_wrap none")(
               div(cls := "content list")
             )
           ),
-          a(id := "reconnecting", cls := "link text", dataIcon := "B")(trans.reconnecting()),
+          a(id := "reconnecting", cls := "link text", dataIcon := "")(trans.reconnecting()),
           loadScripts(moreJs, chessground)
         )
       )
@@ -310,7 +316,7 @@ object layout {
     )
 
     private def reports(implicit ctx: Context) =
-      isGranted(_.SeeReport) option {
+      if (isGranted(_.SeeReport)) {
         blockingReportScores match {
           case (score, mid, high) =>
             a(
@@ -325,7 +331,15 @@ object layout {
               dataIcon := ""
             )
         }
-      }
+      }.some
+      else
+        (isGranted(_.PublicChatView)) option
+          a(
+            cls := "link",
+            title := "Moderation",
+            href := routes.Mod.publicChat,
+            dataIcon := ""
+          )
 
     private def teamRequests(implicit ctx: Context) =
       ctx.teamNbRequests > 0 option
@@ -333,7 +347,7 @@ object layout {
           cls := "link data-count link-center",
           href := routes.Team.requests,
           dataCount := ctx.teamNbRequests,
-          dataIcon := "f",
+          dataIcon := "",
           title := trans.team.teams.txt()
         )
 

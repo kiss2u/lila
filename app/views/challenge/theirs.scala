@@ -27,7 +27,7 @@ object theirs {
           case Status.Created | Status.Offline =>
             frag(
               h1(
-                if (c.isOpen) c.name | "Open Challenge"
+                if (c.isOpen) c.name | "Open challenge"
                 else
                   user.fold[Frag]("Anonymous")(u =>
                     frag(
@@ -52,22 +52,18 @@ object theirs {
                   (c.mode.rated && c.unlimited) option
                     badTag(trans.bewareTheGameIsRatedButHasNoClock()),
                   postForm(cls := "accept", action := routes.Challenge.accept(c.id, color.map(_.name)))(
-                    submitButton(cls := "text button button-fat", dataIcon := "G")(trans.joinTheGame())
+                    submitButton(cls := "text button button-fat", dataIcon := "")(trans.joinTheGame())
                   )
                 )
               } else
                 frag(
                   hr,
                   badTag(
-                    p("This game is rated"),
-                    p(
-                      "You must ",
-                      a(
-                        cls := "button",
-                        href := s"${routes.Auth.login}?referrer=${routes.Round.watcher(c.id, "white")}"
-                      )(trans.signIn()),
-                      " to join it."
-                    )
+                    p(trans.thisGameIsRated()),
+                    a(
+                      cls := "button",
+                      href := s"${routes.Auth.login}?referrer=${routes.Round.watcher(c.id, "white")}"
+                    )(trans.signIn())
                   )
                 )
             )

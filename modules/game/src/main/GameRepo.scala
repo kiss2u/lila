@@ -19,7 +19,8 @@ final class GameRepo(val coll: Coll)(implicit ec: scala.concurrent.ExecutionCont
   import Game.{ ID, BSONFields => F }
   import Player.holdAlertBSONHandler
 
-  def game(gameId: ID): Fu[Option[Game]] = coll.byId[Game](gameId)
+  def game(gameId: ID): Fu[Option[Game]]              = coll.byId[Game](gameId)
+  def gameFromSecondary(gameId: ID): Fu[Option[Game]] = coll.secondaryPreferred.byId[Game](gameId)
 
   def gamesFromSecondary(gameIds: Seq[ID]): Fu[List[Game]] =
     coll.byOrderedIds[Game, ID](gameIds, readPreference = ReadPreference.secondaryPreferred)(_.id)
@@ -390,7 +391,7 @@ final class GameRepo(val coll: Coll)(implicit ec: scala.concurrent.ExecutionCont
       else g
     val userIds = g2.userIds.distinct
     val fen: Option[FEN] = initialFen orElse {
-      (!g2.variant.standardInitialPosition)
+      (g2.variant.fromPosition || g2.variant.chess960)
         .option(Forsyth >> g2.chess)
         .filterNot(_.initial)
     }

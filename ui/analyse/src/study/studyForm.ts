@@ -1,5 +1,5 @@
 import { h, VNode } from 'snabbdom';
-import * as modal from '../modal';
+import { snabModal } from 'common/modal';
 import { prop, Prop } from 'common';
 import { bind, bindSubmit, emptyRedButton } from '../util';
 import { StudyData } from './interfaces';
@@ -17,8 +17,15 @@ export interface StudyFormCtrl {
   relay?: RelayCtrl;
 }
 
-interface FormData {
-  [key: string]: string;
+export interface FormData {
+  name: string;
+  visibility: string;
+  computer: string;
+  explorer: string;
+  cloneable: string;
+  chat: string;
+  sticky: 'true' | 'false';
+  description: 'true' | 'false';
 }
 
 interface Select {
@@ -107,7 +114,7 @@ export function view(ctrl: StudyFormCtrl): VNode {
     ['member', ctrl.trans.noarg('members')],
     ['everyone', ctrl.trans.noarg('everyone')],
   ];
-  return modal.modal({
+  return snabModal({
     class: 'study-edit',
     onClose() {
       ctrl.open(false);
@@ -119,12 +126,24 @@ export function view(ctrl: StudyFormCtrl): VNode {
         'form.form3',
         {
           hook: bindSubmit(e => {
-            const obj: FormData = {};
-            'name visibility computer explorer cloneable chat sticky description'.split(' ').forEach(n => {
-              const el = (e.target as HTMLElement).querySelector('#study-' + n) as HTMLInputElement;
-              if (el) obj[n] = el.value;
-            });
-            ctrl.save(obj, isNew);
+            const getVal = (name: string): string => {
+              const el = (e.target as HTMLElement).querySelector('#study-' + name) as HTMLInputElement;
+              if (el) return el.value;
+              else throw `Missing form input: ${name}`;
+            };
+            ctrl.save(
+              {
+                name: getVal('name'),
+                visibility: getVal('visibility'),
+                computer: getVal('computer'),
+                explorer: getVal('explorer'),
+                cloneable: getVal('cloneable'),
+                chat: getVal('chat'),
+                sticky: getVal('sticky') as 'true' | 'false',
+                description: getVal('description') as 'true' | 'false',
+              },
+              isNew
+            );
           }, ctrl.redraw),
         },
         [
@@ -221,15 +240,24 @@ export function view(ctrl: StudyFormCtrl): VNode {
             })
           ),
           h(`div.form-actions${ctrl.relay ? '' : '.single'}`, [
-            ctrl.relay
-              ? h(
-                  'a',
-                  {
-                    attrs: { href: `/broadcast/-/${data.id}/edit` },
-                  },
-                  'Broadcast settings'
-                )
-              : null,
+            ...(ctrl.relay
+              ? [
+                  h(
+                    'a.text',
+                    {
+                      attrs: { 'data-icon': '', href: `/broadcast/${ctrl.relay.data.tour.id}/edit` },
+                    },
+                    'Tournament settings'
+                  ),
+                  h(
+                    'a.text',
+                    {
+                      attrs: { 'data-icon': '', href: `/broadcast/round/${data.id}/edit` },
+                    },
+                    'Round settings'
+                  ),
+                ]
+              : []),
             h(
               'button.button',
               {

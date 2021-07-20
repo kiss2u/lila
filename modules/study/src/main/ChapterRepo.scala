@@ -30,6 +30,9 @@ final class ChapterRepo(val coll: AsyncColl)(implicit
   def firstByStudy(studyId: Study.Id): Fu[Option[Chapter]] =
     coll(_.find($studyId(studyId)).sort($sort asc "order").one[Chapter])
 
+  private[study] def lastByStudy(studyId: Study.Id): Fu[Option[Chapter]] =
+    coll(_.find($studyId(studyId)).sort($sort desc "order").one[Chapter])
+
   def existsByStudy(studyId: Study.Id): Fu[Boolean] =
     coll(_ exists $studyId(studyId))
 
@@ -96,15 +99,7 @@ final class ChapterRepo(val coll: AsyncColl)(implicit
     }
 
   def nextOrderByStudy(studyId: Study.Id): Fu[Int] =
-    coll(
-      _.primitiveOne[Int](
-        $studyId(studyId),
-        $sort desc "order",
-        "order"
-      )
-    ) dmap { order =>
-      ~order + 1
-    }
+    coll(_.primitiveOne[Int]($studyId(studyId), $sort desc "order", "order")) dmap { ~_ + 1 }
 
   def setConceal(chapterId: Chapter.Id, conceal: Chapter.Ply) =
     coll(_.updateField($id(chapterId), "conceal", conceal)).void

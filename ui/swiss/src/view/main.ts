@@ -36,13 +36,9 @@ export default function (ctrl: SwissCtrl) {
       playerInfo(ctrl) || stats(ctrl) || boards.top(d.boards),
       h('div.swiss__main', [h('div.box.swiss__main-' + d.status, content), boards.many(d.boards)]),
       ctrl.opts.chat
-        ? h('div.chat__members.none', [
-            h('span.number', '\xa0'),
-            ' ',
-            ctrl.trans.noarg('spectators'),
-            ' ',
-            h('span.list'),
-          ])
+        ? h('div.chat__members.none', {
+            hook: onInsert(lichess.watchers),
+          })
         : null,
     ]
   );
@@ -139,7 +135,7 @@ function joinButton(ctrl: SwissCtrl): VNode | undefined {
       {
         attrs: {
           href: '/login?referrer=' + window.location.pathname,
-          'data-icon': 'G',
+          'data-icon': '',
         },
       },
       ctrl.trans('signIn')
@@ -151,10 +147,10 @@ function joinButton(ctrl: SwissCtrl): VNode | undefined {
       {
         attrs: {
           href: `/team/${d.joinTeam}`,
-          'data-icon': 'f',
+          'data-icon': '',
         },
       },
-      'Join the team'
+      ctrl.trans.noarg('joinTeam')
     );
 
   if (d.canJoin)
@@ -163,7 +159,7 @@ function joinButton(ctrl: SwissCtrl): VNode | undefined {
       : h(
           'button.fbt.text.highlight',
           {
-            attrs: dataIcon('G'),
+            attrs: dataIcon(''),
             hook: bind(
               'click',
               _ => {
@@ -185,7 +181,7 @@ function joinButton(ctrl: SwissCtrl): VNode | undefined {
         : h(
             'button.fbt.text.highlight',
             {
-              attrs: dataIcon('G'),
+              attrs: dataIcon(''),
               hook: bind('click', _ => ctrl.join(), ctrl.redraw),
             },
             ctrl.trans.noarg('join')
@@ -195,7 +191,7 @@ function joinButton(ctrl: SwissCtrl): VNode | undefined {
       : h(
           'button.fbt.text',
           {
-            attrs: dataIcon('b'),
+            attrs: dataIcon(''),
             hook: bind('click', ctrl.withdraw, ctrl.redraw),
           },
           ctrl.trans.noarg('withdraw')
@@ -258,7 +254,7 @@ function stats(ctrl: SwissCtrl): VNode | undefined {
             'a.text',
             {
               attrs: {
-                'data-icon': 'x',
+                'data-icon': '',
                 href: `/swiss/${ctrl.data.id}.trf`,
                 download: true,
               },
@@ -269,7 +265,7 @@ function stats(ctrl: SwissCtrl): VNode | undefined {
             'a.text',
             {
               attrs: {
-                'data-icon': 'x',
+                'data-icon': '',
                 href: `/api/swiss/${ctrl.data.id}/games`,
                 download: true,
               },
@@ -280,12 +276,23 @@ function stats(ctrl: SwissCtrl): VNode | undefined {
             'a.text',
             {
               attrs: {
-                'data-icon': 'x',
+                'data-icon': '',
                 href: `/api/swiss/${ctrl.data.id}/results`,
                 download: true,
               },
             },
-            'Download results'
+            'Download results as NDJSON'
+          ),
+          h(
+            'a.text',
+            {
+              attrs: {
+                'data-icon': '',
+                href: `/api/swiss/${ctrl.data.id}/results?as=csv`,
+                download: true,
+              },
+            },
+            'Download results as CSV'
           ),
           h('br'),
           h(

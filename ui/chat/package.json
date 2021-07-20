@@ -3,12 +3,13 @@
   "version": "2.0.0",
   "private": true,
   "description": "lichess.org chat ui",
-  "main": "dist/main.js",
-  "types": "dist/main",
+  "type": "module",
+  "module": "dist/main.js",
+  "types": "dist/main.d.ts",
   "author": "Thibault Duplessis",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "compile": "../../node_modules/typescript/bin/tsc --incremental --outDir ./dist --declaration --inlineSourceMap",
+    "compile": "tsc --incremental --outDir ./dist --declaration --inlineSourceMap",
     "dev": "yarn run compile && rollup --config",
     "prod": "yarn run compile && rollup --config --config-prod"
   },

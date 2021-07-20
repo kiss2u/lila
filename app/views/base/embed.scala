@@ -18,14 +18,15 @@ object embed {
           layout.bits.viewport,
           layout.bits.metaCsp(basicCsp withNonce config.nonce),
           st.headTitle(title),
-          layout.bits.pieceSprite(lila.pref.PieceSet.default),
+          layout.bits.pieceSprite(config.pieceSet),
           cssTagWithTheme(cssModule, config.bg)
         ),
         st.body(cls := s"base highlight ${config.board}")(
           layout.dataSoundSet := SoundSet.silent.key,
-          layout.dataAssetUrl := netConfig.assetBaseUrl,
+          layout.dataAssetUrl,
           layout.dataAssetVersion := assetVersion.value,
           layout.dataTheme := config.bg,
+          layout.dataPieceSet := config.pieceSet.name,
           body
         )
       )

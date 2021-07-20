@@ -39,8 +39,16 @@
   <string name="normal">Vanlig</string>
   <string name="easier">Lettere</string>
   <string name="easiest">Lettest</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">Ett poeng under sjakknøttratingen din</item>
+    <item quantity="other">%s poeng under sjakknøttratingen din</item>
+  </plurals>
   <string name="harder">Verre</string>
   <string name="hardest">Verst</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">Ett poeng over sjakknøttratingen din</item>
+    <item quantity="other">%s poeng over sjakknøttratingen din</item>
+  </plurals>
   <string name="example">Eksempel</string>
   <string name="addAnotherTheme">Legg til tema</string>
   <string name="jumpToNextPuzzleImmediately">Gå til neste sjakknøtt med én gang</string>
@@ -53,6 +61,13 @@
   <string name="streakDescription">Løs verre og verre sjakknøtter og bygg en seiersrekke. Det er ingen klokke, så ta den tiden du trenger. Ett galt trekk og det er slutt! Du kan imidlertid hoppe over ett trekk for hver runde.</string>
   <string name="yourStreakX">Din rekke: %s</string>
   <string name="streakSkipExplanation">Hopp over dette trekket for å bevare rekken din! Funker bare én gang for hver runde.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Fortsett rekken</string>
+  <string name="continueTheStreak">Fortsett rekken</string>
   <string name="newStreak">Ny rekke</string>
+  <string name="fromMyGames">Fra mine partier</string>
+  <string name="lookupOfPlayer">Søk etter sjakknøtter fra en spillers partier</string>
+  <string name="fromXGames">Sjakknøtter fra partier med %s</string>
+  <string name="searchPuzzles">Søk etter sjakknøtter</string>
+  <string name="fromMyGamesNone">Du har ingen sjakknøtter i databasen, men Lichess setter like fullt umåtelig stor pris på deg.
+Spill partier i hurtigsjakk og klassisk sjakk for å øke sjansen for å få med en sjakknøtt!</string>
+  <string name="fromXGamesFound">%1$s sjakknøtter funnet i partier med %2$s</string>
 </resources>

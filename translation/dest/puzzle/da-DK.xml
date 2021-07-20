@@ -39,8 +39,16 @@
   <string name="normal">Normal</string>
   <string name="easier">Nemmere</string>
   <string name="easiest">Nemmest</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">Ét point under din opgave-rating</item>
+    <item quantity="other">%s points under din opgave-rating</item>
+  </plurals>
   <string name="harder">Sværere</string>
   <string name="hardest">Sværest</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">Ét point over din opgave-rating</item>
+    <item quantity="other">%s points over din opgave-rating</item>
+  </plurals>
   <string name="example">Eksempel</string>
   <string name="addAnotherTheme">Tilføj et andet tema</string>
   <string name="jumpToNextPuzzleImmediately">Spring straks videre til næste opgave</string>
@@ -53,6 +61,13 @@
   <string name="streakDescription">Løs gradvist sværere opgaver og opbyg en sejrsstime. Der er intet ur, så tag dig god tid. Ét forkert træk og spillet er ovre! Men du kan springe et træk over per session.</string>
   <string name="yourStreakX">Din stime: %s</string>
   <string name="streakSkipExplanation">Spring dette træk over for at bevare din stime! Virker kun én gang per gennemløb.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Fortsæt stimen</string>
+  <string name="continueTheStreak">Fortsæt stimen</string>
   <string name="newStreak">Ny stime</string>
+  <string name="fromMyGames">Fra mine partier</string>
+  <string name="lookupOfPlayer">Søg opgaver fra en spillers partier</string>
+  <string name="fromXGames">Opgaver fra %s\' partier</string>
+  <string name="searchPuzzles">Søg opgaver</string>
+  <string name="fromMyGamesNone">Du har ingen opgaver i databasen, men Lichess elsker dig alligevel.
+Spil hurtige (rapid) og klassiske (classical) partier for at forøge chancerne for at en af dine opgave tilføjes!</string>
+  <string name="fromXGamesFound">%1$s opgaver fundet i %2$s partier</string>
 </resources>

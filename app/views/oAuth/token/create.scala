@@ -9,7 +9,7 @@ import lila.app.ui.ScalatagsTemplate._
 
 object create {
 
-  def apply(form: Form[lila.oauth.OAuthForm.token.Data], me: lila.user.User)(implicit ctx: Context) = {
+  def apply(form: Form[lila.oauth.OAuthTokenForm.Data], me: lila.user.User)(implicit ctx: Context) = {
 
     val title = "New personal API access token"
 
@@ -36,8 +36,12 @@ object create {
               } || {
                 me.isBot && scope == lila.oauth.OAuthScope.Board.Play
               }
+              val hidden =
+                scope == lila.oauth.OAuthScope.Web.Mod && !(
+                  isGranted(_.Shusher) || isGranted(_.Hunter)
+                )
               val id = s"oauth-scope-${scope.key.replace(":", "_")}"
-              div(
+              !hidden option div(
                 span(
                   form3.cmnToggle(
                     id,

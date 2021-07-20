@@ -1,14 +1,16 @@
-import { h, VNode } from 'snabbdom';
-import { defined, prop, Prop } from 'common';
-import { storedProp, StoredProp } from 'common/storage';
 import * as xhr from 'common/xhr';
-import { bind, bindSubmit, spinner, option, onInsert } from '../util';
-import { variants as xhrVariants, importPgn } from './studyXhr';
-import * as modal from '../modal';
-import { chapter as chapterTour } from './studyTour';
-import { StudyChapterMeta } from './interfaces';
-import { Redraw } from '../interfaces';
 import AnalyseCtrl from '../ctrl';
+import { bind, bindSubmit, spinner, option, onInsert } from '../util';
+import { chapter as chapterTour } from './studyTour';
+import { ChapterData, ChapterMode, Orientation, StudyChapterMeta } from './interfaces';
+import { defined, prop, Prop } from 'common';
+import { h, VNode } from 'snabbdom';
+import { parseFen } from 'chessops/fen';
+import { Redraw } from '../interfaces';
+import { snabModal } from 'common/modal';
+import { storedProp, StoredProp } from 'common/storage';
+import { StudySocketSend } from '../socket';
+import { variants as xhrVariants, importPgn } from './studyXhr';
 
 export const modeChoices = [
   ['normal', 'normalAnalysis'],
@@ -27,7 +29,7 @@ export interface StudyChapterNewFormCtrl {
     open: boolean;
     initial: Prop<boolean>;
     tab: StoredProp<string>;
-    editor: any;
+    editor: LichessEditor | null;
     editorFen: Prop<Fen | null>;
     isDefaultName: boolean;
   };
@@ -35,7 +37,7 @@ export interface StudyChapterNewFormCtrl {
   openInitial(): void;
   close(): void;
   toggle(): void;
-  submit(d: any): void;
+  submit(d: Omit<ChapterData, 'initial'>): void;
   chapters: Prop<StudyChapterMeta[]>;
   startTour(): void;
   multiPgnMax: number;
@@ -43,7 +45,7 @@ export interface StudyChapterNewFormCtrl {
 }
 
 export function ctrl(
-  send: SocketSend,
+  send: StudySocketSend,
   chapters: Prop<StudyChapterMeta[]>,
   setTab: () => void,
   root: AnalyseCtrl
@@ -92,10 +94,13 @@ export function ctrl(
     },
     submit(d) {
       const study = root.study!;
-      d.initial = vm.initial();
-      d.sticky = study.vm.mode.sticky;
-      if (!d.pgn) send('addChapter', d);
-      else importPgn(study.data.id, d);
+      const dd = {
+        ...d,
+        sticky: study.vm.mode.sticky,
+        initial: vm.initial(),
+      };
+      if (!dd.pgn) send('addChapter', dd);
+      else importPgn(study.data.id, dd);
       close();
       setTab();
     },
@@ -135,7 +140,7 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
     : 'normal';
   const noarg = trans.noarg;
 
-  return modal.modal({
+  return snabModal({
     class: 'chapter-new',
     onClose() {
       ctrl.close();
@@ -156,14 +161,16 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
         'form.form3',
         {
           hook: bindSubmit(e => {
-            const o: any = {
+            ctrl.submit({
+              name: fieldValue(e, 'name'),
+              game: fieldValue(e, 'game'),
+              variant: fieldValue(e, 'variant') as VariantKey,
+              pgn: fieldValue(e, 'pgn'),
+              orientation: fieldValue(e, 'orientation') as Orientation,
+              mode: fieldValue(e, 'mode') as ChapterMode,
               fen: fieldValue(e, 'fen') || (ctrl.vm.tab() === 'edit' ? ctrl.vm.editorFen() : null),
               isDefaultName: ctrl.vm.isDefaultName,
-            };
-            'name game variant pgn orientation mode'.split(' ').forEach(field => {
-              o[field] = fieldValue(e, field);
             });
-            ctrl.submit(o);
           }, ctrl.redraw),
         },
         [
@@ -215,7 +222,7 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
                           orientation: currentChapter.setup.orientation,
                           onChange: ctrl.vm.editorFen,
                         };
-                        ctrl.vm.editor = window['LichessEditor'](vnode.elm as HTMLElement, data);
+                        ctrl.vm.editor = window.LichessEditor!(vnode.elm as HTMLElement, data);
                         ctrl.vm.editorFen(ctrl.vm.editor.getFen());
                       });
                     },
@@ -248,6 +255,12 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
                     value: ctrl.root.node.fen,
                     placeholder: noarg('loadAPositionFromFen'),
                   },
+                  hook: onInsert((el: HTMLInputElement) => {
+                    el.addEventListener('change', () => el.reportValidity());
+                    el.addEventListener('input', _ =>
+                      el.setCustomValidity(parseFen(el.value.trim()).isOk ? '' : 'Invalid FEN')
+                    );
+                  }),
                 }),
               ])
             : null,
@@ -267,9 +280,8 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
                         if (!file) return;
                         const reader = new FileReader();
                         reader.onload = function () {
-                          (document.getElementById(
-                            'chapter-pgn'
-                          ) as HTMLTextAreaElement).value = reader.result as string;
+                          (document.getElementById('chapter-pgn') as HTMLTextAreaElement).value =
+                            reader.result as string;
                         };
                         reader.readAsText(file);
                       }),
@@ -308,12 +320,12 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
                 'select#chapter-orientation.form-control',
                 {
                   hook: bind('change', e => {
-                    ctrl.vm.editor && ctrl.vm.editor.setOrientation((e.target as HTMLInputElement).value);
+                    ctrl.vm.editor && ctrl.vm.editor.setOrientation((e.target as HTMLInputElement).value as Color);
                   }),
                 },
-                ['white', 'black'].map(function (color) {
-                  return option(color, currentChapter.setup.orientation, noarg(color));
-                })
+                [...(activeTab === 'pgn' ? ['automatic'] : []), 'white', 'black'].map(c =>
+                  option(c, currentChapter.setup.orientation, noarg(c))
+                )
               ),
             ]),
           ]),
@@ -330,9 +342,22 @@ export function view(ctrl: StudyChapterNewFormCtrl): VNode {
               modeChoices.map(c => option(c[0], mode, noarg(c[1])))
             ),
           ]),
-          modal.button(noarg('createChapter')),
+          modalButton(noarg('createChapter')),
         ]
       ),
     ],
   });
+}
+
+export function modalButton(name: string): VNode {
+  return h(
+    'div.form-actions.single',
+    h(
+      'button.button',
+      {
+        attrs: { type: 'submit' },
+      },
+      name
+    )
+  );
 }

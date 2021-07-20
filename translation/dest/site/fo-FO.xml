@@ -78,7 +78,7 @@
   <string name="losing">Tapir</string>
   <string name="drawn">Javnt</string>
   <string name="unknown">Ókent</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Dátugrunnur</string>
+  <string name="database">Dátugrunnur</string>
   <string name="whiteDrawBlack">Hvítur / Javnt / Svartur</string>
   <string name="averageRatingX">Miðal styrkismeting: %s</string>
   <string name="recentGames">Nýliga telvað talv</string>
@@ -247,7 +247,6 @@
   <string name="send">Send</string>
   <string name="incrementInSeconds">Vøkstur í sekundum</string>
   <string name="freeOnlineChess">Ókeypis talv á netinum</string>
-  <string name="spectators">Áskoðarar:</string>
   <plurals name="nbRated">
     <item quantity="one">%s styrkismettur</item>
     <item quantity="other">%s styrkismett</item>
@@ -275,7 +274,6 @@
     <item quantity="other">Gev %s sekund</item>
   </plurals>
   <string name="thisAccountViolatedTos">Ánarin av hesari konto breyt Lichess tænastutreytirnar</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Hesin telvarin økir ella minkar tilgjørt um styrkitalið</string>
   <string name="openingExplorerAndTablebase">Lat dátugrunn við byrjanar- og endatalvum upp</string>
   <string name="takeback">Tak aftur</string>
   <string name="proposeATakeback">Ber fram ynski um afturtøku</string>
@@ -443,7 +441,6 @@
   <string name="firstName">Fornavn</string>
   <string name="lastName">Eftirnavn</string>
   <string name="biography">Ævilýsing</string>
-  <string name="country">Land</string>
   <string name="thankYou">Takk fyri!</string>
   <string name="socialMediaLinks">Leinki til sosialar miðlar</string>
   <string name="inlineNotation">Innbygd teknskipan</string>
@@ -582,8 +579,8 @@
   <string name="onlyFriends">Bert vinir</string>
   <string name="menu">Valmynd</string>
   <string name="castling">Loypur í borg</string>
-  <string name="whiteCastlingKingside">Hvítur 0-0</string>
-  <string name="blackCastlingKingside">Svartur 0-0</string>
+  <string name="whiteCastlingKingside">Hvítur O-O</string>
+  <string name="blackCastlingKingside">Svartur O-O</string>
   <plurals name="nbForumPosts">
     <item quantity="one">%s uppslag á torgi</item>
     <item quantity="other">%s uppsløg á torgi</item>
@@ -602,7 +599,7 @@
   <string name="really">álvara</string>
   <string name="contribute">Stuðla</string>
   <string name="termsOfService">Tænastutreytir</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Keldukota</string>
+  <string name="sourceCode">Keldukota</string>
   <string name="simultaneousExhibitions">Fjøltelvingar</string>
   <string name="host">Vertur</string>
   <string name="hostColorX">Litur hjá verti: %s</string>
@@ -678,8 +675,6 @@
   <string name="enableKidMode">Vel barnastøðu</string>
   <string name="disableKidMode">Sløkk barnastøðu</string>
   <string name="security">Trygd</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Hetta er ein listi yvir tól, ið hava ritað inn á tína kontu. Strika tær setur, tú ikki kennir aftur.</string>
-  <string name="alternativelyYouCanX">Í øðrum lagi kanst tú %s.</string>
   <string name="revokeAllSessions">strika allar setur (sessions)</string>
   <string name="playChessEverywhere">Telva allastaðni</string>
   <string name="asFreeAsLichess">Ókeypis sum Lichess</string>

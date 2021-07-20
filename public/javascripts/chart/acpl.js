@@ -81,7 +81,6 @@ lichess.advantageChart = function (data, trans, el) {
               threshold: 0,
               lineWidth: 1,
               color: '#d85000',
-              allowPointSelect: true,
               cursor: 'pointer',
               states: {
                 hover: {
@@ -91,7 +90,7 @@ lichess.advantageChart = function (data, trans, el) {
               events: {
                 click: function (event) {
                   if (event.point) {
-                    event.point.select();
+                    event.point.select(true);
                     lichess.pubsub.emit('analysis.chart.click', event.point.x);
                   }
                 },
@@ -114,11 +113,11 @@ lichess.advantageChart = function (data, trans, el) {
           tooltip: {
             pointFormatter: function (format) {
               format = format.replace('{series.name}', trans('advantage'));
-              var eval = data.treeParts[this.x + 1].eval;
-              if (!eval) return;
-              else if (eval.mate) return format.replace('{point.y}', '#' + eval.mate);
-              else if (typeof eval.cp !== 'undefined') {
-                var e = Math.max(Math.min(Math.round(eval.cp / 10) / 10, 99), -99);
+              const ev = data.treeParts[this.x + 1].eval;
+              if (!ev) return;
+              else if (ev.mate) return format.replace('{point.y}', '#' + ev.mate);
+              else if (typeof ev.cp !== 'undefined') {
+                var e = Math.max(Math.min(Math.round(ev.cp / 10) / 10, 99), -99);
                 if (e > 0) e = '+' + e;
                 return format.replace('{point.y}', e);
               }
@@ -150,6 +149,11 @@ lichess.advantageChart = function (data, trans, el) {
             ],
           },
         });
+        el.highcharts.selectPly = ply => {
+          const point = el.highcharts.series[0].data[ply - 1 - data.game.startedAtTurn];
+          if (point) point.select(true);
+          else el.highcharts.getSelectedPoints().forEach(point => point.select(false));
+        };
         lichess.pubsub.emit('analysis.change.trigger');
       });
     });

@@ -5,6 +5,7 @@ import views._
 
 import lila.app._
 import lila.common.{ HTTPRequest, IpAddress }
+import lila.msg.MsgPreset
 
 final class ForumPost(env: Env) extends LilaController(env) with ForumController {
 
@@ -77,14 +78,25 @@ final class ForumPost(env: Env) extends LilaController(env) with ForumController
     }
 
   def delete(categSlug: String, id: String) =
-    Auth { implicit ctx => me =>
+    AuthBody { implicit ctx => me =>
       postApi getPost id flatMap {
         _ ?? { post =>
           if (me.id == ~post.userId && !post.erased)
             postApi.erasePost(post) inject Redirect(routes.ForumPost.redirect(id))
           else
             isGrantedMod(categSlug) flatMap { granted =>
-              (granted | isGranted(_.ModerateForum)) ?? postApi.delete(categSlug, id, me) map { Ok(_) }
+              postApi.delete(categSlug, id, me) inject {
+                implicit val req = ctx.body
+                for {
+                  userId    <- post.userId
+                  reasonOpt <- forms.deleteWithReason.bindFromRequest().value
+                  reason    <- reasonOpt.filter(MsgPreset.forumDeletion.presets.contains)
+                  preset =
+                    if (isGranted(_.ModerateForum)) MsgPreset.forumDeletion.byModerator
+                    else MsgPreset.forumDeletion.byTeamLeader
+                } env.msg.api.systemPost(userId, preset(reason))
+                NoContent
+              }
             }
         }
       }

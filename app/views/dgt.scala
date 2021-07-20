@@ -69,7 +69,7 @@ object dgt {
     )
 
   def play(token: AccessToken)(implicit ctx: Context) =
-    layout("play", embedJsUnsafeLoadThen(s"""LichessDgt.playPage("${token.id.value}")"""))(
+    layout("play", embedJsUnsafeLoadThen(s"""LichessDgt.playPage("${token.plain.secret}")"""))(
       div(id := "dgt-play-zone")(pre(id := "dgt-play-zone-log")),
       div(cls := "dgt__play__help")(
         h2(iconTag("", "If a move is not detected")),
@@ -92,7 +92,7 @@ object dgt {
           st.section(
             h2("Lichess connectivity"),
             if (token.isDefined)
-              p(cls := "text", dataIcon := "E")(
+              p(cls := "text", dataIcon := "")(
                 "You have an OAuth token suitable for DGT play.",
                 br,
                 br,
@@ -149,7 +149,7 @@ object dgt {
                 List((false, trans.no.txt()), (true, trans.yes.txt()))
               ),
               st.small(cls := "form-help")(
-                """Select YES to annouce both your moves and your opponent's moves. Select NO to annouce only your opponent's moves."""
+                """Select YES to announce both your moves and your opponent's moves. Select NO to announce only your opponent's moves."""
               )
             ),
             div(cls := "form-group")(

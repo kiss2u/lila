@@ -50,6 +50,7 @@ object racer {
       ),
       title = "Puzzle Racer",
       zoomable = true,
+      playing = true,
       chessground = false
     ) {
       main(
@@ -71,6 +72,7 @@ object racer {
       s.raceComplete,
       s.spectating,
       s.joinTheRace,
+      s.startTheRace,
       s.yourRankX,
       s.waitForRematch,
       s.nextRace,
@@ -80,7 +82,8 @@ object racer {
       trans.toInviteSomeoneToPlayGiveThisUrl,
       s.skip,
       s.skipHelp,
-      s.skipExplanation
+      s.skipExplanation,
+      trans.flipBoard
     ).map(_.key)
   }
 }

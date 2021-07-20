@@ -315,7 +315,7 @@ final class Tournament(
       create: => Fu[Result]
   ): Fu[Result] = {
     val cost =
-      if (isGranted(_.ManageEvent, me)) 2
+      if (isGranted(_.ManageTournament, me)) 2
       else if (
         me.hasTitle ||
         env.streamer.liveStreamApi.isStreaming(me.id) ||
@@ -625,7 +625,7 @@ final class Tournament(
 
   private val streamerCache = env.memo.cacheApi[Tour.ID, List[UserModel.ID]](64, "tournament.streamers") {
     _.refreshAfterWrite(15.seconds)
-      .maximumSize(64)
+      .maximumSize(256)
       .buildAsyncFuture { tourId =>
         repo.isUnfinished(tourId) flatMap {
           _ ?? {

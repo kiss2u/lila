@@ -76,9 +76,11 @@ export function view(ctrl: ExplorerConfigCtrl): VNode[] {
         'div.choices',
         d.db.available.map(function (s) {
           return h(
-            'span',
+            'button',
             {
-              class: { selected: d.db.selected() === s },
+              attrs: {
+                'aria-pressed': `${d.db.selected() === s}`,
+              },
               hook: bind('click', _ => ctrl.toggleDb(s), ctrl.redraw),
             },
             s
@@ -88,7 +90,7 @@ export function view(ctrl: ExplorerConfigCtrl): VNode[] {
     ]),
     d.db.selected() === 'masters'
       ? h('div.masters.message', [
-          h('i', { attrs: dataIcon('C') }),
+          h('i', { attrs: dataIcon('') }),
           h('p', ctrl.trans('masterDbExplanation', 2200, '1952', '2019')),
         ])
       : h('div', [
@@ -98,9 +100,11 @@ export function view(ctrl: ExplorerConfigCtrl): VNode[] {
               'div.choices',
               d.rating.available.map(function (r) {
                 return h(
-                  'span',
+                  'button',
                   {
-                    class: { selected: d.rating.selected().includes(r) },
+                    attrs: {
+                      'aria-pressed': `${d.rating.selected().includes(r)}`,
+                    },
                     hook: bind('click', _ => ctrl.toggleRating(r), ctrl.redraw),
                   },
                   r.toString()
@@ -114,9 +118,11 @@ export function view(ctrl: ExplorerConfigCtrl): VNode[] {
               'div.choices',
               d.speed.available.map(function (s) {
                 return h(
-                  'span',
+                  'button',
                   {
-                    class: { selected: d.speed.selected().includes(s) },
+                    attrs: {
+                      'aria-pressed': `${d.speed.selected().includes(s)}`,
+                    },
                     hook: bind('click', _ => ctrl.toggleSpeed(s), ctrl.redraw),
                   },
                   s
@@ -130,7 +136,7 @@ export function view(ctrl: ExplorerConfigCtrl): VNode[] {
       h(
         'button.button.button-green.text',
         {
-          attrs: dataIcon('E'),
+          attrs: dataIcon(''),
           hook: bind('click', ctrl.toggleOpen),
         },
         ctrl.trans.noarg('allSet')

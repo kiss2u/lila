@@ -57,7 +57,7 @@ object bits {
         trans.puzzle.history()
       ),
       a(cls := active.active("player"), href := routes.Puzzle.ofPlayer())(
-        "From my games"
+        trans.puzzle.fromMyGames()
       )
     )
 
@@ -94,7 +94,8 @@ object bits {
       trans.showThreat,
       trans.gameOver,
       trans.inLocalBrowser,
-      trans.toggleLocalEvaluation
+      trans.toggleLocalEvaluation,
+      trans.flipBoard
     ).map(_.key)
 
   private val trainingI18nKeys: List[MessageKey] =
@@ -104,7 +105,9 @@ object bits {
       trans.puzzle.yourPuzzleRatingX,
       trans.puzzle.difficultyLevel,
       trans.signUp,
-      trans.puzzle.toGetPersonalizedPuzzles
+      trans.puzzle.toGetPersonalizedPuzzles,
+      trans.puzzle.nbPointsBelowYourPuzzleRating,
+      trans.puzzle.nbPointsAboveYourPuzzleRating
     ).map(_.key) :::
       PuzzleTheme.all.map(_.name.key) :::
       PuzzleTheme.all.map(_.description.key) :::

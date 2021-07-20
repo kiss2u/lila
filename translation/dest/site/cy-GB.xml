@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Chi yw gwyn</string>
   <string name="youPlayTheBlackPieces">Chi yw du</string>
   <string name="itsYourTurn">Dy dro di!</string>
+  <string name="cheatDetected">Twyll wedi ei canfod</string>
   <string name="kingInTheCenter">Teyrn yn y canol</string>
   <string name="threeChecks">Tri siach</string>
   <string name="raceFinished">Rasys drosodd</string>
@@ -74,7 +75,7 @@
   <string name="losing">Colli</string>
   <string name="drawn">Cyfartal</string>
   <string name="unknown">Ddim yn glir</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Bas data</string>
+  <string name="database">Bas data</string>
   <string name="whiteDrawBlack">Gwyn / Cyfartal / Du</string>
   <string name="averageRatingX">Cyfartaledd gradd: %s</string>
   <string name="recentGames">Gemau diweddar</string>
@@ -105,6 +106,30 @@
   <string name="blunder">Camgymeriad difrifol</string>
   <string name="mistake">Camgymeriad</string>
   <string name="inaccuracy">Wallusrwydd</string>
+  <plurals name="nbBlunders">
+    <item quantity="zero">%s camgymeriad difrifol</item>
+    <item quantity="one">%s camgymeriad difrifol</item>
+    <item quantity="two">%s gamgymeriad difrifol</item>
+    <item quantity="few">%s camgymeriad difrifol</item>
+    <item quantity="many">%s camgymeriad difrifol</item>
+    <item quantity="other">%s camgymeriad difrifol</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="zero">%s camgymeriad</item>
+    <item quantity="one">%s camgymeriad</item>
+    <item quantity="two">%s gamgymeriad</item>
+    <item quantity="few">%s camgymeriad</item>
+    <item quantity="many">%s camgymeriad</item>
+    <item quantity="other">%s camgymeriad</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="zero">%s anghywirdeb</item>
+    <item quantity="one">%s anghywirdeb</item>
+    <item quantity="two">%s anghywirdeb</item>
+    <item quantity="few">%s anghywirdeb</item>
+    <item quantity="many">%s anghywirdeb</item>
+    <item quantity="other">%s anghywirdeb</item>
+  </plurals>
   <string name="moveTimes">Amser symudiadau</string>
   <string name="flipBoard">Troi\'r bwrdd</string>
   <string name="threefoldRepetition">Ailadrodd triphlyg</string>
@@ -219,7 +244,6 @@
   <string name="send">Anfon</string>
   <string name="incrementInSeconds">Cynyddiad (eiliadau)</string>
   <string name="freeOnlineChess">Gwyddbwyll ar-lein am ddim</string>
-  <string name="spectators">Ymwelwyr</string>
   <plurals name="nbWins">
     <item quantity="zero">Enillodd %s gêmau</item>
     <item quantity="one">Enillodd %s gêm</item>
@@ -231,7 +255,6 @@
   <string name="exportGames">Allforio</string>
   <string name="ratingRange">Graddfa rhwng</string>
   <string name="thisAccountViolatedTos">Mae\'r defnyddiwr y cyfrif yma wedi torri termau defnyddio Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Mae\'r chwaraewr hwn yn cynyddu/lleihau ei raddfa yn ffug</string>
   <string name="openingExplorerAndTablebase">Porwr agoriadau &amp; bas tabl diweddglo</string>
   <string name="takeback">Cymryd yn ôl</string>
   <string name="proposeATakeback">Awgrymu cymryd yn ôl</string>
@@ -363,7 +386,6 @@
   <string name="firstName">Enw cyntaf</string>
   <string name="lastName">Cyfenw</string>
   <string name="biography">Cofiant</string>
-  <string name="country">Gwlad</string>
   <string name="thankYou">Diolch yn fawr!</string>
   <string name="socialMediaLinks">Dolenni cyfryngau cymdeithasol</string>
   <string name="inlineNotation">Nodiant mewnlin</string>
@@ -503,7 +525,7 @@
   <string name="really">go iawn</string>
   <string name="contribute">Cyfrannu</string>
   <string name="termsOfService">Telerau gwasanaeth</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Côd gwreiddiol</string>
+  <string name="sourceCode">Côd gwreiddiol</string>
   <string name="simultaneousExhibitions">Cystadleuaeth cyfochrog</string>
   <string name="host">Gweinydd</string>
   <string name="hostColorX">Lliw y gwesteiwr: %s</string>
@@ -583,8 +605,6 @@
   <string name="enableKidMode">Galluogi modd plant</string>
   <string name="disableKidMode">Analluogi modd plant</string>
   <string name="security">Diogelwch</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Dyma restr o ddyfeisiau a defnyddiwyd i fewngofnodi i\'ch cyfrif. Analluogwch unrhyw sesiynnau amheus.</string>
-  <string name="alternativelyYouCanX">Fel arall gallwch %s.</string>
   <string name="revokeAllSessions">dirymu pob sesiwn</string>
   <string name="playChessEverywhere">Chwarae gwyddbwyll ym mhobman</string>
   <string name="asFreeAsLichess">Yn ddi-dâl fel lichess</string>

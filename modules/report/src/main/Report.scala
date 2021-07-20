@@ -14,7 +14,7 @@ case class Report(
     score: Report.Score,
     inquiry: Option[Report.Inquiry],
     open: Boolean,
-    processedBy: Option[User.ID]
+    done: Option[Report.Done]
 ) extends Reason.WithReason {
 
   import Report.{ Atom, Score }
@@ -67,7 +67,7 @@ case class Report(
   def process(by: User) =
     copy(
       open = false,
-      processedBy = by.id.some
+      done = Report.Done(by.id, DateTime.now).some
     )
 
   def userIds: List[User.ID] = user :: atoms.toList.map(_.by.value)
@@ -76,6 +76,8 @@ case class Report(
   def isRecentCommOf(sus: Suspect) = isRecentComm && user == sus.user.id
 
   def isAppeal = room == Room.Other && atoms.head.text == Report.appealText
+
+  def isSpontaneous = room == Room.Other && atoms.head.text == Report.spontaneousText
 }
 
 object Report {
@@ -106,6 +108,8 @@ object Report {
     def byLichess = by == ReporterId.lichess
   }
 
+  case class Done(by: User.ID, at: DateTime)
+
   case class Inquiry(mod: User.ID, seenAt: DateTime)
 
   case class WithSuspect(report: Report, suspect: Suspect, isOnline: Boolean) {
@@ -131,7 +135,6 @@ object Report {
     def isAutoComm           = isAutomatic && isComm
     def isAutoBoost          = isAutomatic && isBoost
     def isCoachReview        = isOther && text.contains("COACH REVIEW")
-    def isCommFlag           = text contains Reason.Comm.flagText
   }
 
   object Candidate {
@@ -163,8 +166,10 @@ object Report {
             score = score,
             inquiry = none,
             open = true,
-            processedBy = none
+            done = none
           )
         )(_ add c.atom)
     }
+
+  private[report] case class SnoozeKey(snoozerId: User.ID, reportId: Report.ID) extends lila.memo.Snooze.Key
 }

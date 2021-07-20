@@ -24,16 +24,15 @@
   <string name="visibleByBothStudentsAndTeachers">Həm müəllimlər, həm də sinif şagirdləri tərəfindən görünür</string>
   <string name="teachersOfTheClass">Sinif müəllimləri</string>
   <string name="addLichessUsernames">Müəllim kimi dəvət etmək üçün Lichess istifadəçi adlarını əlavə edin. Hər sətirdə bir.</string>
-  <string name="theyMustFirstApply">Əvvəlcə Lichess Müəllimi olmaq üçün müraciət etməlidirlər.</string>
   <string name="resetPassword">Şifrəni sıfırla</string>
   <string name="makeSureToCopy">Şifrəni kopyaladığınızdan və ya bir yerə yazdığınızdan əmin olun. Yenidən görə bilməyəcəksiniz!</string>
   <string name="passwordX">Şifrə: %s</string>
   <string name="generateANewPassword">Tələbə üçün yeni bir şifrə yaradın</string>
-  <string name="invitedToXByY" comment="invitedToXByY&#10;&#10;%1$s is the Class name and %2$s is the person who invited">%2$s tərəfindən %1$s adlı sinfə dəvət</string>
+  <string name="invitedToXByY">%2$s tərəfindən %1$s adlı sinfə dəvət</string>
   <string name="realName">Həqiqi ad</string>
   <string name="privateWillNeverBeShown">Şəxsi. Yalnız sinif daxilində göstərilir. Tələbənin kim olduğunu xatırlamağa kömək edir.</string>
   <string name="addStudent">Tələbə əlavə et</string>
-  <string name="lichessProfileXCreatedForY" comment="lichessProfileXCreatedForY&#10;&#10;%1$s is the created account (nickname) &#10;%2$s is the real name of the student (only visible for the teacher)">%2$s üçün %1$s Lichess profili yaradıldı.</string>
+  <string name="lichessProfileXCreatedForY">%2$s üçün %1$s Lichess profili yaradıldı.</string>
   <string name="studentCredentials">Tələbə: %1$s
 İstifadəçi adı: %2$s
 Şifrə: %3$s</string>
@@ -53,7 +52,7 @@
 Sinfə daxil olmaq üçün link.</string>
   <string name="invitationToClass">Tələbə olaraq \"%s\" sinfinə dəvətlisiniz.</string>
   <string name="clickToViewInvitation">Dəvətə baxmaq üçün linkə toxunun:</string>
-  <plurals name="nbPendingInvitations" comment="nbPendingInvitations [one] [other]&#10;&#10;Shown to the teacher, in teacher dashboard.">
+  <plurals name="nbPendingInvitations">
     <item quantity="one">Bir gözlənən dəvət</item>
     <item quantity="other">%s gözlənən dəvət</item>
   </plurals>
@@ -81,9 +80,9 @@ Sinfə daxil olmaq üçün link.</string>
   <string name="progress">İrəliləyiş</string>
   <string name="noStudents">Hələ sinifdə tələbə yoxdur.</string>
   <string name="noRemovedStudents">Çıxarılan tələbə yoxdur.</string>
-  <string name="overDays" comment="overDays&#10;&#10;In the &quot;Progress&quot; tab of a Lichess Class dashboard, &quot;Over days&quot; is the title of a selector. This selector offers a choice between various durations, in days, over which the user can view the progress of the class.">Günlər ərzində</string>
+  <string name="overDays">Günlər ərzində</string>
   <string name="timePlaying">Oynama müddəti</string>
-  <string name="variantXOverLastY" comment="variantXOverLastY&#10;&#10;The first variable is a game type (Blitz/Bullet, etc).&#10;The second variable is a duration length (in days).&#10;&#10;This is the heading of a column for a table that appears in the &quot;Progress&quot; tab of the Lichess Class dashboard.">Son %2$s gündə %1$s</string>
+  <string name="variantXOverLastY">Son %2$s gündə %1$s</string>
   <string name="winrate">Qazanma əmsalı</string>
   <string name="na">Məlumat Yoxdur</string>
   <string name="news">Sinif xəbərləri</string>
@@ -94,5 +93,4 @@ Sinfə daxil olmaq üçün link.</string>
   <string name="newsEdit2">Üstə son xəbərləri əlavə edin. Əvvəlki xəbərləri silməyin.</string>
   <string name="newsEdit3">Xəbərləri bununla ayırın ---
 Bu üfüqi bir xətt göstərəcək.</string>
-  <string name="markdownAvailable">Daha inkişaf etmiş sintaksis üçün %s mövcuddur.</string>
 </resources>

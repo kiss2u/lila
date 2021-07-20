@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Xogas coas brancas</string>
   <string name="youPlayTheBlackPieces">Xogas coas negras</string>
   <string name="itsYourTurn">Tócache!</string>
+  <string name="cheatDetected">Trampa detectada</string>
   <string name="kingInTheCenter">Rei no centro</string>
   <string name="threeChecks">Xaque triplo</string>
   <string name="raceFinished">Carreira finalizada</string>
@@ -78,7 +79,7 @@
   <string name="losing">Perdedor</string>
   <string name="drawn">Leva a táboas</string>
   <string name="unknown">Descoñecido</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Base de datos</string>
+  <string name="database">Base de datos</string>
   <string name="whiteDrawBlack">Brancas / Táboas / Negras</string>
   <string name="averageRatingX">Puntuación media: %s</string>
   <string name="recentGames">Partidas recentes</string>
@@ -95,6 +96,7 @@
   <string name="noGameFound">Non se atoparon partidas</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">E se probas a incluír máis partidas dende o menú de preferencias?</string>
   <string name="openingExplorer">Abrir o explorador</string>
+  <string name="openingEndgameExplorer">Explorador de aperturas/finais</string>
   <string name="xOpeningExplorer">Explorador de aperturas %s</string>
   <string name="winPreventedBy50MoveRule">Victoria impedida pola regra das 50 xogadas</string>
   <string name="lossSavedBy50MoveRule">Derrota impedida pola regra das 50 xogadas</string>
@@ -117,6 +119,18 @@
   <string name="blunder">Pifia</string>
   <string name="mistake">Erro</string>
   <string name="inaccuracy">Imprecisión</string>
+  <plurals name="nbBlunders">
+    <item quantity="one">%s erros graves</item>
+    <item quantity="other">%s erro grave</item>
+  </plurals>
+  <plurals name="nbMistakes">
+    <item quantity="one">%s erro</item>
+    <item quantity="other">%s erros</item>
+  </plurals>
+  <plurals name="nbInaccuracies">
+    <item quantity="one">%s imprecisión</item>
+    <item quantity="other">%s imprecisións</item>
+  </plurals>
   <string name="moveTimes">Tempos por movemento</string>
   <string name="flipBoard">Xirar o taboleiro</string>
   <string name="threefoldRepetition">Repetición tripla de posición</string>
@@ -247,7 +261,6 @@
   <string name="send">Enviar</string>
   <string name="incrementInSeconds">Incremento en segundos</string>
   <string name="freeOnlineChess">Xadrez libre en liña</string>
-  <string name="spectators">Espectadores:</string>
   <plurals name="nbRated">
     <item quantity="one">%s puntuadas</item>
     <item quantity="other">%s puntuadas</item>
@@ -275,7 +288,6 @@
     <item quantity="other">Dar %s segundos</item>
   </plurals>
   <string name="thisAccountViolatedTos">Esta conta violou os Termos de Servizo de Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Este xogador varía artificialmente a súa puntuación</string>
   <string name="openingExplorerAndTablebase">Explorador de aperturas e base de datos de finais</string>
   <string name="takeback">Rectificar xogada</string>
   <string name="proposeATakeback">Propoñer cambio de xogada</string>
@@ -429,6 +441,8 @@ unha análise por ordenador, un chat de xogo e unha URL para compartir.</string>
   <string name="boardEditor">Editor de taboleiro</string>
   <string name="setTheBoard">Configurar o taboleiro</string>
   <string name="popularOpenings">Aperturas populares</string>
+  <string name="endgamePositions">Posicións de finais</string>
+  <string name="chess960StartPosition">Posición de comezo Chess960: %s</string>
   <string name="startPosition">Posición inicial</string>
   <string name="clearBoard">Limpar taboleiro</string>
   <string name="savePosition">Gardar posición</string>
@@ -444,7 +458,7 @@ unha análise por ordenador, un chat de xogo e unha URL para compartir.</string>
   <string name="firstName">Nome</string>
   <string name="lastName">Apelido(s)</string>
   <string name="biography">Biografía</string>
-  <string name="country">País</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">País ou bandeira</string>
   <string name="thankYou">Grazas!</string>
   <string name="socialMediaLinks">Enlaces ás redes sociais</string>
   <string name="inlineNotation">Notación compacta</string>
@@ -604,7 +618,7 @@ unha análise por ordenador, un chat de xogo e unha URL para compartir.</string>
   <string name="really">realmente</string>
   <string name="contribute">Contribuír</string>
   <string name="termsOfService">Termos do Servizo</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Código Fonte</string>
+  <string name="sourceCode">Código Fonte</string>
   <string name="simultaneousExhibitions">Exhibicións simultáneas</string>
   <string name="host">Anfitrión</string>
   <string name="hostColorX">Cor do anfitrión: %s</string>
@@ -667,8 +681,10 @@ unha análise por ordenador, un chat de xogo e unha URL para compartir.</string>
   <string name="printFriendlyPDF">Descargar PDF</string>
   <string name="crosstable">Táboa de cruces</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Tamén podes facer scroll sobre o taboleiro para moverte pola partida.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Mantén pulsado sobre as variantes da análise para previsualizalas.</string>
   <string name="analysisShapesHowTo">Pulsa Mays+clic ou fai clic dereito para debuxar círculos e frechas no taboleiro.</string>
   <string name="letOtherPlayersMessageYou">Permitir que outros xogadores te envíen mensaxes</string>
+  <string name="receiveForumNotifications">Recibe notificacións cando alguén te mencione no foro</string>
   <string name="shareYourInsightsData">Compartir os teus datos estatísticos</string>
   <string name="withNobody">Con ninguén</string>
   <string name="withFriends">Cos teus amigos</string>
@@ -680,8 +696,7 @@ unha análise por ordenador, un chat de xogo e unha URL para compartir.</string>
   <string name="enableKidMode">Activar modo infantil</string>
   <string name="disableKidMode">Desactivar modo infantil</string>
   <string name="security">Seguridade</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Esta é unha lista de dispositivos que teñen iniciado sesión coa túa conta. Peche todas as sesións que non recoñeza.</string>
-  <string name="alternativelyYouCanX">Alternativamente podes %s.</string>
+  <string name="sessions">Sesións</string>
   <string name="revokeAllSessions">pechar todas as sesións</string>
   <string name="playChessEverywhere">Xoga ó xadrez en todas partes</string>
   <string name="asFreeAsLichess">Tan libre coma lichess</string>
@@ -836,4 +851,68 @@ unha análise por ordenador, un chat de xogo e unha URL para compartir.</string>
   <string name="youCannotPostYetPlaySomeGames">Aínda non podes publicar nos foros. Xoga algunhas partidas!</string>
   <string name="subscribe">Subscribirse</string>
   <string name="unsubscribe">Cancelar a subscrición</string>
+  <string name="mentionedYouInX">fuches mencionad@ en \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s mencionouche en \"%2$s\".</string>
+  <string name="invitedYouToX">invitouche a \"%1$s\".</string>
+  <string name="xInvitedYouToY">%1$s invitouche a \"%2$s\".</string>
+  <string name="youAreNowPartOfTeam">Agora es parte do equipo.</string>
+  <string name="youHaveJoinedTeamX">Unícheste a \"%1$s\".</string>
+  <string name="someoneYouReportedWasBanned">Alguén que reportaches foi banead@</string>
+  <string name="congratsYouWon">Parabéns, gañaches!</string>
+  <string name="gameVsX">Xogo contra %1$s</string>
+  <string name="resVsX">%1$s contra %2$s</string>
+  <string name="someoneReviewedYourCoachProfile">Alguén revisou o teu perfil de entrenador/a.</string>
+  <string name="newPendingReview">Nova revisión pendente</string>
+  <string name="lostAgainstTOSViolator">Perdiches con alguén que incumpriu as condicións de servizo de Lichess</string>
+  <string name="refundXpointsTimeControlY">Recuperaches %1$s puntos en %2$s.</string>
+  <string name="timeAlmostUp">Quédache pouco tempo!</string>
+  <string name="clickToRevealEmailAddress">[Pincha para ver o correo electrónico]</string>
+  <string name="download">Descarga</string>
+  <string name="welcome">Benvid@!</string>
+  <string name="lichessPatronInfo">Lichess é unha organización benéfica e un software totalmente libre e de código aberto.
+Tódolos custos de funcionamento, desenvolvemento e contidos financianse unicamente mediante as doazóns d@s usuari@s.</string>
+  <string name="coachManager">Administrador de adestradores/as</string>
+  <string name="streamerManager">Administrador de streamers</string>
+  <string name="cancelTournament">Cancelar o torneo</string>
+  <string name="tournDescription">Descripción do torneo</string>
+  <string name="tournDescriptionHelp">Tes algo en especial que dicir ás participantes? Tenta ser breve. Poden engadir ligazóns de Markdown [name](https://url)</string>
+  <string name="ratedFormHelp">As partidas son puntuadas e impactan nas calificacións das xogadoras</string>
+  <string name="onlyMembersOfTeam">Só membros do equipo</string>
+  <string name="noRestriction">Sen restrición</string>
+  <string name="minimumRatedGames">Mínimo de partidas por puntos</string>
+  <string name="minimumRating">Mínima puntuación</string>
+  <string name="maximumWeeklyRating">Máxima puntuación semanal</string>
+  <string name="onlyTitled">Só xogadoras tituladas</string>
+  <string name="onlyTitledHelp">Require un título oficial para xogar o torneo</string>
+  <string name="positionInputHelp">Pega un FEN válido para comezar cada partida dende unha posición determinada.
+Só funciona para xogos estándar, non con variantes.
+Podes empregar o %s para xerar unha posición FEN e despois pegala aquí.
+Deixa en branco para comezar partidas dende a posición inicial normal.</string>
+  <string name="cancelSimul">Cancela a simulación</string>
+  <string name="simulHostcolor">Cor do anfitrión para cada partida</string>
+  <string name="estimatedStart">Tempo estimado de comezo</string>
+  <string name="simulFeatured">Amosar simultánea en %s</string>
+  <string name="simulFeaturedHelp">Amosa a simultánea públicamente en %s. Deshabilitado para simultáneas privadas.</string>
+  <string name="simulDescription">Descrición da simulación</string>
+  <string name="simulDescriptionHelp">Algo que queiras dicir ás persoas participantes?</string>
+  <string name="markdownAvailable">%s está dispoñíbel para unha sintaxe máis avanzada.</string>
+  <string name="inYourLocalTimezone">Na túa zona horaria</string>
+  <string name="tournChat">Chat do torneo</string>
+  <string name="noChat">Sen chat</string>
+  <string name="onlyTeamLeaders">Só líderes de equipo</string>
+  <string name="onlyTeamMembers">Só membros do equipo</string>
+  <string name="navigateMoveTree">Navegar a árbore de movementos</string>
+  <string name="mouseTricks">Trucos co rato</string>
+  <string name="toggleLocalAnalysis">Cambiar a análise local da computadora</string>
+  <string name="toggleAllAnalysis">Cambiar todo a análise da computadora</string>
+  <string name="playComputerMove">Xogar o mellor movemento da computadora</string>
+  <string name="analysisOptions">Opcións de análise</string>
+  <string name="focusChat">Enfocar o chat</string>
+  <string name="showHelpDialog">Amosa este diálogo de axuda</string>
+  <string name="reopenYourAccount">Abre de novo a túa conta</string>
+  <string name="closedAccountChangedMind">Se pechaches a túa conta pero mudaches de idea, tes unha oportunidade de volver a reactivala.</string>
+  <string name="onlyWorksOnce">Só funcionará unha vez.</string>
+  <string name="cantDoThisTwice">Se pechas a túa conta de novo, non haberá maneira de recuperala.</string>
+  <string name="emailAssociatedToaccount">Dirección de correo electrónico asociada á conta</string>
+  <string name="sentEmailWithLink">Enviámosche un correo electrónico cunha ligazón.</string>
 </resources>

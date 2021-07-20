@@ -1,7 +1,6 @@
 import { attributesModule, classModule, init } from 'snabbdom';
 import boot from './boot';
 import LichessChat from 'chat';
-// eslint-disable-next-line no-duplicate-imports
 import makeCtrl from './ctrl';
 import menuHover from 'common/menuHover';
 import view from './view';
@@ -14,7 +13,7 @@ export function start(opts: AnalyseOpts): AnalyseApi {
   opts.element = document.querySelector('main.analyse') as HTMLElement;
   opts.trans = lichess.trans(opts.i18n);
 
-  const ctrl = new makeCtrl(opts, redraw);
+  const ctrl = (lichess.analysis = new makeCtrl(opts, redraw));
 
   const blueprint = view(ctrl);
   opts.element.innerHTML = '';

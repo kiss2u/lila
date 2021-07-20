@@ -31,6 +31,8 @@ final case class ApiConfig(
       Speed(c) >= Speed.Bullet
     }
 
+  def validRated = mode.casual || clock.isDefined || variant.standard
+
   def mode = chess.Mode(rated)
 
   def autoVariant =
@@ -48,7 +50,7 @@ object ApiConfig extends BaseHumanConfig {
       d: Option[Int],
       r: Boolean,
       c: Option[String],
-      pos: Option[String],
+      pos: Option[FEN],
       tok: Option[String],
       msg: Option[String]
   ) =
@@ -58,7 +60,7 @@ object ApiConfig extends BaseHumanConfig {
       days = d,
       rated = r,
       color = Color.orDefault(~c),
-      position = pos map FEN.apply,
+      position = pos,
       acceptByToken = tok,
       message = msg map Template
     ).autoVariant

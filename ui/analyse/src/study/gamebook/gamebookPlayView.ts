@@ -1,12 +1,14 @@
 import { h, VNode } from 'snabbdom';
-import GamebookPlayCtrl from './gamebookPlayCtrl';
+import GamebookPlayCtrl, { Feedback } from './gamebookPlayCtrl';
 import { bind, dataIcon, iconTag, richHTML } from '../../util';
 // eslint-disable-next-line no-duplicate-imports
 import { State } from './gamebookPlayCtrl';
 
-const defaultComments = {
+const defaultComments: Record<Feedback, string | undefined> = {
   play: 'What would you play in this position?',
   end: 'Congratulations! You completed this lesson.',
+  bad: undefined,
+  good: undefined,
 };
 
 export function render(ctrl: GamebookPlayCtrl): VNode {
@@ -61,7 +63,7 @@ function renderFeedback(ctrl: GamebookPlayCtrl, state: State) {
       {
         hook: bind('click', ctrl.retry),
       },
-      [iconTag('P'), h('span', 'Retry')]
+      [iconTag(''), h('span', 'Retry')]
     );
   if (fb === 'good' && state.comment)
     return h(
@@ -69,7 +71,7 @@ function renderFeedback(ctrl: GamebookPlayCtrl, state: State) {
       {
         hook: bind('click', ctrl.next),
       },
-      [h('span.text', { attrs: dataIcon('G') }, 'Next'), h('kbd', '<space>')]
+      [h('span.text', { attrs: dataIcon('') }, 'Next'), h('kbd', '<space>')]
     );
   if (fb === 'end') return renderEnd(ctrl);
   return h(
@@ -90,15 +92,14 @@ function renderFeedback(ctrl: GamebookPlayCtrl, state: State) {
 }
 
 function renderEnd(ctrl: GamebookPlayCtrl) {
-  const study = ctrl.root.study!,
-    nextChapter = study.nextChapter();
+  const study = ctrl.root.study!;
   return h('div.feedback.end', [
-    nextChapter
+    study.nextChapter()
       ? h(
           'a.next.text',
           {
-            attrs: dataIcon('G'),
-            hook: bind('click', () => study.setChapter(nextChapter.id)),
+            attrs: dataIcon(''),
+            hook: bind('click', study.goToNextChapter),
           },
           'Next chapter'
         )
@@ -106,7 +107,7 @@ function renderEnd(ctrl: GamebookPlayCtrl) {
     h(
       'a.retry',
       {
-        attrs: dataIcon('P'),
+        attrs: dataIcon(''),
         hook: bind('click', () => ctrl.root.userJump(''), ctrl.redraw),
       },
       'Play again'
@@ -114,7 +115,7 @@ function renderEnd(ctrl: GamebookPlayCtrl) {
     h(
       'a.analyse',
       {
-        attrs: dataIcon('A'),
+        attrs: dataIcon(''),
         hook: bind('click', () => study.setGamebookOverride('analyse'), ctrl.redraw),
       },
       'Analyse'

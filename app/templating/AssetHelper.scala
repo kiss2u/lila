@@ -54,6 +54,9 @@ trait AssetHelper { self: I18nHelper with SecurityHelper =>
   def analyseTag                            = jsModule("analysisBoard")
   def analyseNvuiTag(implicit ctx: Context) = ctx.blind option jsModule("analysisBoard.nvui")
 
+  def puzzleTag                            = jsModule("puzzle")
+  def puzzleNvuiTag(implicit ctx: Context) = ctx.blind option jsModule("puzzle.nvui")
+
   def captchaTag          = jsModule("captcha")
   def infiniteScrollTag   = jsModule("infiniteScroll")
   def chessgroundTag      = jsAt("javascripts/vendor/chessground.min.js")
@@ -81,7 +84,6 @@ trait AssetHelper { self: I18nHelper with SecurityHelper =>
       defaultSrc = List("'self'", assets),
       connectSrc = "'self'" :: assets :: sockets ::: env.explorerEndpoint :: env.tablebaseEndpoint :: Nil,
       styleSrc = List("'self'", "'unsafe-inline'", assets),
-      fontSrc = List("'self'", assetDomain.value, "https://fonts.gstatic.com"),
       frameSrc = List("'self'", assets, "https://www.youtube.com", "https://player.twitch.tv"),
       workerSrc = List("'self'", assets),
       imgSrc = List("data:", "*"),

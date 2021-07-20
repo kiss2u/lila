@@ -15,6 +15,7 @@
   <string name="dateAddedOldest">Data engadida (máis antigas)</string>
   <string name="recentlyUpdated">Recentemente actualizado</string>
   <string name="mostPopular">Máis populares</string>
+  <string name="alphabetical">Alfabeticamente</string>
   <string name="addNewChapter">Engadir un novo capítulo</string>
   <plurals name="nbChapters">
     <item quantity="one">%s Capítulo</item>
@@ -62,15 +63,13 @@
   <string name="chapterPgn">PGN do capítulo</string>
   <string name="downloadGame">Descargar partida</string>
   <string name="studyUrl">URL do estudo</string>
-  <string name="broadcastUrl" comment="broadcastUrl&#10;&#10;This is to do with the Broadcasts feature. These are tournaments in the chess world, hosted elsewhere, for example the FIDE Championship. This specific text lets you share the URL. https://lichess.org/broadcast">Ligazón da transmisión</string>
   <string name="currentChapterUrl">Ligazón do capítulo actual</string>
-  <string name="currentGameUrl">Ligazón da partida actual</string>
-  <string name="youCanPasteThisInTheForumToEmbed" comment="youCanPasteThisInTheForumToEmbed&#10;&#10;The thing you are pasting is a link to a study. This will make it appear in the correct section as well.">Podes pegar esto no foro para inserir a partida</string>
+  <string name="youCanPasteThisInTheForumToEmbed">Podes pegar esto no foro para inserir a partida</string>
   <string name="startAtInitialPosition">Comezar desde a posición inicial</string>
   <string name="startAtX">Comezar en %s</string>
   <string name="embedInYourWebsite">Incrustar na túa páxina web ou blog</string>
   <string name="readMoreAboutEmbedding">Ler máis sobre como insertar contido</string>
-  <string name="onlyPublicStudiesCanBeEmbedded" comment="onlyPublicStudiesCanBeEmbedded&#10;&#10;Embedding is when you put the study in another website.">Só poden incorporarse estudos públicos!</string>
+  <string name="onlyPublicStudiesCanBeEmbedded">Só poden incorporarse estudos públicos!</string>
   <string name="open">Abrir</string>
   <string name="xBroughtToYouByY">%1$s traído para ti por %2$s</string>
   <string name="studyNotFound">Estudo non atopado</string>
@@ -129,4 +128,31 @@
   <string name="deleteStudy">Borrar estudio</string>
   <string name="deleteTheEntireStudy">Borrar o estudio enteiro? Non hai volta atrás!</string>
   <string name="whereDoYouWantToStudyThat">Onde queres estudar isto?</string>
+  <string name="goodMove">Bo movemento</string>
+  <string name="mistake">Erro</string>
+  <string name="brilliantMove">Movemento brillante</string>
+  <string name="blunder">Pifia</string>
+  <string name="interestingMove">Movemento interesante</string>
+  <string name="dubiousMove" comment="dubiousMove&#10;A questionable move.">Movemento dubidoso</string>
+  <string name="onlyMove" comment="onlyMove&#10;The only possible move. This is a label that can be placed in a study of a past game. It may not technically be the only move, but the only feasible one.">Movemento único</string>
+  <string name="zugzwang" comment="zugzwang&#10;What zugzwang is: https://lichess.org/practice/intermediate-tactics/zugzwang/9cKgYrHb/ybYJ9gNa&#10;&#10;This specific string is a label that can be applied to a position in a study, to indicate one side is in zugzwang.">Zugzwang</string>
+  <string name="equalPosition">Posición igualada</string>
+  <string name="unclearPosition" comment="unclearPosition&#10;It is unclear who is winning or losing.">Posición pouco clara</string>
+  <string name="whiteIsSlightlyBetter">Brancas lixeiramente mellor</string>
+  <string name="blackIsSlightlyBetter">Negras lixeiramente mellor</string>
+  <string name="whiteIsBetter">As brancas están mellor</string>
+  <string name="blackIsBetter">As negras están mellor</string>
+  <string name="whiteIsWinning">As brancas gañan</string>
+  <string name="blackIsWinning">As negras gañan</string>
+  <string name="novelty" comment="novelty&#10;&#10;A move in the opening that has not been played before.&#10;https://en.wikipedia.org/wiki/Glossary_of_chess#theoretical_novelty">Novidade</string>
+  <string name="development" comment="development&#10;Used in studies - shows that the player made a developing move (e.g. pushing pawns to open their bishops in the opening).">Desenvolvemento</string>
+  <string name="initiative">Iniciativa</string>
+  <string name="attack" comment="attack&#10;A label that can be applied to a position in a Lichess study. Noun.">Ataque</string>
+  <string name="counterplay" comment="counterplay&#10;A label that can be applied to a position in a Lichess study. Noun.&#10;&#10;Generally describes a defending player who is under attack, and makes an attacking move elsewhere.">Contraxogo</string>
+  <string name="timeTrouble" comment="timeTrouble&#10;A label that can be applied to a position in a Lichess study. Noun. Indicates that a player had little time to think and make this move (clock was running low).">Problema de tempo</string>
+  <string name="withCompensation" comment="withCompensation&#10;&#10;Compensation is the short-term positional advantage a player has in exchange for typically material disadvantage. Short term advantages involve initiative and attack.&#10;https://en.wikipedia.org/wiki/Compensation_(chess)">Con compensación</string>
+  <string name="withTheIdea" comment="withTheIdea&#10;A label that can be applied to a position in a Lichess study. Noun.&#10;&#10;Shows that the player was following the theory around an opening, even after the initial opening moves.">Coa idea</string>
+  <string name="nextChapter">Capítulo seguinte</string>
+  <string name="prevChapter">Capítulo anterior</string>
+  <string name="studyActions">Accións de estudo</string>
 </resources>

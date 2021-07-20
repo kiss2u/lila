@@ -35,6 +35,7 @@ object OAuthScope {
   }
 
   object Team {
+    case object Read  extends OAuthScope("team:read", "Read private team information")
     case object Write extends OAuthScope("team:write", "Join, leave, and manage teams")
   }
 
@@ -53,6 +54,8 @@ object OAuthScope {
   object Web {
     case object Login
         extends OAuthScope("web:login", "Create authenticated website sessions (grants full access!)")
+    case object Mod
+        extends OAuthScope("web:mod", "Use moderator tools (within the bounds of your permissions)")
   }
 
   case class Scoped(user: lila.user.User, scopes: List[OAuthScope])
@@ -70,11 +73,13 @@ object OAuthScope {
     Study.Write,
     Tournament.Write,
     Puzzle.Read,
+    Team.Read,
     Team.Write,
     Msg.Write,
     Board.Play,
     Bot.Play,
-    Web.Login
+    Web.Login,
+    Web.Mod
   )
 
   val byKey: Map[String, OAuthScope] = all.map { s =>

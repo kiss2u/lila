@@ -11,7 +11,6 @@ import { path as treePath } from 'tree';
 import { render as renderTreeView } from './treeView/treeView';
 import * as control from './control';
 import { view as actionMenu } from './actionMenu';
-import { view as renderPromotion } from './promotion';
 import renderClocks from './clocks';
 import * as pgnExport from './pgnExport';
 import forecastView from './forecast/forecastView';
@@ -31,10 +30,11 @@ import { render as acplView } from './acpl';
 import AnalyseCtrl from './ctrl';
 import { ConcealOf } from './interfaces';
 import relayManager from './study/relay/relayManagerView';
-import relayIntro from './study/relay/relayIntroView';
+import relayTour from './study/relay/relayTourView';
 import renderPlayerBars from './study/playerBars';
 import serverSideUnderboard from './serverSideUnderboard';
 import * as gridHacks from './gridHacks';
+import { bindNonPassive } from 'common/snabbdom';
 
 function renderResult(ctrl: AnalyseCtrl): VNode[] {
   let result: string | undefined;
@@ -91,6 +91,7 @@ function renderAnalyse(ctrl: AnalyseCtrl, concealOf?: ConcealOf) {
 }
 
 function wheel(ctrl: AnalyseCtrl, e: WheelEvent) {
+  if (ctrl.gamebookPlay()) return;
   const target = e.target as HTMLElement;
   if (target.tagName !== 'PIECE' && target.tagName !== 'SQUARE' && target.tagName !== 'CG-BOARD') return;
   e.preventDefault();
@@ -152,7 +153,7 @@ function inputs(ctrl: AnalyseCtrl): VNode | undefined {
         h(
           'button.button.button-thin.action.text',
           {
-            attrs: dataIcon('G'),
+            attrs: dataIcon(''),
             hook: bind(
               'click',
               _ => {
@@ -232,7 +233,7 @@ function controls(ctrl: AnalyseCtrl) {
                       target: '_blank',
                       rel: 'noopener',
                       href: ctrl.studyPractice.analysisUrl(),
-                      'data-icon': 'A',
+                      'data-icon': '',
                     },
                   }),
                 ]
@@ -241,7 +242,7 @@ function controls(ctrl: AnalyseCtrl) {
                     attrs: {
                       title: noarg('openingExplorerAndTablebase'),
                       'data-act': 'explorer',
-                      'data-icon': ']',
+                      'data-icon': '',
                     },
                     class: {
                       hidden: menuIsOpen || !ctrl.explorer.allowed() || !!ctrl.retro,
@@ -264,10 +265,10 @@ function controls(ctrl: AnalyseCtrl) {
                 ]
           ),
       h('div.jumps', [
-        jumpButton('W', 'first', canJumpPrev),
-        jumpButton('Y', 'prev', canJumpPrev),
-        jumpButton('X', 'next', canJumpNext),
-        jumpButton('V', 'last', canJumpNext),
+        jumpButton('', 'first', canJumpPrev),
+        jumpButton('', 'prev', canJumpPrev),
+        jumpButton('', 'next', canJumpNext),
+        jumpButton('', 'last', canJumpNext),
       ]),
       ctrl.studyPractice
         ? h('div.noop')
@@ -276,7 +277,7 @@ function controls(ctrl: AnalyseCtrl) {
             attrs: {
               title: noarg('menu'),
               'data-act': 'menu',
-              'data-icon': '[',
+              'data-icon': '',
             },
           }),
     ]
@@ -284,7 +285,7 @@ function controls(ctrl: AnalyseCtrl) {
 }
 
 function forceInnerCoords(ctrl: AnalyseCtrl, v: boolean) {
-  if (ctrl.data.pref.coords == 2) {
+  if (ctrl.data.pref.coords === Prefs.Coords.Outside) {
     $('body').toggleClass('coords-in', v).toggleClass('coords-out', !v);
     changeColorHandle();
   }
@@ -307,7 +308,7 @@ export default function (ctrl: AnalyseCtrl): VNode {
     clocks = !playerBars && renderClocks(ctrl),
     gaugeOn = ctrl.showEvalGauge(),
     needsInnerCoords = !!gaugeOn || !!playerBars,
-    intro = relayIntro(ctrl);
+    tour = relayTour(ctrl);
   return h(
     'main.analyse.variant-' + ctrl.data.game.variant.key,
     {
@@ -335,34 +336,34 @@ export default function (ctrl: AnalyseCtrl): VNode {
         'gauge-on': gaugeOn,
         'has-players': !!playerBars,
         'has-clocks': !!clocks,
-        'has-intro': !!intro,
+        'has-relay-tour': !!tour,
         'analyse-hunter': ctrl.opts.hunter,
       },
     },
     [
       ctrl.keyboardHelp ? keyboardView(ctrl) : null,
       study ? studyView.overboard(study) : null,
-      intro ||
+      tour ||
         h(
           addChapterId(study, 'div.analyse__board.main-board'),
           {
             hook:
-              'ontouchstart' in window || ctrl.gamebookPlay()
+              'ontouchstart' in window || lichess.storage.get('scrollMoves') == '0'
                 ? undefined
-                : bind('wheel', (e: WheelEvent) => wheel(ctrl, e)),
+                : bindNonPassive('wheel', (e: WheelEvent) => wheel(ctrl, e)),
           },
           [
             ...(clocks || []),
             playerBars ? playerBars[ctrl.bottomIsWhite() ? 1 : 0] : null,
             chessground.render(ctrl),
             playerBars ? playerBars[ctrl.bottomIsWhite() ? 0 : 1] : null,
-            renderPromotion(ctrl),
+            ctrl.promotion.view(ctrl.data.game.variant.key === 'antichess'),
           ]
         ),
-      gaugeOn && !intro ? cevalView.renderGauge(ctrl) : null,
-      menuIsOpen || intro ? null : crazyView(ctrl, ctrl.topColor(), 'top'),
+      gaugeOn && !tour ? cevalView.renderGauge(ctrl) : null,
+      menuIsOpen || tour ? null : crazyView(ctrl, ctrl.topColor(), 'top'),
       gamebookPlayView ||
-        (intro
+        (tour
           ? null
           : h(addChapterId(study, 'div.analyse__tools'), [
               ...(menuIsOpen
@@ -375,9 +376,9 @@ export default function (ctrl: AnalyseCtrl): VNode {
                     retroView(ctrl) || practiceView(ctrl) || explorerView(ctrl),
                   ]),
             ])),
-      menuIsOpen || intro ? null : crazyView(ctrl, ctrl.bottomColor(), 'bottom'),
-      gamebookPlayView || intro ? null : controls(ctrl),
-      ctrl.embed || intro
+      menuIsOpen || tour ? null : crazyView(ctrl, ctrl.bottomColor(), 'bottom'),
+      gamebookPlayView || tour ? null : controls(ctrl),
+      ctrl.embed || tour
         ? null
         : h(
             'div.analyse__underboard',
@@ -387,7 +388,7 @@ export default function (ctrl: AnalyseCtrl): VNode {
             },
             study ? studyView.underboard(ctrl) : [inputs(ctrl)]
           ),
-      intro ? null : acplView(ctrl),
+      tour ? null : acplView(ctrl),
       ctrl.embed
         ? null
         : ctrl.studyPractice
@@ -397,7 +398,7 @@ export default function (ctrl: AnalyseCtrl): VNode {
             {
               hook: onInsert(elm => {
                 ctrl.opts.$side && ctrl.opts.$side.length && $(elm).replaceWith(ctrl.opts.$side);
-                $(elm).append($('.streamers').clone().removeClass('none'));
+                $(elm).append($('.context-streamers').clone().removeClass('none'));
               }),
             },
             ctrl.studyPractice
@@ -414,7 +415,7 @@ export default function (ctrl: AnalyseCtrl): VNode {
                           {
                             attrs: {
                               href: router.game(ctrl.data, ctrl.data.player.color),
-                              'data-icon': 'i',
+                              'data-icon': '',
                             },
                           },
                           ctrl.trans.noarg('backToGame')
@@ -435,13 +436,9 @@ export default function (ctrl: AnalyseCtrl): VNode {
         }),
       ctrl.embed
         ? null
-        : h(
-            'div.chat__members.none',
-            {
-              hook: onInsert(lichess.watchers),
-            },
-            [h('span.number', '\xa0'), ' ', ctrl.trans.noarg('spectators'), ' ', h('span.list')]
-          ),
+        : h('div.chat__members.none', {
+            hook: onInsert(lichess.watchers),
+          }),
     ]
   );
 }

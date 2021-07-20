@@ -25,6 +25,7 @@
   <string name="youPlayTheWhitePieces">Παίζετε τα λευκά</string>
   <string name="youPlayTheBlackPieces">Παίζετε τα μαύρα</string>
   <string name="itsYourTurn">Είναι η σειρά σας!</string>
+  <string name="cheatDetected">Βρέθηκε απάτη</string>
   <string name="kingInTheCenter">Βασιλιάς στο κέντρο</string>
   <string name="threeChecks">Τρία σαχ</string>
   <string name="raceFinished">Τέλος αγώνα</string>
@@ -78,7 +79,7 @@
   <string name="losing">Χάνει</string>
   <string name="drawn">Ισοπαλία</string>
   <string name="unknown">Άγνωστο</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Βάση δεδομένων</string>
+  <string name="database">Βάση δεδομένων</string>
   <string name="whiteDrawBlack">Λευκά / Ισοπαλία / Μαύρα</string>
   <string name="averageRatingX">Μέση βαθμολογία: %s</string>
   <string name="recentGames">Πρόσφατα παιχνίδια</string>
@@ -95,6 +96,7 @@
   <string name="noGameFound">Δεν βρέθηκε παρτίδα</string>
   <string name="maybeIncludeMoreGamesFromThePreferencesMenu">Δοκιμάστε να συμπεριλάβετε περισσότερα παιχνίδια από το μενού προτιμήσεων.</string>
   <string name="openingExplorer">Εξερευνητής ανοιγμάτων</string>
+  <string name="openingEndgameExplorer">Εξερευνητής ανοιγμάτων/φινάλε</string>
   <string name="xOpeningExplorer">%s εξερευνητής ανοιγμάτων</string>
   <string name="winPreventedBy50MoveRule">H νίκη εμποδίζεται από τον κανόνα των 50 κινήσεων</string>
   <string name="lossSavedBy50MoveRule">Η ήττα αποτρέπεται από τον κανόνα των 50 κινήσεων</string>
@@ -188,8 +190,8 @@
   <string name="changeUsernameNotSame">Μόνο η αλλαγή χαρακτήρων από μικρά σε κεφαλαία επιτρέπεται. Για παράδειγμα \"johndoe\" σε \"JohnDoe\".</string>
   <string name="changeUsernameDescription">Αλλαγή ονόματος χρήστη. Μπορεί να γίνει μόνο μία φορά και μόνο η αλλαγή χαρακτήρων σε μικρά-κεφαλαία στο όνομα χρήστη επιτρέπεται.</string>
   <string name="password">Κωδικός</string>
-  <string name="changePassword">Αλλάξτε κωδικό</string>
-  <string name="changeEmail">Αλλαγή ηλ. ταχυδρομείου</string>
+  <string name="changePassword">Αλλαγή κωδικού</string>
+  <string name="changeEmail">Αλλαγή διεύθυνσης email</string>
   <string name="email">Ηλ. ταχυδρομείο</string>
   <string name="passwordReset">Επαναφορά κωδικού</string>
   <string name="forgotPassword">Ξεχάσατε τον κωδικό;</string>
@@ -230,7 +232,7 @@
   <string name="gameAborted">Παιχνίδι εγκατελήφθη</string>
   <string name="standard">Κανονικό</string>
   <string name="unlimited">Απεριόριστου χρόνου</string>
-  <string name="mode">Ρύθμιση</string>
+  <string name="mode">Τύπος παιχνιδιού</string>
   <string name="casual">Φιλικό</string>
   <string name="rated">Βαθμολογημένο</string>
   <string name="casualTournament">Φιλικό</string>
@@ -259,7 +261,6 @@
   <string name="send">Αποστολή</string>
   <string name="incrementInSeconds">Προσαύξηση σε δευτερόλεπτα</string>
   <string name="freeOnlineChess">Δωρεάν Διαδικτυακό Σκάκι</string>
-  <string name="spectators">Θεατές:</string>
   <plurals name="nbRated">
     <item quantity="one">%s βαθμολογημένο</item>
     <item quantity="other">%s βαθμολογημένα</item>
@@ -287,8 +288,7 @@
     <item quantity="other">Προσθέστε %s δευτερόλεπτα</item>
   </plurals>
   <string name="thisAccountViolatedTos">Αυτός ο λογαριασμός παραβαίνει τους όρους χρήσης του Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Ο παίκτης αυξάνει/μειώνει τεχνητά την βαθμολογία</string>
-  <string name="openingExplorerAndTablebase">Εξερευνητής ανοιγμάτων &amp; τελειωμάτων</string>
+  <string name="openingExplorerAndTablebase">Εξερευνητής ανοιγμάτων &amp; φινάλε</string>
   <string name="takeback">Ανάκληση κίνησης</string>
   <string name="proposeATakeback">Προσφέρετε ανάκληση της προηγούμενης κίνησης</string>
   <string name="takebackPropositionSent">Προσφορά ανάκλησης κίνησης εστάλη</string>
@@ -441,6 +441,8 @@
   <string name="boardEditor">Προετοιμαστής σκακιέρας</string>
   <string name="setTheBoard">Στήστε την σκακιέρα</string>
   <string name="popularOpenings">Δημοφιλή ανοίγματα</string>
+  <string name="endgamePositions">Θέσεις φινάλε</string>
+  <string name="chess960StartPosition">Αρχική θέση Chess960: %s</string>
   <string name="startPosition">Αρχική διάταξη</string>
   <string name="clearBoard">Εκκαθάριση σκακιέρας</string>
   <string name="savePosition">Αποθηκεύστε τη θέση</string>
@@ -456,7 +458,7 @@
   <string name="firstName">Όνομα</string>
   <string name="lastName">Επώνυμο</string>
   <string name="biography">Βιογραφικό</string>
-  <string name="country">Χώρα</string>
+  <string name="countryOrFlag" comment="countryOrFlag&#10;Appears when you edit your profile. Lets a player add a country/flag (not all flags are for countries) to their profile">Χώρα ή σημαία</string>
   <string name="thankYou">Ευχαριστούμε!</string>
   <string name="socialMediaLinks">Σύνδεσμοι κοινωνικών μέσων</string>
   <string name="inlineNotation">Ενσωματωμένη σημειογραφία</string>
@@ -616,7 +618,7 @@
   <string name="really">πραγματικά</string>
   <string name="contribute">Συνεισφέρετε</string>
   <string name="termsOfService">Όροι χρήσης</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Πηγαίος κώδικας</string>
+  <string name="sourceCode">Πηγαίος κώδικας</string>
   <string name="simultaneousExhibitions">Ταυτόχρονες εκθέσεις</string>
   <string name="host">Διοργανωτής</string>
   <string name="hostColorX">Χρώμα διοργανωτή: %s</string>
@@ -679,8 +681,10 @@
   <string name="printFriendlyPDF">PDF φιλικό για εκτύπωση</string>
   <string name="crosstable">Αποτελέσματα</string>
   <string name="youCanAlsoScrollOverTheBoardToMoveInTheGame">Μπορείτε επίσης να κινηθείτε πάνω στην σκακιέρα για να πάτε στο παιχνίδι.</string>
+  <string name="scrollOverComputerVariationsToPreviewThem">Μετακινήστε το ποντίκι σας πάνω στις βαριάντες του υπολογιστή για την προεπισκόπησή τους.</string>
   <string name="analysisShapesHowTo">Πατήστε Shift + κλικ ή δεξί κλικ για να σχεδιάσετε κύκλους και βέλη στην σκακιέρα.</string>
   <string name="letOtherPlayersMessageYou">Επιτρέψτε άλλους παίκτες να σας στέλνουν μηνύματα</string>
+  <string name="receiveForumNotifications">Να λαμβάνετε ειδοποιήσεις όταν γίνεται αναφορά σας στο φόρουμ</string>
   <string name="shareYourInsightsData">Κοινή χρήση των δεδομένων σας</string>
   <string name="withNobody">Με κανέναν</string>
   <string name="withFriends">Με φίλους</string>
@@ -692,8 +696,7 @@
   <string name="enableKidMode">Ενεργοποίηση λειτουργίας παιδιού</string>
   <string name="disableKidMode">Απενεργοποίηση λειτουργίας παιδιού</string>
   <string name="security">Ασφάλεια</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Αυτή είναι η λίστα συσκευών συνδεδεμένες με τον λογαριασμό σας. Ανακαλέστε τις συνεδρίες που δεν αναγνωρίζετε.</string>
-  <string name="alternativelyYouCanX">Εναλλακτικά, μπορείτε να %s.</string>
+  <string name="sessions">Συνεδρίες</string>
   <string name="revokeAllSessions">ανακαλέστε όλες τις συνεδρίες</string>
   <string name="playChessEverywhere">Παίξτε σκάκι παντού</string>
   <string name="asFreeAsLichess">Δωρεάν</string>
@@ -848,9 +851,9 @@
   <string name="youCannotPostYetPlaySomeGames">Δεν μπορείτε να δημοσιεύσετε σε αυτό το φόρουμ ακόμα. Παίξτε μερικά παιχνίδια!</string>
   <string name="subscribe">Εγγραφείτε</string>
   <string name="unsubscribe">Απεγγραφείτε</string>
-  <string name="mentionedYouInX"> σας ανέφερε στο \"%1$s\".</string>
-  <string name="xMentionedYouInY"> Ο χρήστης %1$s σας ανέφερε στο «%2$s».</string>
-  <string name="invitedYouToX"> σας προσκάλεσε στο «%1$s».</string>
+  <string name="mentionedYouInX">σας ανέφερε στο \"%1$s\".</string>
+  <string name="xMentionedYouInY">Ο χρήστης %1$s σας ανέφερε στο «%2$s».</string>
+  <string name="invitedYouToX">σας προσκάλεσε στο «%1$s».</string>
   <string name="xInvitedYouToY">Ο χρήστης %1$s σας προσκάλεσε στο «%2$s».</string>
   <string name="youAreNowPartOfTeam">Είστε πλέον μέλος της ομάδας.</string>
   <string name="youHaveJoinedTeamX">Είστε πλέον μέλος της ομάδας «%1$s».</string>
@@ -858,12 +861,59 @@
   <string name="congratsYouWon">Συγχαρητήρια, κερδίσατε!</string>
   <string name="gameVsX">Παιχνίδι εναντίον %1$s</string>
   <string name="resVsX">%1$s εναντίον %2$s</string>
-  <string name="youJustBecamePatron">Μόλις γίνατε ένας Υποστηρικτής του Lichess.</string>
-  <string name="patronAccountExpired">Η συνδρομή Υποστηρικτή έχει λήξει</string>
-  <string name="pleaseReconsiderRenewIt">Σκεφτείτε να την ανανεώσετε!</string>
   <string name="someoneReviewedYourCoachProfile">Κάποιος άφησε μια κριτική για το προφίλ προπονητή σας.</string>
   <string name="newPendingReview">Νέα κριτική σε αναμονή</string>
   <string name="lostAgainstTOSViolator">Χάσατε από κάποιον που παραβίασε τους όρους χρήσης του Lichess</string>
   <string name="refundXpointsTimeControlY">Επιστροφή πόντων: %1$s %2$s πόντοι βαθμολογίας.</string>
   <string name="timeAlmostUp">Ο χρόνος σας έχει σχεδόν τελειώσει!</string>
+  <string name="clickToRevealEmailAddress">[Κάντε κλικ για να δείτε τη διεύθυνση ηλεκτρονικού ταχυδρομείου]</string>
+  <string name="download">Λήψη</string>
+  <string name="welcome">Καλώς ήρθατε!</string>
+  <string name="lichessPatronInfo">Το Lichess είναι ένα φιλανθρωπικό και εντελώς ελεύθερο λογισμικό ανοιχτού κώδικα.
+Όλα τα εξοδα λειτουργίας, ανάπτυξης και περιεχομένου καλύπτοναι αποκλειστικά από δωρεές χρηστών.</string>
+  <string name="coachManager">Διαχειριστής προπονητή</string>
+  <string name="streamerManager">Διαχειριστής streamer</string>
+  <string name="cancelTournament">Ακύρωση τουρνουά</string>
+  <string name="tournDescription">Περιγραφή του τουρνουά</string>
+  <string name="tournDescriptionHelp">Θέλετε να πείτε κάτι ιδιαίτερο στους παίκτες; Προσπαθήστε να κρατήσετε το μήνυμά σας σύντομο. Μπορείτε να χρησιμοποιείτε συνδέσμους σε Markdown: [name](https://url)</string>
+  <string name="ratedFormHelp">Τα παιχνίδια αξιολογούνται
+και επηρεάζουν τη βαθμολογία των παιχτών</string>
+  <string name="onlyMembersOfTeam">Μόνο μέλη της ομάδας</string>
+  <string name="noRestriction">Χωρίς περιορισμούς</string>
+  <string name="minimumRatedGames">Ελάχιστος αριθμός βαθμολογημένων παιχνιδιών</string>
+  <string name="minimumRating">Ελάχιστη βαθμολογία</string>
+  <string name="maximumWeeklyRating">Μέγιστη εβδομαδιαία βαθμολογία</string>
+  <string name="onlyTitled">Μόνο τιτλούχοι παίκτες</string>
+  <string name="onlyTitledHelp">Να απαιτείται επίσημος τίτλος για τη συμμετοχή στο τουρνουά</string>
+  <string name="positionInputHelp">Επικολλήστε ένα έγκυρο FEN για να ξεκινήσει κάθε παιχνίδι από μια συγκεκριμένη θέση.
+Λειτουργεί μόνο για κανονικά παιχνίδια, όχι για παραλλαγές.
+Μπορείτε να χρησιμοποιήσετε τον %s για να πάρετε το FEN μιας θέσης, και στη συνέχεια να την επικολλήστε το εδώ.
+Μπορείτε να αφήσετε το πλαίσιο κενό για να ξεκινούν οι παρτίδες από την κανονική αρχική θέση.</string>
+  <string name="cancelSimul">Ακύρωση σιμουλτανέ</string>
+  <string name="simulHostcolor">Χρώμα διοργανωτή σε κάθε παιχνίδι</string>
+  <string name="estimatedStart">Εκτιμώμενη ώρα έναρξης</string>
+  <string name="simulFeatured">Προβεβλημένο στο %s</string>
+  <string name="simulFeaturedHelp">Να εμφανίζεται το σιμουλτανέ σε όλους στο %s. Απενεργοποιήστε αυτήν την επιλογή για ιδιωτικά σιμουλτανέ.</string>
+  <string name="simulDescription">Περιγραφή σιμουλτανέ</string>
+  <string name="simulDescriptionHelp">Θέλετε να πείτε κάτι στους συμμετέχοντες;</string>
+  <string name="markdownAvailable">Η μορφή %s είναι διαθέσιμη για μια πιο προχωρημένη σύνταξη.</string>
+  <string name="inYourLocalTimezone">Στη δική σας ζώνη ώρας</string>
+  <string name="tournChat">Δωμάτιο συνομιλίας τουρνουά</string>
+  <string name="noChat">Να μην επιτρέπεται η συνομιλία</string>
+  <string name="onlyTeamLeaders">Μόνο οι αρχηγοί ομάδων</string>
+  <string name="onlyTeamMembers">Μόνο τα μέλη της ομάδας</string>
+  <string name="navigateMoveTree">Πλοηγηθείτε στο δέντρο κινήσεων</string>
+  <string name="mouseTricks">«Κόλπα» με το ποντίκι</string>
+  <string name="toggleLocalAnalysis">Εναλλαγή ανάλυσης τοπικού υπολογιστή</string>
+  <string name="toggleAllAnalysis">Εναλλαγή όλων των αναλύσεων υπολογιστή</string>
+  <string name="playComputerMove">Παίξτε την καλύτερη κίνηση που προτείνει ο υπολογιστής</string>
+  <string name="analysisOptions">Ρυθμίσεις ανάλυσης</string>
+  <string name="focusChat">Εστίαση στο chat</string>
+  <string name="showHelpDialog">Εμφάνιση αυτού του παραθύρου διαλόγου βοήθειας</string>
+  <string name="reopenYourAccount">Ξανανοίξτε τον λογαριασμό σας</string>
+  <string name="closedAccountChangedMind">Αν κλείσατε το λογαριασμό σας, αλλά έχετε αλλάξει γνώμη, μπορείτε να τον ξανανοίξετε.</string>
+  <string name="onlyWorksOnce">Αυτό θα λειτουργήσει μόνο μία φορά.</string>
+  <string name="cantDoThisTwice">Αν κλείσετε το λογαριασμό σας για δεύτερη φορά, δε θα υπάρχει τρόπος να τον ανοίξετε ξανά.</string>
+  <string name="emailAssociatedToaccount">Διεύθυνση ηλεκτρονικού ταχυδρομείου αυτού του λογαριασμού</string>
+  <string name="sentEmailWithLink">Σας στείλαμε ένα email με τον σύνδεσμο.</string>
 </resources>

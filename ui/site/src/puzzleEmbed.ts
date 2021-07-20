@@ -4,11 +4,9 @@ window.onload = () => {
   const el = document.querySelector('#daily-puzzle') as HTMLElement,
     board = el.querySelector('.mini-board') as HTMLAnchorElement,
     [fen, orientation, lm] = board.getAttribute('data-state')!.split(',');
-  board.innerHTML = '<div class="cg-wrap">';
 
   Chessground(board.firstChild as HTMLElement, {
     coordinates: false,
-    resizable: false,
     drawable: { enabled: false, visible: false },
     viewOnly: true,
     fen: fen,

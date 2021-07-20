@@ -39,8 +39,16 @@
   <string name="normal">Arrunta</string>
   <string name="easier">Erraza</string>
   <string name="easiest">Errazena</string>
+  <plurals name="nbPointsBelowYourPuzzleRating">
+    <item quantity="one">Ariketen zure puntuazioa baino puntu bat beherago</item>
+    <item quantity="other">Ariketen zure puntuazioa baino %s puntu beherago</item>
+  </plurals>
   <string name="harder">Zaila</string>
   <string name="hardest">Zailena</string>
+  <plurals name="nbPointsAboveYourPuzzleRating">
+    <item quantity="one">Ariketen zure puntuazioa baino puntu bat gorago</item>
+    <item quantity="other">Ariketen zure puntuazioa baino %s puntu gorago</item>
+  </plurals>
   <string name="example">Adibidea</string>
   <string name="addAnotherTheme">Beste gai bat gehitu</string>
   <string name="jumpToNextPuzzleImmediately">Salto egin hurrengo ariketara berehala</string>
@@ -53,6 +61,13 @@
   <string name="streakDescription">Ebatzi gero eta zailagoak diren ariketak eta garaipen-bolada lortu. Ez dago erlojurik, beraz hartu behar duzun denbora. Jokaldi oker bat eta akabo! Baina aldi bakoitzean behin salto egin dezakezu.</string>
   <string name="yourStreakX">Zure garaipen-bolada: %s</string>
   <string name="streakSkipExplanation">Jokaldi hau saltatu zure bolada mantentzeko! Lasterketa bakoitzean behin bakarrik erabili dezakezu.</string>
-  <string name="continueTheStreak" comment="continueTheStreak&#10;&#10;Used for Puzzle Streak (https://lichess.org/streak). If you disabled immediately jumping to the next puzzle, this button appears so you can continue without voting on the puzzle.">Jarraitu garaipen-bolada</string>
+  <string name="continueTheStreak">Jarraitu garaipen-bolada</string>
   <string name="newStreak">Garaipen-bolada berria</string>
+  <string name="fromMyGames">Nire partidetatik</string>
+  <string name="lookupOfPlayer">Bilatu jokalari baten partidetatik ateratako ariketak</string>
+  <string name="fromXGames">%s jokalariaren partidetako ariketak</string>
+  <string name="searchPuzzles">Ariketak bilatu</string>
+  <string name="fromMyGamesNone">Ez duzu ariketarik datu-basean, hala ere Lichessek asko maite zaitu.
+Jokatu partida azkar eta arruntak zure partidetatik eratorritako ariketak izateko!</string>
+  <string name="fromXGamesFound">%1$s ariketa aurkitu dira %2$s partidatan</string>
 </resources>

@@ -1,16 +1,18 @@
-import { h, VNode } from 'snabbdom';
-import { defined, prop, Prop } from 'common';
-import { Redraw } from '../interfaces';
-import { bind, bindSubmit, spinner, option, onInsert, emptyRedButton } from '../util';
-import * as modal from '../modal';
 import * as chapterForm from './chapterNewForm';
-import { StudyChapterConfig, StudyChapterMeta } from './interfaces';
+import { bind, bindSubmit, spinner, option, onInsert, emptyRedButton } from '../util';
+import { ChapterMode, EditChapterData, Orientation, StudyChapterConfig, StudyChapterMeta } from './interfaces';
+import { defined, prop, Prop } from 'common';
+import { h, VNode } from 'snabbdom';
+import { modalButton } from './chapterNewForm';
+import { Redraw } from '../interfaces';
+import { snabModal } from 'common/modal';
+import { StudySocketSend } from '../socket';
 
-interface StudyChapterEditFormCtrl {
+export interface StudyChapterEditFormCtrl {
   current: Prop<StudyChapterMeta | StudyChapterConfig | null>;
   open(data: StudyChapterMeta): void;
   toggle(data: StudyChapterMeta): void;
-  submit(data: any): void;
+  submit(data: Omit<EditChapterData, 'id'>): void;
   delete(id: string): void;
   clearAnnotations(id: string): void;
   isEditing(id: string): boolean;
@@ -19,7 +21,7 @@ interface StudyChapterEditFormCtrl {
 }
 
 export function ctrl(
-  send: SocketSend,
+  send: StudySocketSend,
   chapterConfig: (id: string) => Promise<StudyChapterConfig>,
   trans: Trans,
   redraw: Redraw
@@ -52,8 +54,7 @@ export function ctrl(
     submit(data) {
       const c = current();
       if (c) {
-        data.id = c.id;
-        send('editChapter', data);
+        send('editChapter', { id: c.id, ...data });
         current(null);
       }
       redraw();
@@ -75,7 +76,7 @@ export function ctrl(
 export function view(ctrl: StudyChapterEditFormCtrl): VNode | undefined {
   const data = ctrl.current();
   return data
-    ? modal.modal({
+    ? snabModal({
         class: 'edit-' + data.id, // full redraw when changing chapter
         onClose() {
           ctrl.current(null);
@@ -87,11 +88,12 @@ export function view(ctrl: StudyChapterEditFormCtrl): VNode | undefined {
             'form.form3',
             {
               hook: bindSubmit(e => {
-                const o: any = {};
-                'name mode orientation description'.split(' ').forEach(field => {
-                  o[field] = chapterForm.fieldValue(e, field);
+                ctrl.submit({
+                  name: chapterForm.fieldValue(e, 'name'),
+                  mode: chapterForm.fieldValue(e, 'mode') as ChapterMode,
+                  orientation: chapterForm.fieldValue(e, 'orientation') as Orientation,
+                  description: chapterForm.fieldValue(e, 'description'),
                 });
-                ctrl.submit(o);
               }),
             },
             [
@@ -200,6 +202,6 @@ function viewLoaded(ctrl: StudyChapterEditFormCtrl, data: StudyChapterConfig): V
         ].map(v => option(v[0], data.description ? '1' : '', v[1]))
       ),
     ]),
-    modal.button(ctrl.trans.noarg('saveChapter')),
+    modalButton(ctrl.trans.noarg('saveChapter')),
   ];
 }

@@ -150,6 +150,10 @@ object pref {
             setting(
               sayGgWpAfterLosingOrDrawing(),
               radios(form("behavior.courtesy"), booleanChoices)
+            ),
+            setting(
+              scrollOnTheBoardToReplayMoves(),
+              radios(form("behavior.scrollMoves"), booleanChoices)
             )
           ),
           categFieldset(PrefCateg.Privacy, categ)(
@@ -170,11 +174,15 @@ object pref {
               radios(form("studyInvite"), translatedStudyInviteChoices)
             ),
             setting(
+              trans.receiveForumNotifications(),
+              radios(form("mention"), booleanChoices)
+            ),
+            setting(
               trans.shareYourInsightsData(),
               radios(form("insightShare"), translatedInsightShareChoices)
             )
           ),
-          p(cls := "saved text none", dataIcon := "E")(yourPreferencesHaveBeenSaved())
+          p(cls := "saved text none", dataIcon := "")(yourPreferencesHaveBeenSaved())
         )
       )
     }

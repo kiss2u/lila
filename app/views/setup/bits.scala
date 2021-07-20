@@ -22,7 +22,7 @@ private object bits {
           dataValidateUrl := s"""${routes.Setup.validateFen}${strict.??("?strict=1")}"""
         )(
           form3.input(field)(st.placeholder := trans.pasteTheFenStringHere.txt()),
-          a(cls := "button button-empty", dataIcon := "m", title := trans.boardEditor.txt(), href := url)
+          a(cls := "button button-empty", dataIcon := "", title := trans.boardEditor.txt(), href := url)
         ),
         a(cls := "board_editor", href := url)(
           span(cls := "preview")(
@@ -149,10 +149,11 @@ private object bits {
   val dataRandomColorVariants =
     attr("data-random-color-variants") := lila.game.Game.variantsWhereWhiteIsBetter.map(_.id).mkString(",")
 
-  val dataAnon        = attr("data-anon")
-  val dataMin         = attr("data-min")
-  val dataMax         = attr("data-max")
-  val dataValidateUrl = attr("data-validate-url")
-  val dataResizable   = attr("data-resizable")
-  val dataType        = attr("data-type")
+  val dataAnon          = attr("data-anon")
+  val dataMin           = attr("data-min")
+  val dataMax           = attr("data-max")
+  val dataValidateUrl   = attr("data-validate-url")
+  val dataResizable     = attr("data-resizable")
+  val dataType          = attr("data-type")
+  val dataForceTimeMode = attr("data-force-time-mode")
 }

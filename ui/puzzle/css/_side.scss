@@ -122,8 +122,8 @@
       }
     }
 
-    &__zen {
-      display: inline-block;
+    &__toggles {
+      @extend %flex-between;
       margin-top: 2vmin;
     }
   }
@@ -245,7 +245,7 @@
     &::before {
       @extend %data-icon;
 
-      content: 'h';
+      content: '';
       font-size: 1.3em;
     }
 

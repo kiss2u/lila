@@ -78,7 +78,7 @@
   <string name="losing">Perdente</string>
   <string name="drawn">Nulle</string>
   <string name="unknown">Incognite</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Base de datos</string>
+  <string name="database">Base de datos</string>
   <string name="whiteDrawBlack">Blanco / Nulle / Nigro</string>
   <string name="averageRatingX">Classification medie: %s</string>
   <string name="recentGames">Partitas recente</string>
@@ -247,7 +247,6 @@
   <string name="send">Inviar</string>
   <string name="incrementInSeconds">Incremento in secundas</string>
   <string name="freeOnlineChess">Chacos in linea gratis</string>
-  <string name="spectators">Spectatores:</string>
   <plurals name="nbRated">
     <item quantity="one">%s partitas classificatori</item>
     <item quantity="other">%s partitas classificatori</item>
@@ -275,7 +274,6 @@
     <item quantity="other">Dona %s secundas</item>
   </plurals>
   <string name="thisAccountViolatedTos">Iste conto ha violate le Terminos de servicio de Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Iste jocator altera su classification de maniera artificial</string>
   <string name="openingExplorerAndTablebase">Explorator de initio de joco e tabula de finales</string>
   <string name="takeback">Retornar</string>
   <string name="proposeATakeback">Proponer un retorno del ultime movimento</string>
@@ -443,7 +441,6 @@
   <string name="firstName">Prenomine</string>
   <string name="lastName">Nomine de familia</string>
   <string name="biography">Biographia</string>
-  <string name="country">Pais</string>
   <string name="thankYou">Gratias!</string>
   <string name="socialMediaLinks">Ligamines de medios social</string>
   <string name="inlineNotation">Notation in lineas</string>
@@ -603,7 +600,7 @@
   <string name="really">vermente</string>
   <string name="contribute">Contribuer</string>
   <string name="termsOfService">Terminos de servicio</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Codice-fonte</string>
+  <string name="sourceCode">Codice-fonte</string>
   <string name="simultaneousExhibitions">Exhibitiones simultanee</string>
   <string name="host">Hospite</string>
   <string name="hostColorX">Color del hospite: %s</string>
@@ -679,8 +676,6 @@
   <string name="enableKidMode">Activar modo infantil</string>
   <string name="disableKidMode">Disactivar modo infantil</string>
   <string name="security">Securitate</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Isto es un lista de dispositivos que tu ha registrate in tu conto. Revoca qualcunque session que tu non recognosce.</string>
-  <string name="alternativelyYouCanX">Alternativemente tu pote %s.</string>
   <string name="revokeAllSessions">revocar tote sessiones</string>
   <string name="playChessEverywhere">Joca chacos ubique!</string>
   <string name="asFreeAsLichess">Tanto gratis como Lichess</string>
@@ -823,9 +818,9 @@
   <string name="youCannotPostYetPlaySomeGames">Tu non pote postar in le foros ancora. Joca qualque partitas!</string>
   <string name="subscribe">Abonar</string>
   <string name="unsubscribe">Disabonar</string>
-  <string name="mentionedYouInX"> mentionava tu in \"%1$s\".</string>
-  <string name="xMentionedYouInY"> %1$s mentionava tu in \"%2$s\".</string>
-  <string name="invitedYouToX"> invitava tu a \"%1$s\".</string>
+  <string name="mentionedYouInX">mentionava tu in \"%1$s\".</string>
+  <string name="xMentionedYouInY">%1$s mentionava tu in \"%2$s\".</string>
+  <string name="invitedYouToX">invitava tu a \"%1$s\".</string>
   <string name="xInvitedYouToY">%1$s invitava tu a \"%2$s\".</string>
   <string name="youAreNowPartOfTeam">Tu ora es parte del equipa.</string>
   <string name="youHaveJoinedTeamX">Tu ha adherite a \"%1$s\".</string>

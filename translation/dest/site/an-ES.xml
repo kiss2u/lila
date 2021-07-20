@@ -78,7 +78,7 @@
   <string name="losing">Perdedor</string>
   <string name="drawn">Resulta en taulas</string>
   <string name="unknown">Desconoixiu</string>
-  <string name="database" comment="database&#10;&#10;Offers the user the option to choose between the Lichess or Master databases.&#10;&#10;Also used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Base de datos</string>
+  <string name="database">Base de datos</string>
   <string name="whiteDrawBlack">Blancas / Taulas / Negras</string>
   <string name="averageRatingX">Puntuación meya: %s</string>
   <string name="recentGames">Partidas recients</string>
@@ -247,7 +247,6 @@
   <string name="send">Ninviar</string>
   <string name="incrementInSeconds">Segundos d\'incremento</string>
   <string name="freeOnlineChess">Escaques en linia gratis</string>
-  <string name="spectators">Espectadors:</string>
   <plurals name="nbRated">
     <item quantity="one">%s per puntos</item>
     <item quantity="other">%s per puntos</item>
@@ -275,7 +274,6 @@
     <item quantity="other">Dar %s segundos</item>
   </plurals>
   <string name="thisAccountViolatedTos">Esta cuenta ha violau los Termins de Servicio de Lichess</string>
-  <string name="thisPlayerArtificiallyIncreasesTheirRating">Este chugador incrementa u disminuye artificialment la suya puntuación</string>
   <string name="openingExplorerAndTablebase">Explorador d\'obriduras y base de datos de finals</string>
   <string name="takeback">Desfer chugada</string>
   <string name="proposeATakeback">Proposar desfer chugada</string>
@@ -443,7 +441,6 @@
   <string name="firstName">Nombre</string>
   <string name="lastName">Apellido</string>
   <string name="biography">Biografía</string>
-  <string name="country">País</string>
   <string name="thankYou">Gracias!</string>
   <string name="socialMediaLinks">Vinclos a retz socials</string>
   <string name="inlineNotation">Notación compacta</string>
@@ -599,7 +596,7 @@
   <string name="really">de verdat</string>
   <string name="contribute">Contribuyir</string>
   <string name="termsOfService">Condicions d\'o servicio</string>
-  <string name="sourceCode" comment="sourceCode&#10;&#10;Used as part of the string yesLichessInspiredOtherOpenSourceWebsites">Codigo fuent</string>
+  <string name="sourceCode">Codigo fuent</string>
   <string name="simultaneousExhibitions">Exhibicions simultanias</string>
   <string name="host">Anfitrión</string>
   <string name="hostColorX">Color de l\'anfitrión: %s</string>
@@ -675,8 +672,6 @@
   <string name="enableKidMode">Activar lo modo infantil</string>
   <string name="disableKidMode">Desactivar lo modo infantil</string>
   <string name="security">Seguridat</string>
-  <string name="thisIsAListOfDevicesThatHaveLoggedIntoYourAccount">Esta ye una lista de dispositivos dende los quals has iniciau sesión. Zarra totas las sesions que no reconoixcas.</string>
-  <string name="alternativelyYouCanX">U tamién puetz %s.</string>
   <string name="revokeAllSessions">zarrar totas las sesions</string>
   <string name="playChessEverywhere">Chuga a los escaques an que siga</string>
   <string name="asFreeAsLichess">Igual de gratis como lichess</string>

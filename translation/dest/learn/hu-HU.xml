@@ -38,8 +38,7 @@ Mindkettőre szükséged van!</string>
   <string name="kingComplete">Most már parancsolhatsz a parancsnoknak!</string>
   <string name="theKnight">A huszár</string>
   <string name="itMovesInAnLShape">L alakban mozog</string>
-  <string name="knightIntro">Itt van a kihívásod.
-A huszár egy trükkös figura.</string>
+  <string name="knightIntro">Itt van a kihívásod. A huszár egy trükkös figura.</string>
   <string name="knightsHaveAFancyWay">A huszárok specialitása hogy ugrálnak!</string>
   <string name="knightsCanJumpOverObstacles">A huszárok átugorhatják az akadályokat!
 Menekülj és szerezd meg a csillagokat!</string>
@@ -123,7 +122,7 @@ A sarokban van a helyük.</string>
 A bástyák mellett állnak.</string>
   <string name="placeTheBishops">Majd a futókat!
 Ők a huszárok mellett állnak.</string>
-  <string name="placeTheQueen">Hellyezd a vezért arra a mezőre, amilyen színű.</string>
+  <string name="placeTheQueen">Helyezd a vezért arra a mezőre, amilyen színű.</string>
   <string name="placeTheKing">Helyezd el a királyt!
 A vezér mellett áll.</string>
   <string name="pawnsFormTheFrontLine">A gyalogok alkotják a frontvonalat.
@@ -167,8 +166,7 @@ amikor a gyalogod az 5. sorban van.</string>
   <string name="enPassantComplete">Gratulálunk! Mos már tudsz en passant ütni.</string>
   <string name="stalemate">Patt</string>
   <string name="theGameIsADraw">A döntetlen játszma</string>
-  <string name="stalemateIntro">Amikor a játékos nincs sakkban és nem tud szabályosan lépni, az patt.
-A játszma döntetlen: senki sem győzött vagy vesztett.</string>
+  <string name="stalemateIntro">Amikor a játékos nincs sakkban és nem tud szabályosan lépni, az patt. A játszma döntetlen: senki sem győzött vagy vesztett.</string>
   <string name="stalemateGoal">Ha pattot adunk a sötétnek:
 - Sötétnek nem tud lépni
 - Nincs sakkban</string>
@@ -185,6 +183,12 @@ Gyalog = 1
 A király a legértékesebb! Ha elesik, elveszett a játszma.</string>
   <string name="queenOverBishop">Üsd ki a legértékesebb figurát!
 Vezér &gt; Futó</string>
+  <string name="pieceValueExchange">Üsd le a legértékesebb figurát!
+ Ne cserélj
+ egy értékes figurát kevésbé értékesre.</string>
+  <string name="pieceValueLegal">Üsd le a
+legértékesebb figurát!
+Ellenőrizd, hogy a lépésed szabályos!</string>
   <string name="takeThePieceWithTheHighestValue">Üsd ki a legértékesebb figurát!</string>
   <string name="pieceValueComplete">Gratulálunk! Most már ismered a figurák anyagi értékét!
 Vezér = 9
