@@ -82,7 +82,8 @@ final private class TutorQueue(
           for
             position <- colls.queue(_.countSel($doc(F.requestedAt.$lte(item.requestedAt))))
             avgDuration <- durationCache.get({})
-          yield InQueue(item, position, avgDuration)
+            eta = ((position * avgDuration) / parallelism.get())
+          yield InQueue(item, position, eta)
 
 object TutorQueue:
 
@@ -90,8 +91,7 @@ object TutorQueue:
 
   sealed trait Status
   case object NotInQueue extends Status
-  case class InQueue(item: Item, position: Int, avgDuration: FiniteDuration) extends Status:
-    def eta = avgDuration * position
+  case class InQueue(item: Item, position: Int, eta: FiniteDuration) extends Status
 
   case class Awaiting(q: InQueue, games: List[(Pov, PgnStr)]):
     export q.item.config
