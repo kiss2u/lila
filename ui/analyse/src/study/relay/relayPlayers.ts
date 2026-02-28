@@ -303,7 +303,7 @@ export const renderPlayers = (
               hl(
                 'th.tiebreak',
                 { attrs: { 'data-sort': tb.points, title: tb.description, 'aria-label': tb.description } },
-                `${tb.extendedCode}`,
+                tb.extendedCode,
               ),
             ),
           ]),
@@ -445,7 +445,7 @@ const renderPlayerGames = (ctrl: RelayPlayers, p: RelayPlayerWithGames, withTips
     if (!coloredResult) return;
 
     return hl(
-      `${coloredResult.tag}`,
+      coloredResult.tag,
       customPoints && points.replace('1/2', '0.5') !== customPoints.toString()
         ? customPoints
         : coloredResult.points,

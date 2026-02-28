@@ -57,7 +57,7 @@ export const renderPockets = (pockets: NodeCrazy['pockets']): VNode =>
   h(
     'div.pieces',
     COLORS.map((color, i) =>
-      h(`div.${color}-pieces`, [h('h3', i18n.site[color]), `${pocketsStr(pockets[i])}` || '0']),
+      h(`div.${color}-pieces`, [h('h3', i18n.site[color]), pocketsStr(pockets[i]) ?? '0']),
     ),
   );
 
