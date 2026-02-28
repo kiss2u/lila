@@ -335,7 +335,7 @@ export default class StudyCtrl {
   };
 
   isCevalAllowed = () =>
-    !this.relay?.tourShow() &&
+    (!this.relay?.tourShow() || site.blindMode) &&
     !this.isGamebookPlay() &&
     !!(this.data.chapter.features.computer || this.data.chapter.practice);
 
