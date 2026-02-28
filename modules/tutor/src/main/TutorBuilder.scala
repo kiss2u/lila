@@ -106,7 +106,10 @@ final private class TutorBuilder(
       lila.core.notify.NotificationContent.GenericLink(
         url = report.url.root.url,
         title = "Tutor report ready".some,
-        text = s"${report.nbGames} games analyzed".some,
+        text =
+          if report.nbGames > 0
+          then s"${report.nbGames} games analyzed".some
+          else "Not enough games in the time range".some,
         icon = lila.ui.Icon.Checkmark.value
       )
     )
