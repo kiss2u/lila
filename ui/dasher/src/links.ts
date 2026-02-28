@@ -68,7 +68,7 @@ export class LinksCtrl extends PaneCtrl {
       : null;
   }
 
-  private modeCfg = (m: Mode): any => ({
+  private modeCfg = (m: Mode) => ({
     hook: bind('click', () => this.root.setMode(m)),
     attrs: { 'data-icon': licon.GreaterThan, type: 'button' },
   });

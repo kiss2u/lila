@@ -26,7 +26,7 @@ export function stopSass(): void {
   themeColorMap.clear();
 }
 
-export async function sass(): Promise<any> {
+export async function sass(): Promise<string | undefined> {
   if (!env.begin('sass')) return;
 
   await Promise.allSettled([

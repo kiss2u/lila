@@ -8,7 +8,7 @@ export type Sound = Omit<NamedSound, 'key'>;
 
 export type { Requirement };
 
-export interface Template<T extends object = any> {
+export interface Template<T extends object> {
   min: Record<keyof T, number>;
   max: Record<keyof T, number>;
   step: Record<keyof T, number>;

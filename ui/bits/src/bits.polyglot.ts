@@ -10,8 +10,9 @@ import type {
   PolyglotResult,
   PolyglotOpts,
 } from 'lib/game/polyglot';
+import type { Board } from 'chessops';
 
-export async function initModule(o: PolyglotOpts): Promise<any> {
+export async function initModule(o: PolyglotOpts): Promise<PolyglotResult | ((board: Board) => bigint)> {
   if (!o) return hashBoard;
   const book =
     'bytes' in o

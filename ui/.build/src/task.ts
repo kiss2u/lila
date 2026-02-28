@@ -79,7 +79,7 @@ export function stopTask(keys?: TaskKey | TaskKey[]) {
   }
 }
 
-export async function runTask(key: TaskKey): Promise<any> {
+export async function runTask(key: TaskKey): Promise<void> {
   const t = tasks.get(key);
   if (!t?.status) return;
   clearTimeout(t.debounce.timer);
@@ -142,7 +142,7 @@ async function execute(t: Task, firstRun = false): Promise<void> {
   }
 }
 
-async function watchGlob({ cwd, path: globPath }: CwdPath, key: TaskKey): Promise<any> {
+async function watchGlob({ cwd, path: globPath }: CwdPath, key: TaskKey): Promise<void> {
   if (!(await isFolder(cwd))) return;
   const [head, ...tail] = globPath.split('/');
   const path = tail.join('/');
