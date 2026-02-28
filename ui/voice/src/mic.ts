@@ -205,7 +205,7 @@ export class Mic implements Microphone {
   }
 
   private async downloadModel(emscriptenPath: string): Promise<void> {
-    const voskStore = await objectStorage<any>({
+    const voskStore = await objectStorage({
       db: '/vosk',
       store: 'FILE_DATA',
       version: 21,

@@ -327,7 +327,7 @@ export default class LobbyController {
     if (location.hash.startsWith('#pool/')) {
       const regex = /^#pool\/(\d+\+\d+)(?:\/(.+))?$/,
         match = regex.exec(location.hash),
-        member: any = { id: match![1], blocking: match![2] },
+        member: PoolMember = { id: match![1], blocking: match![2] },
         range = poolRangeStorage.get(this.me?.username, member.id);
       if (range) member.range = range;
       if (match) {

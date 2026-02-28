@@ -20,7 +20,7 @@ let dicts = new Map<string, Dict>();
 let locales: string[];
 let cats: string[];
 
-export function i18n(): Promise<any> {
+export function i18n(): Promise<void | string> {
   if (!env.begin('i18n')) return Promise.resolve();
 
   return makeTask({
@@ -89,7 +89,7 @@ async function compileTypings(): Promise<void> {
   }
 }
 
-function compileJavascripts(): Promise<any> {
+function compileJavascripts(): Promise<void[]> {
   return Promise.all(
     cats.map(async cat => {
       const u = await updated(cat);

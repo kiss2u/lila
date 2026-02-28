@@ -72,11 +72,11 @@ function initProseMirror(view: EditorViewType, rewire: () => void) {
   const imageSpec = old.nodes['image'].spec;
   // can't import the ProseMirror javascript because toastui bundles it,
   // so put on the gloves, reach in, and grab some constructors
-  const Schema = (old as any).constructor as new (cfg: { nodes: any; marks: any }) => SchemaType;
-  const EditorState = (view.state as any).constructor as typeof EditorStateType & {
+  const Schema = old.constructor as new (cfg: { nodes: any; marks: any }) => SchemaType;
+  const EditorState = view.state.constructor as typeof EditorStateType & {
     create(cfg: any): EditorStateType;
   };
-  const Node = (view.state.doc as any).constructor as typeof NodeType & {
+  const Node = view.state.doc.constructor as typeof NodeType & {
     fromJSON(s: SchemaType, j: any): NodeType;
   };
   const nodes = old.spec.nodes.update('image', {

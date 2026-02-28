@@ -197,7 +197,7 @@ export default class RoundController implements MoveRootCtrl {
     site.sound.move();
   };
 
-  private onPredrop = (role: Role | undefined, _?: Key) => {
+  private onPredrop = (role: Role | undefined) => {
     this.preDrop = role;
     this.redraw();
   };
