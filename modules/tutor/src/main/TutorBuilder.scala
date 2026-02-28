@@ -21,7 +21,8 @@ final private class TutorBuilder(
     userApi: lila.core.user.UserApi,
     fishnet: TutorFishnet,
     messenger: lila.core.msg.MsgApi,
-    routeUrl: lila.core.config.RouteUrl
+    routeUrl: lila.core.config.RouteUrl,
+    notifyApi: lila.core.notify.NotifyApi
 )(using Executor, Scheduler):
 
   import TutorBsonHandlers.given
@@ -37,7 +38,7 @@ final private class TutorBuilder(
     report <- lap.result.toFuture
     doc = bsonWriteObjTry(report).get ++ $doc("_id" -> report.id, "millis" -> lap.millis)
     _ <- colls.report(_.insert.one(doc).void)
-    _ <- messenger.postPreset(config.user, doneMsg(report)).void
+    _ <- notifyOf(report)
   yield report
 
   private def produce(user: UserWithPerfs)(using config: TutorConfig): Fu[TutorFullReport] = for
@@ -99,8 +100,16 @@ final private class TutorBuilder(
         perfs.keys.foreach: pt =>
           lila.mon.tutor.peerMatch(matches.exists(_.perf == pt), pt.key).increment()
 
-  private def doneMsg(report: TutorFullReport) =
-    lila.core.msg.MsgPreset("Tutor complete", s"Your tutor report is ready! ${routeUrl(report.url.root)}")
+  private def notifyOf(report: TutorFullReport) =
+    notifyApi.notifyOne(
+      report.config.user,
+      lila.core.notify.NotificationContent.GenericLink(
+        url = report.url.root.url,
+        title = "Tutor report ready".some,
+        text = s"${report.nbGames} games analyzed".some,
+        icon = lila.ui.Icon.Checkmark.value
+      )
+    )
 
 private object TutorBuilder:
 

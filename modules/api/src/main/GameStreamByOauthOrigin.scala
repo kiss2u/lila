@@ -6,6 +6,7 @@ import play.api.mvc.RequestHeader
 
 import lila.common.{ Bus, HTTPRequest }
 import lila.core.game.{ FinishGame, Game, StartGame, WithInitialFen }
+import lila.core.net.UserAgent
 import lila.oauth.AccessToken
 
 final class GameStreamByOauthOrigin(
@@ -36,16 +37,16 @@ final class GameStreamByOauthOrigin(
       request = s"$ip ${req.uri} $ua"
       logMsg = s"$randomName $origin $request ${since.so(_.toNow.toMinutes)}m"
     yield Source.futureSource:
-      logger.branch("gameStream").info(s"OPEN  $logMsg")
       for
         tokenUsers <- tokenApi.userIdsByClientOrigin(origin)
         allUsers = tokenUsers ++ extraUsers
         recentlySeenUsers <- userRepo.filterSeenSince((since | nowInstant).minusMinutes(30))(allUsers)
-      yield run(since, origin, allUsers, recentlySeenUsers, logMsg)
+      yield run(since, origin, ua, allUsers, recentlySeenUsers, logMsg)
 
   private def run(
       since: Option[Instant],
       origin: String,
+      ua: UserAgent,
       initialUserIds: Set[UserId],
       recentlySeenUserIds: List[UserId],
       logMsg: String
@@ -55,6 +56,8 @@ final class GameStreamByOauthOrigin(
     val startStream =
       Source.queue[Game](300, akka.stream.OverflowStrategy.dropHead).mapMaterializedValue { queue =>
         var userIds = initialUserIds
+        streams.open(ua)
+        logger.branch("gameStream").info(s"OPEN  $logMsg")
         mon.users("initial").update(userIds.size)
         mon.users("recentlySeen").update(recentlySeenUserIds.size)
 
@@ -78,8 +81,9 @@ final class GameStreamByOauthOrigin(
             Bus.unsub[StartGame](subStart)
             Bus.unsub[FinishGame](subFinish)
             Bus.unsub[AccessToken.Create](subToken)
+            streams.close(ua)
             val seconds = nowSeconds - startedAt.toSeconds
-            logger.branch("gameStream").info(s"CLOSE $logMsg ($seconds seconds, $nbGames games sent)")
+            logger.branch("gameStream").info(s"CLOSE $logMsg ($seconds seconds, $nbGames games)")
       }
     pastGamesSource(recentlySeenUserIds, since)
       .concat(currentGamesSource(recentlySeenUserIds))
@@ -102,3 +106,11 @@ final class GameStreamByOauthOrigin(
 
   private def currentGamesSource(userIds: Iterable[UserId]): Source[Game, ?] =
     gameRepo.ongoingByOneOfUserIdsCursor(userIds).documentSource().throttle(100, 1.second)
+
+  private object streams:
+    private val count = scala.collection.mutable.Map[UserAgent, Int]()
+    private def inc(v: Int)(ua: UserAgent) =
+      val nb = count.updateWith(ua)(_.fold(v)(_ + v).atLeast(0).some) | 0
+      mon.streams(ua).update(nb)
+    def open = inc(1)
+    def close = inc(-1)

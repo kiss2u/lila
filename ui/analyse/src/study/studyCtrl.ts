@@ -408,7 +408,7 @@ export default class StudyCtrl {
   xhrReload = throttlePromiseDelay(
     () => 400,
     /* `callback` runs immediately after the xhr, and is not affected by the delay */
-    (withChapters: boolean = false, callback: () => void = () => {}) => {
+    (withChapters: boolean = false, immediateCallback: () => void = () => {}) => {
       this.vm.loading = true;
       return xhr
         .reload(
@@ -418,7 +418,7 @@ export default class StudyCtrl {
           withChapters,
         )
         .then(this.onReload, site.reload)
-        .then(callback);
+        .then(immediateCallback);
     },
   );
 
