@@ -2,6 +2,7 @@ package lila.tutor
 
 import lila.analyse.AccuracyPercent
 import lila.insight.{ InsightApi, InsightDimension, InsightMetric, Phase, Question }
+import lila.rating.PerfType
 
 case class TutorPhase(
     phase: Phase,
@@ -38,6 +39,9 @@ private object TutorPhases:
   private val accuracyQuestion = Question(InsightDimension.Phase, InsightMetric.MeanAccuracy)
   private val awarenessQuestion = Question(InsightDimension.Phase, InsightMetric.Awareness)
   private val phases = InsightDimension.valuesOf(InsightDimension.Phase).toList
+  private def phasesOf(perfType: PerfType) = perfType match
+    case PerfType.Crazyhouse => phases.filter(_ != Phase.End)
+    case _ => phases
 
   private type PhaseGet = Phase => Option[Double]
 
@@ -62,7 +66,7 @@ private object TutorPhases:
       myAwareness <- answerMine(awarenessQuestion, user)
       peerAwarenessGet <- cachedOrComputedPeerPhaseGet(awarenessQuestion, _.awareness.map(_.peer.value))
     yield TutorPhases:
-      phases.map: phase =>
+      phasesOf(user.perfType).map: phase =>
         TutorPhase(
           phase,
           accuracy = for
