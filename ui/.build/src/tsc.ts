@@ -157,7 +157,7 @@ function tscError({ code, text, file, line, col }: ErrorMessage['data']): void {
   const key = `${code}:${text}:${file}`;
   if (performance.now() > (spamGuard.get(key) ?? -Infinity)) {
     const prelude = `${errorMark} ts${code} `;
-    const message = `${ts.flattenDiagnosticMessageText(text, '\n', 0)}`;
+    const message = ts.flattenDiagnosticMessageText(text, '\n', 0);
     let location = '';
     if (file) {
       location = `${c.grey('in')} '${c.cyan(relative(env.uiDir, file))}`;

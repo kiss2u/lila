@@ -109,7 +109,7 @@ export function renderNvui(ctx: AnalyseNvuiContext): VNode {
       !ctrl.retro && liveText(renderCurrentNode(ctx), 'polite', 'p.position.lastMove'),
       clocks &&
         hl('div.clocks', [
-          hl('h2', `${i18n.site.clock}`),
+          hl('h2', i18n.site.clock),
           hl('div.clocks', [hl('div.topc', clocks[0]), hl('div.botc', clocks[1])]),
         ]),
       hl('h2', i18n.nvui.inputForm),

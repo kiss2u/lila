@@ -51,7 +51,7 @@ const makeDataset = (data: RoundStats, el: HTMLCanvasElement): chart.ChartDatase
       indexAxis: 'x',
       type: 'line',
       data: fillData(data.viewers),
-      label: `${data.round.name}`,
+      label: data.round.name,
       pointBorderColor: '#fff',
       pointBackgroundColor: blue,
       backgroundColor: gradient,

@@ -65,7 +65,7 @@ export default class RelayTeamLeaderboard {
           [
             hl('thead', [
               hl('tr', [
-                hl('th.text', { attrs: dataIcon(Group) }, `${i18n.team.team}`),
+                hl('th.text', { attrs: dataIcon(Group) }, i18n.team.team),
                 hl('th', i18n.broadcast.matches),
                 hl('th', { attrs: { 'data-sort-default': 1 } }, i18n.broadcast.matchPoints),
                 hl('th', i18n.broadcast.gamePoints),
@@ -160,10 +160,7 @@ export default class RelayTeamLeaderboard {
                 ),
                 hl(
                   'td.score',
-                  hl(
-                    `${match.points === '1' ? 'good' : match.points === '0' ? 'bad' : 'draw'}`,
-                    match.mp ?? '*',
-                  ),
+                  hl(match.points === '1' ? 'good' : match.points === '0' ? 'bad' : 'draw', match.mp ?? '*'),
                 ),
                 hl('td.score', match.gp ?? '*'),
               ]),
