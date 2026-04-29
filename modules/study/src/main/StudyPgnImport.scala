@@ -200,13 +200,15 @@ object StudyPgnImport:
    * 7. c4 (7. c4 Nf6) (7. c4 dxc4) 7... cxd4
    * where 7. c4 appears three times
    */
-  // TODO this could probably be refactored better or moved to scalachess
+
   private def removeDuplicatedChildrenFirstNode(children: Branches): Branches =
     children.first match
       case Some(main) if children.variations.exists(_.id == main.id) =>
-        Branches:
-          main +: children.variations.flatMap { node =>
-            if node.id == main.id then node.children.toList
-            else List(node)
-          }
+        val duplicates = children.variations.filter(_.id == main.id)
+        val validVariations = children.variations.filterNot(_.id == main.id)
+        val mergedChildren = Branches(
+          main.children.toList ++ duplicates.flatMap(_.children.toList)
+        )
+        val newMain = main.copy(children = mergedChildren)
+        Branches(newMain +: validVariations)
       case _ => children
