@@ -172,13 +172,7 @@ export default class StudyCtrl {
       ? new MultiCloudEval(this.redraw, () => this.ctrl.variantKey, this.chapters.list, this.send)
       : undefined;
     if (relayData) this.relay = new RelayCtrl(this, relayData);
-    this.multiBoard = new MultiBoardCtrl(
-      this.chapters.list,
-      defined(this.relay),
-      this.multiCloudEval,
-      this.relay?.players.pins,
-      this.redraw,
-    );
+    this.multiBoard = new MultiBoardCtrl(this.chapters.list, this.relay, this.multiCloudEval, this.redraw);
     this.form = new StudyForm(
       (d, isNew) => {
         this.send('editStudy', d);
