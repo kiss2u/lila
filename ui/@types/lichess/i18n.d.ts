@@ -3543,8 +3543,6 @@ interface I18n {
     estimatedStart: string;
     /** Evaluating your move ... */
     evaluatingYourMove: string;
-    /** Evaluation gauge */
-    evaluationGauge: string;
     /** Playing now */
     eventInProgress: string;
     /** Everybody gets all features for free */
