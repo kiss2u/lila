@@ -2,7 +2,7 @@ import { h } from 'snabbdom';
 
 import perfIcons from 'lib/game/perfIcons';
 import * as licon from 'lib/licon';
-import { bind } from 'lib/view';
+import { bind, dataIcon } from 'lib/view';
 
 import type LobbyController from '@/ctrl';
 import * as hookRepo from '@/hookRepo';
@@ -32,7 +32,7 @@ function renderHook(ctrl: LobbyController, hook: Hook) {
         : i18n.site.anonymous,
       ...(!ctrl.me ? [] : !ctrl.opts.showRatings ? [''] : [hook.rating + (hook.prov ? '?' : '')]),
       hook.clock,
-      h('span', { attrs: { 'data-icon': perfIcons[hook.perf] } }, i18n.site[hook.ra ? 'rated' : 'casual']),
+      h('span', { attrs: dataIcon(perfIcons[hook.perf]) }, i18n.site[hook.ra ? 'rated' : 'casual']),
     ]),
   );
 }

@@ -174,7 +174,7 @@ function scrubControl(ctrl: AnalyseCtrl, dx: number | 'pointerup') {
   ctrl.redraw();
 }
 
-const jumpButton = (icon: string, effect: string, enabled: boolean): VNode =>
+const jumpButton = (icon: LiconType, effect: string, enabled: boolean): VNode =>
   hl('button.fbt.move', { attrs: { disabled: !enabled, 'data-act': effect, 'data-icon': icon } });
 
 const isMobileUi = (): boolean => displayColumns() === 1 && isTouchDevice();

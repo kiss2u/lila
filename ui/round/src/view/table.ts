@@ -1,6 +1,6 @@
 import { abortable, playable, drawableSwiss, resignable, takebackable, type TopOrBottom } from 'lib/game';
 import * as licon from 'lib/licon';
-import { type LooseVNodes, hl, bind, toggleButton as boardMenuToggleButton } from 'lib/view';
+import { type LooseVNodes, hl, bind, toggleButton as boardMenuToggleButton, dataIcon } from 'lib/view';
 
 import type RoundController from '../ctrl';
 import * as button from './button';
@@ -45,10 +45,10 @@ const prompt = (ctrl: RoundController) => {
   const o = ctrl.question();
   if (!o) return {};
 
-  const btn = (tpe: 'yes' | 'no', icon: string, text: string, action: () => void) =>
+  const btn = (tpe: 'yes' | 'no', icon: LiconType, text: string, action: () => void) =>
     ctrl.nvui
       ? hl('button', { hook: bind('click', action) }, text)
-      : hl(`a.${tpe}`, { attrs: { 'data-icon': icon }, hook: bind('click', action) });
+      : hl(`a.${tpe}`, { attrs: dataIcon(icon), hook: bind('click', action) });
 
   const noBtn = o.no && btn('no', o.no.icon || licon.X, o.no.text || i18n.site.decline, o.no.action);
   const yesBtn =

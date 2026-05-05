@@ -96,7 +96,7 @@ export const tourSide = (ctx: RelayViewContext, kid: LooseVNode) => {
                   hook: bind('click', relay.showStreamerMenu.toggle, relay.redraw),
                 }),
               hl('button.relay-tour__side__search', {
-                attrs: { 'data-icon': licon.Search },
+                attrs: dataIcon(licon.Search),
                 hook: bind('click', study.search.open.toggle),
               }),
             ]),

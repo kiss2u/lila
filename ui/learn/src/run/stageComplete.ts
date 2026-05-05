@@ -2,7 +2,7 @@ import { h } from 'snabbdom';
 
 import { numberSpread } from 'lib/i18n';
 import * as licon from 'lib/licon';
-import { bind } from 'lib/view';
+import { bind, iconTag } from 'lib/view';
 
 import { hashNavigate } from '../hashRouting';
 import { getStageRank } from '../score';
@@ -52,11 +52,11 @@ export default function (ctrl: RunCtrl) {
         next
           ? h('button.button', { hook: bind('click', () => hashNavigate(next.id)) }, [
               i18n.learn.nextX(next.title),
-              h('i', { attrs: { 'data-icon': licon.GreaterThan } }),
+              iconTag(licon.GreaterThan),
             ])
           : null,
         h(`button.button.button-empty`, { hook: bind('click', () => hashNavigate()) }, [
-          h('i', { attrs: { 'data-icon': licon.LessThan } }),
+          iconTag(licon.LessThan),
           i18n.learn.backToMenu,
         ]),
       ]),
