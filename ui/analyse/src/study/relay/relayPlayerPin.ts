@@ -8,7 +8,7 @@ import { type RelayPlayerId } from './relayPlayers';
 
 export default class RelayPlayerPin {
   private readonly pins = new Set<RelayPlayerId>();
-  private readonly store = storedMap<RelayPlayerId[]>(`relay.players.pins.${myUserId()}`, 100, () => []);
+  private readonly store = storedMap<RelayPlayerId[]>(`relay.players.pins.${myUserId()}`, 50, () => []);
 
   constructor(
     private readonly tourId: TourId,

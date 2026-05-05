@@ -305,7 +305,7 @@ export const renderPlayers = (
         hl(
           'thead',
           hl('tr', [
-            hl('th.pin'),
+            hl('th.pin', defaultSort),
             withRank && hl('th.rank', { attrs: { ...defaultSort['attrs'], ...dataIcon(licon.Trophy) } }),
             hl('th.player-name', { attrs: { 'data-sort-reverse': true } }, i18n.site.player),
             withRating && hl('th', ((!withScores && !withRank) || forceEloSort) && defaultSort, 'Elo'),
@@ -324,14 +324,16 @@ export const renderPlayers = (
           'tbody',
           players.map(player => {
             const id = playerId(player);
+            const pinned = ctrl.pins.isPinned(id);
             return hl('tr', [
               hl(
                 'td.pin',
+                { attrs: { 'data-sort': pinned ? 1 : 0 } },
                 id &&
                   hl(
                     'button',
                     {
-                      class: { 'is-pinned': ctrl.pins.isPinned(id) },
+                      class: { pinned },
                       attrs: {
                         title: 'Pin player',
                       },
