@@ -148,16 +148,18 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     49. Kf2 Ke4 50. Bxf6 d4 51. Be7 Kd3
     """
 
-    StudyPgnImport.result(bugPgn, Nil).assertRight: parsed =>
-      val kg1 = parsed.root.children.toList.head
-      val bh3 = kg1.children.toList.head
-      val gxh3 = bh3.children.toList.head
-      
-      assertEquals(gxh3.move.san.value, "gxh3")
-      
-      // BEFORE FIX: gxh3 had 4 children (Kf5, Kf5, f5, g5). 
-      // AFTER FIX: The two Kf5 nodes merge, leaving 3 distinct branches.
-      assertEquals(gxh3.children.toList.size, 3)
-      
-      val kf5 = gxh3.children.toList.head
-      assertEquals(kf5.move.san.value, "Kf5")
+    StudyPgnImport
+      .result(bugPgn, Nil)
+      .assertRight: parsed =>
+        val kg1 = parsed.root.children.toList.head
+        val bh3 = kg1.children.toList.head
+        val gxh3 = bh3.children.toList.head
+
+        assertEquals(gxh3.move.san.value, "gxh3")
+
+        // BEFORE FIX: gxh3 had 4 children (Kf5, Kf5, f5, g5).
+        // AFTER FIX: The two Kf5 nodes merge, leaving 3 distinct branches.
+        assertEquals(gxh3.children.toList.size, 3)
+
+        val kf5 = gxh3.children.toList.head
+        assertEquals(kf5.move.san.value, "Kf5")
