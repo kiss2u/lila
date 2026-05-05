@@ -1,4 +1,3 @@
-import type { LiconType } from 'lichess/licon';
 import { h, type VNode } from 'snabbdom';
 
 import { timeago } from 'lib/i18n';

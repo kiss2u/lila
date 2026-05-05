@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import type { ColorChoice } from 'lib/setup/color';
 import type { ClockConfig } from 'lib/setup/interfaces';
 import type { TimeMode } from 'lib/setup/timeControl';

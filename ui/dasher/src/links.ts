@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import * as licon from 'lib/licon';
 import { pubsub } from 'lib/pubsub';
 import { type Attrs, hl, type VNode, bind } from 'lib/view';

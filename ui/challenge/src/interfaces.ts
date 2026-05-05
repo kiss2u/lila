@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 export interface ChallengeOpts {
   el: Element;
   data?: ChallengeData;

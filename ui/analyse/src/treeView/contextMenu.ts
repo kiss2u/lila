@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import { isTouchDevice } from 'lib/device';
 import * as licon from 'lib/licon';
 import type { TreePath } from 'lib/tree/types';

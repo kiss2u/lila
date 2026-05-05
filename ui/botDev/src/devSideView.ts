@@ -1,5 +1,4 @@
 import * as co from 'chessops';
-import type { LiconType } from 'lichess/licon';
 
 import { definedMap } from 'lib/algo';
 import { Bot } from 'lib/bot/bot';

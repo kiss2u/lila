@@ -4,7 +4,6 @@ import { eventPosition, opposite } from '@lichess-org/chessground/util';
 import { lichessRules } from 'chessops/compat';
 import { parseFen } from 'chessops/fen';
 import { parseSquare, makeSquare } from 'chessops/util';
-import type { LiconType } from 'lichess/licon';
 import { h, type VNode } from 'snabbdom';
 
 import { fenToEpd } from 'lib/game/chess';

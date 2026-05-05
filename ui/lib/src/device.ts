@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import { memoize } from './index';
 import * as licon from './licon';
 import { bind, type Hooks } from './view/snabbdom';

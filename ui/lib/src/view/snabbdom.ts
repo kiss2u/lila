@@ -1,6 +1,5 @@
 // no side effects allowed due to re-export by index.ts
 
-import type { LiconType } from 'lichess/licon';
 import {
   type VNode,
   type VNodeData,

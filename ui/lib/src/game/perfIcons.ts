@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import * as licon from '@/licon';
 
 const perfIcons: Record<Exclude<Perf, 'fromPosition'>, LiconType> = {

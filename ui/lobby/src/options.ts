@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import * as licon from 'lib/licon';
 
 import type { GameMode, GameType, Variant } from './interfaces';

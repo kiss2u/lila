@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 import { repeater, myUserId, blurIfPrimaryClick } from 'lib';
 import { renderEval, view as cevalView } from 'lib/ceval';
 import { displayColumns, isTouchDevice } from 'lib/device';

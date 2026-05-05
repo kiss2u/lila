@@ -1,5 +1,4 @@
 import { render as renderKeyboardMove } from 'keyboardMove';
-import type { LiconType } from 'lichess/licon';
 import { type VNode, h } from 'snabbdom';
 import { renderVoiceBar } from 'voice';
 

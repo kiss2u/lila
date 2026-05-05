@@ -1,5 +1,3 @@
-import type { LiconType } from 'lichess/licon';
-
 export interface StandingPlayer extends SimplePlayer {
   id: string;
   withdraw?: boolean;
