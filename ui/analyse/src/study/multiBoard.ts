@@ -19,11 +19,13 @@ import type { ChapterId, ChapterPreview, StudyPlayer } from './interfaces';
 import { type CloudEval, type MultiCloudEval, renderScore } from './multiCloudEval';
 import { playerColoredResult } from './relay/customScoreStatus';
 import type { RelayRound } from './relay/interfaces';
+import type RelayPlayerPin from './relay/relayPlayerPin';
 import { type StudyChapters, gameLinkAttrs, gameLinksListener } from './studyChapters';
 import type StudyCtrl from './studyCtrl';
 
 export class MultiBoardCtrl {
   playing: Toggle = toggle(false);
+  pinned: Toggle = toggle(false);
   showResults: Prop<boolean>;
   teamSelect: Prop<string> = prop('');
   page = 1;
@@ -33,6 +35,7 @@ export class MultiBoardCtrl {
     readonly chapters: StudyChapters,
     readonly isRelay: boolean,
     readonly multiCloudEval: MultiCloudEval | undefined,
+    readonly pins: RelayPlayerPin | undefined,
     readonly redraw: Redraw,
   ) {
     this.showResults = this.isRelay ? storedBooleanProp('study.showResults', true) : toggle(true);
@@ -45,7 +48,9 @@ export class MultiBoardCtrl {
   private readonly chapterFilter = (c: ChapterPreview) => {
     const t = this.teamSelect();
     return (
-      (!this.playing() || c.playing) && (!t || c.players?.white.team === t || c.players?.black.team === t)
+      (!this.playing() || c.playing) &&
+      (!this.pins || !this.pinned() || this.pins.isChapterPinned(c)) &&
+      (!t || c.players?.white.team === t || c.players?.black.team === t)
     );
   };
 
@@ -99,18 +104,25 @@ export function view(ctrl: MultiBoardCtrl, study: StudyCtrl): MaybeVNode {
     h('div.study__multiboard__top', [
       renderPagerNav(pager, ctrl),
       hl('div.study__multiboard__options', [
-        ctrl.multiCloudEval &&
-          cmnToggleWrapProp({
-            id: 'multiboard-eval',
-            name: i18n.study.showEvalBar,
-            prop: ctrl.multiCloudEval.showEval,
-          }),
         ctrl.isRelay &&
           cmnToggleWrapProp({
             id: 'multiboard-playing',
             name: i18n.study.playing,
             prop: ctrl.playing,
             redraw: ctrl.redraw,
+          }),
+        ctrl.pins &&
+          cmnToggleWrapProp({
+            id: 'multiboard-pinned',
+            name: 'Pinned',
+            prop: ctrl.pinned,
+            redraw: ctrl.redraw,
+          }),
+        ctrl.multiCloudEval &&
+          cmnToggleWrapProp({
+            id: 'multiboard-eval',
+            name: i18n.study.showEvalBar,
+            prop: ctrl.multiCloudEval.showEval,
           }),
         ctrl.isRelay &&
           cmnToggleWrapProp({

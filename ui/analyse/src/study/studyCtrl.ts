@@ -176,6 +176,7 @@ export default class StudyCtrl {
       this.chapters.list,
       defined(this.relay),
       this.multiCloudEval,
+      this.relay?.players.pins,
       this.redraw,
     );
     this.form = new StudyForm(
