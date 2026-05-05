@@ -156,7 +156,7 @@ export function view(ctrl: MultiBoardCtrl, study: StudyCtrl): MaybeVNode {
         study.relay?.round,
       ),
     ),
-    ctrl.relay
+    ctrl.pinned()
       ? h(
           'div.go-to-pinned',
           h(
