@@ -13,7 +13,7 @@ import { isTouchDevice } from '@/device';
 import { blurIfPrimaryClick, defined, notNull, requestIdleCallbackSafe } from '@/index';
 import * as licon from '@/licon';
 import type { ClientEval, LocalEval, PvData } from '@/tree/types';
-import { type VNode, type LooseVNodes, bind, hl } from '@/view';
+import { type VNode, type LooseVNodes, bind, hl, iconTag } from '@/view';
 import { cmnToggle } from '@/view/cmn-toggle';
 import stepwiseScroll from '@/view/stepwiseScroll';
 
@@ -172,8 +172,7 @@ export function renderCeval(ctrl: CevalHandler): VNode[] {
   } else {
     if (!enabled) pearl = hl('pearl', hl('i'));
     else if (node.outcome() || node.threefold) pearl = hl('pearl', '-');
-    else if (ceval.state === CevalState.Failed)
-      pearl = hl('pearl', hl('i.is-red', { attrs: { 'data-icon': licon.CautionCircle } }));
+    else if (ceval.state === CevalState.Failed) pearl = hl('pearl', iconTag(licon.CautionCircle, 'is-red'));
     else pearl = hl('pearl', hl('i.ddloader'));
     percent = node.outcome() ? 100 : 0;
   }

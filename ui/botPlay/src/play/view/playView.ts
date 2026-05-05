@@ -1,4 +1,5 @@
 import { Chessground } from '@lichess-org/chessground';
+import type { LiconType } from 'lichess/licon';
 
 import { repeater } from 'lib';
 import { type BotInfo, Bot } from 'lib/bot/bot';
@@ -150,7 +151,7 @@ const viewNavigation = (ctrl: PlayCtrl) => {
       [licon.JumpPrev, ctrl.board.onPly - 1],
       [licon.JumpNext, ctrl.board.onPly + 1],
       [licon.JumpLast, ctrl.game.ply()],
-    ].map((b: [string, number], i) => {
+    ].map((b: [LiconType, number], i) => {
       const enabled = ctrl.board.onPly !== b[1] && b[1] >= 0 && b[1] <= ctrl.game.ply();
       return hl('button.fbt.repeatable', {
         class: { glowing: i === 3 && !ctrl.isOnLastPly() },

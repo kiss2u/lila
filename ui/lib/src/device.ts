@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 import { memoize } from './index';
 import * as licon from './licon';
 import { bind, type Hooks } from './view/snabbdom';
@@ -65,7 +67,7 @@ const webkitVersion = memoize<string | false>(
     false,
 );
 
-export const shareIcon: () => string = () => (isApple() ? licon.ShareIos : licon.ShareAndroid);
+export const shareIcon: () => LiconType = () => (isApple() ? licon.ShareIos : licon.ShareAndroid);
 
 export type Feature =
   | 'wasm'

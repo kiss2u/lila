@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 export interface StandingPlayer extends SimplePlayer {
   id: string;
   withdraw?: boolean;
@@ -68,7 +70,7 @@ export interface TournamentData {
   defender?: string;
   spotlight?: {
     iconImg: string;
-    iconFont: string;
+    iconFont: LiconType;
   };
   schedule?: {
     freq: 'shield' | 'marathon';

@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 import { repeater, myUserId, blurIfPrimaryClick } from 'lib';
 import { renderEval, view as cevalView } from 'lib/ceval';
 import { displayColumns, isTouchDevice } from 'lib/device';
@@ -174,7 +176,7 @@ function scrubControl(ctrl: AnalyseCtrl, dx: number | 'pointerup') {
   ctrl.redraw();
 }
 
-const jumpButton = (icon: string, effect: string, enabled: boolean): VNode =>
+const jumpButton = (icon: LiconType, effect: string, enabled: boolean): VNode =>
   hl('button.fbt.move', { attrs: { disabled: !enabled, 'data-act': effect, 'data-icon': icon } });
 
 const isMobileUi = (): boolean => displayColumns() === 1 && isTouchDevice();

@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 import * as licon from 'lib/licon';
 import { pubsub } from 'lib/pubsub';
 import { type Attrs, hl, type VNode, bind } from 'lib/view';
@@ -74,7 +76,7 @@ export class LinksCtrl extends PaneCtrl {
     attrs: { 'data-icon': licon.GreaterThan, type: 'button' },
   });
 
-  private readonly linkCfg = (href: string, icon: string, more?: Attrs) => ({
+  private readonly linkCfg = (href: string, icon: LiconType, more?: Attrs) => ({
     attrs: { href, 'data-icon': icon, ...more },
   });
 }

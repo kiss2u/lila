@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 import type { ColorChoice } from 'lib/setup/color';
 import type { ClockConfig } from 'lib/setup/interfaces';
 import type { TimeMode } from 'lib/setup/timeControl';
@@ -12,7 +14,7 @@ export interface Variant {
   id: number;
   key: VariantKey;
   name: string;
-  icon: string;
+  icon: LiconType;
   description: string;
 }
 

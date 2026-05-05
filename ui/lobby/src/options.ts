@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 import * as licon from 'lib/licon';
 
 import type { GameMode, GameType, Variant } from './interfaces';
@@ -80,7 +82,7 @@ export const variantsWhereWhiteIsBetter: VariantKey[] = [
   'threeCheck',
 ];
 
-export const speeds: { key: Speed; name: string; icon: string }[] = [
+export const speeds: { key: Speed; name: string; icon: LiconType }[] = [
   { icon: licon.UltraBullet, key: 'ultraBullet', name: i18n.site.ultraBullet },
   { icon: licon.Bullet, key: 'bullet', name: i18n.site.bullet },
   { icon: licon.FlameBlitz, key: 'blitz', name: i18n.site.blitz },

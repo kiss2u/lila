@@ -1,3 +1,5 @@
+import type { LiconType } from 'lichess/licon';
+
 export interface ChallengeOpts {
   el: Element;
   data?: ChallengeData;
@@ -38,7 +40,7 @@ export interface Challenge {
   color: Color | 'random';
   finalColor: Color;
   perf: {
-    icon: string;
+    icon: LiconType;
     name: string;
   };
   declined?: boolean;
