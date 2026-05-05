@@ -50,6 +50,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?:
           players.reverse();
           clocks.reverse();
         }
+        const current = c.id === study.data.chapter.id && !relay.tourShow();
         return hl(
           `a.relay-game.relay-game--${c.id}${pin ? '.relay-game--pinned' : ''}`,
           {
@@ -57,7 +58,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?:
               ...gameLinkAttrs(roundPath, c),
               'data-n': i + 1,
             },
-            class: { 'relay-game--current': c.id === study.data.chapter.id },
+            class: { 'relay-game--current': current },
           },
           [
             showResults && cloudEval && verticalEvalGauge(c, c.orientation, cloudEval),
