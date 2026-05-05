@@ -3543,8 +3543,6 @@ interface I18n {
     estimatedStart: string;
     /** Evaluating your move ... */
     evaluatingYourMove: string;
-    /** Evaluation gauge */
-    evaluationGauge: string;
     /** Playing now */
     eventInProgress: string;
     /** Everybody gets all features for free */
@@ -3823,6 +3821,8 @@ interface I18n {
     maximumNbCharacters: I18nPlural;
     /** Maximum weekly rating */
     maximumWeeklyRating: string;
+    /** Maximum rating of %s */
+    maxRatingX: I18nFormat;
     /** Maybe include more games from the preferences menu? */
     maybeIncludeMoreGamesFromThePreferencesMenu: string;
     /** Member since */
@@ -3843,6 +3843,8 @@ interface I18n {
     minimumRatedGames: string;
     /** Minimum rating */
     minimumRating: string;
+    /** Minimum rating of %s */
+    minRatingX: I18nFormat;
     /** Minutes per side */
     minutesPerSide: string;
     /** Mistake */

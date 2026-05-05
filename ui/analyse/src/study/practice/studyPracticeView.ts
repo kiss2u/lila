@@ -2,7 +2,7 @@ import { h, thunk, type VNode } from 'snabbdom';
 
 import * as licon from 'lib/licon';
 import { richHTML } from 'lib/richText';
-import { bind, bindNonPassive, type MaybeVNodes, spinnerVdom as spinner } from 'lib/view';
+import { bind, bindNonPassive, dataIcon, type MaybeVNodes, spinnerVdom as spinner } from 'lib/view';
 import { cmnToggleWrapProp } from 'lib/view/cmn-toggle';
 
 import { option, plural } from '@/view/util';
@@ -115,26 +115,25 @@ export function side(ctrl: StudyCtrl): VNode {
           return false;
         }),
       },
-      ctrl.chapters.list.all().flatMap(chapter => {
-        const loading = ctrl.vm.loading && chapter.id === ctrl.vm.nextChapterId,
-          active = !ctrl.vm.loading && current && current.id === chapter.id,
-          completion = data.completion[chapter.id] >= 0 ? 'done' : 'ongoing';
+      ctrl.chapters.list.all().flatMap(({ id, name }) => {
+        const loading = ctrl.vm.loading && id === ctrl.vm.nextChapterId,
+          active = !ctrl.vm.loading && current && current.id === id,
+          completion = data.completion[id] >= 0 ? 'done' : 'ongoing';
         return [
           h(
             'a.ps__chapter',
             {
-              key: chapter.id,
-              attrs: { href: data.url + '/' + chapter.id, 'data-id': chapter.id },
+              key: id,
+              attrs: { href: data.url + '/' + id, 'data-id': id },
               class: { active, loading },
             },
             [
               h('span.status.' + completion, {
-                attrs: {
-                  'data-icon':
-                    (loading || active) && completion === 'ongoing' ? licon.PlayTriangle : licon.Checkmark,
-                },
+                attrs: dataIcon(
+                  (loading || active) && completion === 'ongoing' ? licon.PlayTriangle : licon.Checkmark,
+                ),
               }),
-              h('h3', chapter.name),
+              h('h3', name),
             ],
           ),
         ];

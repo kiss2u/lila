@@ -178,7 +178,7 @@ export function view(ctrl: StudyChapterNewForm): VNode {
       activeTab !== 'edit' &&
         hl('h2', [
           i18n.study.newChapter,
-          hl('i.help', { attrs: { 'data-icon': licon.InfoCircle }, hook: bind('click', ctrl.startTour) }),
+          hl('i.help', { attrs: dataIcon(licon.InfoCircle), hook: bind('click', ctrl.startTour) }),
         ]),
       hl(
         'form.form3',
