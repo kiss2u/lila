@@ -876,6 +876,9 @@
     text-align: end;
     color: $c-font-dimmer;
   }
+  &--pinned::before {
+    color: $c-accent;
+  }
 
   &--current::before,
   &:hover::before {

@@ -51,7 +51,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?:
           clocks.reverse();
         }
         return hl(
-          `a.relay-game.relay-game--${c.id}`,
+          `a.relay-game.relay-game--${c.id}${pin ? '.relay-game--pinned' : ''}`,
           {
             attrs: {
               ...gameLinkAttrs(roundPath, c),
