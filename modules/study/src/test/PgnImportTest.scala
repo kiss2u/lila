@@ -228,7 +228,7 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .result(pgn, Nil)
       .assertRight: parsed =>
         val expected = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 (3. Bc4))"
-        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expected)
 
   test("merge duplicated children: deep fork"):
     val pgn = "1. e4 e5 2. Nf3 Nc6 (2... Nc6 3. Bc4 Bc5 4. c3) 3. Bc4 Bc5 4. d3"
@@ -236,7 +236,7 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .result(pgn, Nil)
       .assertRight: parsed =>
         val expected = "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 (4. c3)"
-        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expected)
 
   test("merge duplicated children: nested matryoshka (Philidor Exchange)"):
     val pgn = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 exd4 (3... exd4 4. Nxd4) (3... exd4 4. Qxd4))"
@@ -244,7 +244,7 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .result(pgn, Nil)
       .assertRight: parsed =>
         val expected = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 exd4 4. Nxd4 (4. Qxd4))"
-        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expected)
 
   test("merge duplicated children: triplicate branches"):
     val pgn = "1. e4 e5 2. Nf3 Nc6 (2... Nc6 3. Bc4) (2... Nc6 3. d4) 3. Bb5"
@@ -252,4 +252,4 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .result(pgn, Nil)
       .assertRight: parsed =>
         val expected = "1. e4 e5 2. Nf3 Nc6 3. Bb5 (3. Bc4) (3. d4)"
-        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expected)
