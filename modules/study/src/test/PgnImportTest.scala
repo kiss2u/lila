@@ -194,17 +194,20 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
         assertEquals(nc6.move.san.value, "Nc6")
         assertEquals(nf3.nextSans, List("Nc6", "d6"))
         assertEquals(nc6.nextSans, List("d4", "Bb5", "Bc4"))
+        val expectedPgn =
+          """1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 exd4) 3. d4 (3. Bb5 a6) (3. Bc4 Nf6) 3... exd4"""
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expectedPgn)
 
   test("merge duplicate from code comment pattern: same move appearing three times"):
-    val threeDupPgn = """
-    1. d4 ( 1. d4 Nf6 ) ( 1. d4 d5 ) 1... e5
-    """
+    val threeDupPgn = """1. d4 ( 1. d4 Nf6 ) ( 1. d4 d5 ) 1... e5"""
     StudyPgnImport
       .result(threeDupPgn, Nil)
       .assertRight: parsed =>
         assertEquals(parsed.root.nextSans, List("d4"))
         val d4 = parsed.root.next
         assertEquals(d4.nextSans, List("e5", "Nf6", "d5"))
+        val expectedPgn = "1. d4 e5 (1... Nf6) (1... d5)"
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expectedPgn)
 
   test("merge sibling variations that duplicate each other but NOT the mainline"):
     val siblingDupPgn = """
@@ -214,13 +217,12 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .result(siblingDupPgn, Nil)
       .assertRight: parsed =>
         val e4 = parsed.root.next
-        val e5 = e4.next
-        val nf3 = e5.next
-
+        val nf3 = e4.next.next
         assertEquals(nf3.nextSans, List("Nc6", "d6"))
-
         val d6 = nf3.children.variations.head
         assertEquals(d6.nextSans, List("d4", "Bc4"))
+        val expectedPgn = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 (3. Bc4))"
+        assertEquals(Helpers.rootToPgn(parsed.root).value, expectedPgn)
 
   test("merge duplicated children: sibling clone (Philidor variations)"):
     val pgn = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4) (2... d6 3. Bc4)"
