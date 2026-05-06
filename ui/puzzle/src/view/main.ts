@@ -1,4 +1,4 @@
-import { render as renderKeyboardMove } from 'keyboardMove';
+import { render as renderKeyboardMove } from 'keyboard-move';
 import { type VNode, h } from 'snabbdom';
 import { renderVoiceBar } from 'voice';
 

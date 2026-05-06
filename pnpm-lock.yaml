@@ -12,7 +12,7 @@ patchedDependencies:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@lichess-org/chessground':
         specifier: ^10.1.1
         version: 10.1.1
@@ -71,7 +71,7 @@ importers:
   bin:
     dependencies:
       '@types/node':
-        specifier: 24.12.2
+        specifier: ^24.12.2
         version: 24.12.2
       cheerio:
         specifier: ^1.1.2
@@ -114,7 +114,7 @@ importers:
       editor:
         specifier: workspace:*
         version: link:../editor
-      keyboardMove:
+      keyboard-move:
         specifier: workspace:*
         version: link:../keyboardMove
       lib:
@@ -485,7 +485,7 @@ importers:
       chart.js:
         specifier: 4.5.1
         version: 4.5.1
-      keyboardMove:
+      keyboard-move:
         specifier: workspace:*
         version: link:../keyboardMove
       lib:
@@ -512,7 +512,7 @@ importers:
 
   ui/round:
     dependencies:
-      keyboardMove:
+      keyboard-move:
         specifier: workspace:*
         version: link:../keyboardMove
       lib:
