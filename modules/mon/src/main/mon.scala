@@ -258,7 +258,8 @@ object actor:
 object mod:
   object report:
     val highest = gauge("mod.report.highest").withoutTags()
-    val close = counter("mod.report.close").withoutTags()
+    def close(mod: UserId, room: String) = counter("mod.report.close").withTags:
+      tags("mod" -> mod, "room" -> room)
     def create(reason: String, score: Int) =
       counter("mod.report.create").withTags:
         tags("reason" -> reason, "score" -> score)
@@ -268,7 +269,8 @@ object mod:
       val imageRequest = future("mod.report.automod.image.request")
       def imageFlagged(v: Boolean) = counter("mod.report.automod.image.flagged").withTag("flagged", v)
   object log:
-    val create = counter("mod.log.create").withoutTags()
+    def create(mod: UserId, action: String) = counter("mod.log.create").withTags:
+      tags("mod" -> mod, "action" -> action)
   object irwin:
     val report = counter("mod.report.irwin.report").withoutTags()
     val mark = counter("mod.report.irwin.mark").withoutTags()
