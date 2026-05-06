@@ -147,7 +147,7 @@ def gen_sources(codes):
             ts.write(f"export const {name} = '{chr(codes[name])}'; // {codes[name]:x}\n")
             scss.write(f"$licon-{name}: '{chr(codes[name])}'; // {codes[name]:x}\n")
             debug.write(f'    <i title="{name}">&#x{codes[name]:x};</i>\n')
-        types.write(f"declare type LiconType = { ' | '.join([f"'{chr(codes[name])}'" for name in codes]) }\n")
+        types.write(f"declare type LiconType = { ' | '.join([f"'{chr(codes[name])}'" for name in codes]) };\n")
         debug.write('  </body>\n</html>\n')
 
 def gen_fonts():
