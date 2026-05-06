@@ -20,12 +20,13 @@ import { type CloudEval, type MultiCloudEval, renderScore } from './multiCloudEv
 import { playerColoredResult } from './relay/customScoreStatus';
 import type { RelayRound } from './relay/interfaces';
 import type RelayCtrl from './relay/relayCtrl';
+import type RelayPlayerPin from './relay/relayPlayerPin';
 import { type StudyChapters, gameLinkAttrs, gameLinksListener } from './studyChapters';
 import type StudyCtrl from './studyCtrl';
 
 export class MultiBoardCtrl {
   playing: Toggle = toggle(false);
-  pinned: Toggle;
+  pinned: Toggle = toggle(false);
   showResults: Prop<boolean>;
   teamSelect: Prop<string> = prop('');
   page = 1;
@@ -38,7 +39,6 @@ export class MultiBoardCtrl {
     readonly redraw: Redraw,
   ) {
     this.showResults = this.relay ? storedBooleanProp('study.showResults', true) : toggle(true);
-    this.pinned = toggle(this.relay?.players.pins.anyPinned() || false);
   }
 
   gameTeam = (id: ChapterId): string | undefined => this.chapters.get(id)?.players?.white.team;
@@ -53,6 +53,11 @@ export class MultiBoardCtrl {
       (!t || c.players?.white.team === t || c.players?.black.team === t)
     );
   };
+  private readonly chapterSorter = (pins: RelayPlayerPin) => (a: ChapterPreview, b: ChapterPreview) => {
+    const aPinned = pins.isChapterPinned(a);
+    const bPinned = pins.isChapterPinned(b);
+    return aPinned === bPinned ? 0 : aPinned ? -1 : 1;
+  };
 
   setMaxPerPage = (nb: string) => {
     this.maxPerPageStorage.set(nb);
@@ -63,8 +68,11 @@ export class MultiBoardCtrl {
   pager = (): Paginator<ChapterPreview> => {
     const maxPerPage = this.maxPerPage();
     const filteredResults = this.chapters.all().filter(this.chapterFilter);
-    const currentPageResults = filteredResults.slice((this.page - 1) * maxPerPage, this.page * maxPerPage);
-    const nbResults = filteredResults.length;
+    const sortedResults = this.relay?.players.pins.anyPinned()
+      ? filteredResults.sort(this.chapterSorter(this.relay.players.pins))
+      : filteredResults;
+    const currentPageResults = sortedResults.slice((this.page - 1) * maxPerPage, this.page * maxPerPage);
+    const nbResults = sortedResults.length;
     const nbPages = Math.floor((nbResults + maxPerPage - 1) / maxPerPage);
     return {
       currentPage: this.page,
