@@ -137,6 +137,7 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .drop(1) // skip the root
       .foreach: node =>
         assert(node.clock.isDefined)
+
   test("merge duplicated children from engine analysis variations (issue #20342)"):
     val bugPgn = """
     [FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/7K w - - 1 47"]
@@ -151,9 +152,9 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     StudyPgnImport
       .result(bugPgn, Nil)
       .assertRight: parsed =>
-        val kg1 = parsed.root.children.toList.head
-        val bh3 = kg1.children.toList.head
-        val gxh3 = bh3.children.toList.head
+        val kg1 = parsed.root.children.first.get
+        val bh3 = kg1.children.first.get
+        val gxh3 = bh3.children.first.get
 
         assertEquals(gxh3.move.san.value, "gxh3")
 
@@ -161,5 +162,4 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
         // AFTER FIX: The two Kf5 nodes merge, leaving 3 distinct branches.
         assertEquals(gxh3.children.toList.size, 3)
 
-        val kf5 = gxh3.children.toList.head
-        assertEquals(kf5.move.san.value, "Kf5")
+        assertEquals(gxh3.children.toList.map(_.move.san.value), List("Kf5", "f5", "g5"))
