@@ -5,7 +5,6 @@ import play.api.libs.json.*
 import scala.util.Try
 
 import lila.db.dsl.{ *, given }
-import lila.mod.ModActivity.{ Period, dateFormat }
 import lila.report.Room
 
 final class ModQueueStats(
@@ -86,3 +85,18 @@ object ModQueueStats:
   val scores = List[Score](20, 40, 60, 80)
 
   case class Result(period: Period, json: JsObject)
+
+  enum Period:
+    def key = toString.toLowerCase
+    case Week, Month, Year
+  object Period:
+    def apply(str: String): Period =
+      if str == "year" then Year
+      else if str == "month" then Month
+      else Week
+    def dateSince(period: Period) = period match
+      case Period.Week => nowInstant.minusWeeks(1)
+      case Period.Month => nowInstant.minusMonths(1)
+      case Period.Year => nowInstant.minusYears(1)
+
+  val dateFormat = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")

@@ -42,38 +42,8 @@ const conf = (title: string, xaxis: Date[]) => ({
   },
 });
 
-export function initModule({ op, data }: { op: 'activity' | 'queues'; data: any }): void {
-  if (op === 'activity') activity(data);
-  else queues(data);
-}
-
-function activity(data: any) {
-  const extend = {
-    chart: {
-      height: Math.round(window.innerHeight * 0.4),
-    },
-  };
-  new ApexCharts(
-    document.querySelector('.mod-activity .chart-reports'),
-    merge(
-      {
-        ...conf('Closed reports', data.common.xaxis),
-        series: data.reports.series,
-      },
-      extend,
-    ),
-  ).render();
-
-  new ApexCharts(
-    document.querySelector('.mod-activity .chart-actions'),
-    merge(
-      {
-        ...conf('Mod actions', data.common.xaxis),
-        series: data.actions.series,
-      },
-      extend,
-    ),
-  ).render();
+export function initModule({ data }: { data: any }): void {
+  queues(data);
 }
 
 function queues(data: any) {
