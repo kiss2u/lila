@@ -38,4 +38,7 @@ final class ForumBits(helpers: Helpers):
 
   def postTextarea(field: play.api.data.Field)(modifiers: Modifier*)(using Context, Me) =
     bits.markdownTextarea("forumPostBody".some):
-      form3.textarea(field, "post-text-area")(rows := 10, placeholder := trans.site.pleaseBeNiceInTheForum.txt())(modifiers)
+      form3.textarea(field, "post-text-area")(
+        rows := 10,
+        placeholder := trans.site.pleaseBeNiceInTheForum.txt()
+      )(modifiers)
