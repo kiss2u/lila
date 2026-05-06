@@ -7,7 +7,7 @@ import { userTitle } from 'lib/view/userLink';
 import { playerFedFlag } from '@/view/util';
 
 import type { ChapterPreview } from '../interfaces';
-import { renderClock, verticalEvalGauge } from '../multiBoard';
+import { pinIcon, renderClock, verticalEvalGauge } from '../multiBoard';
 import type { MultiCloudEval } from '../multiCloudEval';
 import { gameLinkAttrs } from '../studyChapters';
 import type { StudyCtrl } from '../studyDeps';
@@ -34,8 +34,6 @@ export const gamesLists = (study: StudyCtrl, relay: RelayCtrl) => {
     pinned.length ? [pinned, hl('div.relay-games__separator'), nonPinned] : nonPinned,
   );
 };
-
-const pinIcon = hl('img.pinned-icon', { attrs: { alt: '', src: site.asset.flairSrc('objects.pushpin') } });
 
 const gamesList = (study: StudyCtrl, relay: RelayCtrl, pinned: boolean, cloudEval?: MultiCloudEval) => {
   const chapters = study.chapters.list.all();
@@ -80,7 +78,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pinned: boolean, cloudEva
                         hl('span.mini-game__user', [
                           playerFedFlag(p.fed),
                           hl('span.name', [userTitle(p), p.name]),
-                          pinned && relay.players.pins.isPlayerPinned(p) ? pinIcon : undefined,
+                          pinned && relay.players.pins.isPlayerPinned(p) ? pinIcon() : undefined,
                         ]),
                         coloredResult
                           ? hl(coloredResult.tag, [coloredResult.points])

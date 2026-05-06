@@ -14,6 +14,7 @@ import { json as xhrJson } from 'lib/xhr';
 import { playerFedFlag } from '@/view/util';
 
 import type { ChapterId, FideId, PointsStr, StudyPlayer, StudyPlayerFromServer } from '../interfaces';
+import { pinIcon } from '../multiBoard';
 import { convertPlayerFromServer } from '../studyChapters';
 import { playerColoredResult } from './customScoreStatus';
 import { teamLinkData } from './deepLink';
@@ -274,8 +275,6 @@ const playersList = (ctrl: RelayPlayers): VNode =>
     ctrl.players ? renderPlayers(ctrl, ctrl.players) : [spinner()],
   );
 
-const pinIcon = hl('img', { attrs: { alt: '', src: site.asset.flairSrc('objects.pushpin') } });
-
 export const renderPlayers = (
   ctrl: RelayPlayers,
   players: RelayPlayer[],
@@ -343,7 +342,7 @@ export const renderPlayers = (
                         },
                       },
                     },
-                    pinIcon,
+                    pinIcon(),
                   ),
               ),
               withRank &&
