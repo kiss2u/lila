@@ -158,25 +158,9 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
 
         assertEquals(gxh3.move.san.value, "gxh3")
 
-        // BEFORE FIX: gxh3 had 4 children (Kf5, Kf5, f5, g5).
-        // AFTER FIX: The two Kf5 nodes merge, leaving 3 distinct branches.
-
         assertEquals(gxh3.children.toList.map(_.move.san.value), List("Kf5", "f5", "g5"))
 
         val pgnDump = Helpers.rootToPgn(parsed.root)
-        // before fix:
-        //  47. Kg1 Bh3 48. gxh3 Kf5
-        //    (48... Kf2 49. Ke4 h5 50. gxh5)
-        //    (48... f5 49. Kf2 Kd6 50. Ke3 Kc5)
-        //    (48... g5 49 . Kf2 gxh4 50. Ke3 Kf5)
-        //  49. Kf2 Ke4 50. Bxf6 d4 51. Be7 Kd3
-        // currently:
-        //  47. Kg1 Bh3 48. gxh3 Kf5
-        //    (48... f5 49. Kf2 Kd6 50. Ke3 Kc5)
-        //    (48... g5 49. Kf2 gxh4 50. Ke3 Kf5)
-        //  49. Kf2
-        //    (49. Kf2 Ke4 50. h5 gxh5)
-        //  49... Ke4 50. Bxf6 d4 51. Be7 Kd3
         val pgnExpected =
           """47. Kg1 Bh3 48. gxh3 Kf5 
             |  (48... f5 49. Kf2 Kd6 50. Ke3 Kc5) 
@@ -186,3 +170,83 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
             |50... d4 51. Be7 Kd3
             |""".stripMargin.replaceAll("\n", "").replaceAll("\\s+", " ")
         assertEquals(pgnDump.value, pgnExpected)
+
+  test("merge multiple duplicate variations with same first move"):
+    val multiDupPgn = """
+    1. e4 e5 2. Nf3 Nc6
+        ( 2... Nc6 3. Bb5 a6 )
+        ( 2... Nc6 3. Bc4 Nf6 )
+        ( 2... d6 3. d4 exd4 )
+    3. d4 exd4
+    """
+
+    StudyPgnImport
+      .result(multiDupPgn, Nil)
+      .assertRight: parsed =>
+        val e4 = parsed.root.children.first.get
+        val e5 = e4.children.first.get
+        val nf3 = e5.children.first.get
+        val nc6 = nf3.children.first.get
+
+        assertEquals(nc6.move.san.value, "Nc6")
+        assertEquals(nf3.children.toList.map(_.move.san.value), List("Nc6", "d6"))
+        assertEquals(nc6.children.toList.map(_.move.san.value), List("d4", "Bb5", "Bc4"))
+
+  test("merge duplicate from code comment pattern: same move appearing three times"):
+    val threeDupPgn = """
+    1. d4 ( 1. d4 Nf6 ) ( 1. d4 d5 ) 1... e5
+    """
+    StudyPgnImport
+      .result(threeDupPgn, Nil)
+      .assertRight: parsed =>
+        assertEquals(parsed.root.children.toList.map(_.move.san.value), List("d4"))
+        val d4 = parsed.root.children.first.get
+        assertEquals(d4.children.toList.map(_.move.san.value), List("e5", "Nf6", "d5"))
+
+  test("merge sibling variations that duplicate each other but NOT the mainline"):
+    val siblingDupPgn = """
+    1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4) (2... d6 3. Bc4)
+    """
+    StudyPgnImport
+      .result(siblingDupPgn, Nil)
+      .assertRight: parsed =>
+        val e4 = parsed.root.children.first.get
+        val e5 = e4.children.first.get
+        val nf3 = e5.children.first.get
+
+        assertEquals(nf3.children.toList.map(_.move.san.value), List("Nc6", "d6"))
+
+        val d6 = nf3.children.variations.head
+        assertEquals(d6.children.toList.map(_.move.san.value), List("d4", "Bc4"))
+
+  test("merge duplicated children: sibling clone (Philidor variations)"):
+    val pgn = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4) (2... d6 3. Bc4)"
+    StudyPgnImport
+      .result(pgn, Nil)
+      .assertRight: parsed =>
+        val expected = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 (3. Bc4))"
+        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+
+  test("merge duplicated children: deep fork"):
+    val pgn = "1. e4 e5 2. Nf3 Nc6 (2... Nc6 3. Bc4 Bc5 4. c3) 3. Bc4 Bc5 4. d3"
+    StudyPgnImport
+      .result(pgn, Nil)
+      .assertRight: parsed =>
+        val expected = "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 (4. c3)"
+        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+
+  test("merge duplicated children: nested matryoshka (Philidor Exchange)"):
+    val pgn = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 exd4 (3... exd4 4. Nxd4) (3... exd4 4. Qxd4))"
+    StudyPgnImport
+      .result(pgn, Nil)
+      .assertRight: parsed =>
+        val expected = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4 exd4 4. Nxd4 (4. Qxd4))"
+        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
+
+  test("merge duplicated children: triplicate branches"):
+    val pgn = "1. e4 e5 2. Nf3 Nc6 (2... Nc6 3. Bc4) (2... Nc6 3. d4) 3. Bb5"
+    StudyPgnImport
+      .result(pgn, Nil)
+      .assertRight: parsed =>
+        val expected = "1. e4 e5 2. Nf3 Nc6 3. Bb5 (3. Bc4) (3. d4)"
+        assertEquals(Helpers.rootToPgn(parsed.root).value.replaceAll("\\s+", " ").trim, expected)
