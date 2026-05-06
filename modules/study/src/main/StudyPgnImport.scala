@@ -202,18 +202,17 @@ object StudyPgnImport:
    */
 
   private def removeDuplicatedChildrenFirstNode(children: Branches): Branches =
-    children.first match
-      case None => children
-      case Some(_) =>
-        val list = children.toList
-        val ids = list.map(_.id).distinct
+    val list = children.toList
+    if list.sizeIs < 2 then children
+    else
+      val ids = list.map(_.id).distinct
 
-        val deduplicated = ids.map: id =>
-          val matching = list.filter(_.id == id)
-          val main = matching.head
+      val deduplicated = ids.map: id =>
+        val matching = list.filter(_.id == id)
+        val main = matching.head
 
-          val mergedChildrenList = matching.flatMap(_.children.toList)
+        val mergedChildrenList = matching.flatMap(_.children.toList)
 
-          main.copy(children = removeDuplicatedChildrenFirstNode(Branches(mergedChildrenList)))
+        main.copy(children = removeDuplicatedChildrenFirstNode(Branches(mergedChildrenList)))
 
-        Branches(deduplicated)
+      Branches(deduplicated)
