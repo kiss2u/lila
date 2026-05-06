@@ -206,13 +206,14 @@ object StudyPgnImport:
     if list.sizeIs < 2 then children
     else
       val ids = list.map(_.id).distinct
+      if ids.sizeCompare(list) == 0 then children
+      else
+        val deduplicated = ids.map: id =>
+          val matching = list.filter(_.id == id)
+          val main = matching.head
 
-      val deduplicated = ids.map: id =>
-        val matching = list.filter(_.id == id)
-        val main = matching.head
+          val mergedChildrenList = matching.flatMap(_.children.toList)
 
-        val mergedChildrenList = matching.flatMap(_.children.toList)
+          main.copy(children = removeDuplicatedChildrenFirstNode(Branches(mergedChildrenList)))
 
-        main.copy(children = removeDuplicatedChildrenFirstNode(Branches(mergedChildrenList)))
-
-      Branches(deduplicated)
+        Branches(deduplicated)
