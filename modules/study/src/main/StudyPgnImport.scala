@@ -204,11 +204,8 @@ object StudyPgnImport:
   private def removeDuplicatedChildrenFirstNode(children: Branches): Branches =
     children.first match
       case Some(main) if children.variations.exists(_.id == main.id) =>
-        val duplicates = children.variations.filter(_.id == main.id)
-        val validVariations = children.variations.filterNot(_.id == main.id)
-        val mergedChildren = Branches(
-          main.children.toList ++ duplicates.flatMap(_.children.toList)
-        )
+        val (duplicates, validVariations) = children.variations.partition(_.id == main.id)
+        val mergedChildren = Branches(main.children.toList ::: duplicates.flatMap(_.children.toList))
         val newMain = main.copy(children = mergedChildren)
-        Branches(newMain +: validVariations)
+        Branches(newMain :: validVariations)
       case _ => children
