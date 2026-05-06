@@ -7,7 +7,7 @@ import { userTitle } from 'lib/view/userLink';
 import { playerFedFlag } from '@/view/util';
 
 import type { ChapterPreview } from '../interfaces';
-import { renderClock, verticalEvalGauge } from '../multiBoard';
+import { pinIcon, renderClock, verticalEvalGauge } from '../multiBoard';
 import type { MultiCloudEval } from '../multiCloudEval';
 import { gameLinkAttrs } from '../studyChapters';
 import type { StudyCtrl } from '../studyDeps';
@@ -35,7 +35,7 @@ export const gamesLists = (study: StudyCtrl, relay: RelayCtrl) => {
   );
 };
 
-const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?: MultiCloudEval) => {
+const gamesList = (study: StudyCtrl, relay: RelayCtrl, pinned: boolean, cloudEval?: MultiCloudEval) => {
   const chapters = study.chapters.list.all();
   const roundPath = relay.roundPath();
   const showResults = study.multiBoard.showResults();
@@ -43,7 +43,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?:
   return chapters.length === 1 && chapters[0].name === 'Chapter 1'
     ? []
     : chapters.map((c, i) => {
-        if (relay.players.pins.isChapterPinned(c) !== pin) return;
+        if (relay.players.pins.isChapterPinned(c) !== pinned) return;
         const clocks = renderClocks(c);
         const players = [c.players?.black, c.players?.white];
         if (c.orientation === 'black') {
@@ -52,7 +52,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?:
         }
         const current = c.id === study.data.chapter.id && !relay.tourShow();
         return hl(
-          `a.relay-game.relay-game--${c.id}${pin ? '.relay-game--pinned' : ''}`,
+          `a.relay-game.relay-game--${c.id}`,
           {
             attrs: {
               ...gameLinkAttrs(roundPath, c),
@@ -78,6 +78,7 @@ const gamesList = (study: StudyCtrl, relay: RelayCtrl, pin: boolean, cloudEval?:
                         hl('span.mini-game__user', [
                           playerFedFlag(p.fed),
                           hl('span.name', [userTitle(p), p.name]),
+                          pinned && relay.players.pins.isPlayerPinned(p) ? pinIcon() : undefined,
                         ]),
                         coloredResult
                           ? hl(coloredResult.tag, [coloredResult.points])

@@ -256,6 +256,9 @@ object user:
 object actor:
   def queueSize(name: String) = gauge("trouper.queueSize").withTag("name", name)
 object mod:
+  def queueStatus(room: String, score: Int) =
+    gauge("mod.queueStatus").withTags:
+      tags("room" -> room, "score" -> score)
   object report:
     val highest = gauge("mod.report.highest").withoutTags()
     def close(mod: UserId, room: String) = counter("mod.report.close").withTags:

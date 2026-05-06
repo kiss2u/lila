@@ -2,7 +2,6 @@ package lila.mod
 package ui
 
 import play.api.data.Form
-import play.api.libs.json.Json
 
 import lila.core.perf.UserWithPerfs
 import lila.core.perm.Permission
@@ -229,31 +228,6 @@ final class ModUi(helpers: Helpers):
           )
         )
 
-  def queueStats(p: ModQueueStats.Result)(using Context) =
-    Page("Queues stats")
-      .css("mod.activity")
-      .js(PageModule("mod.activity", Json.obj("op" -> "queues", "data" -> p.json))):
-        main(cls := "page-menu modMenu")(
-          menu("queues"),
-          div(cls := "page-menu__content index box mod-queues")(
-            boxTop(
-              h1(
-                " Queues this ",
-                lila.ui.bits.mselect(
-                  s"mod-activity__period-select box__top__actions",
-                  span(p.period.key),
-                  ModQueueStats.Period.values.toList.map: per =>
-                    a(
-                      cls := (p.period == per).option("current"),
-                      href := routes.Mod.queues(per.key)
-                    )(per.toString)
-                )
-              )
-            ),
-            div(cls := "chart-grid")
-          )
-        )
-
   def reportMenu(using Context) = menu("report")
 
   def menu(active: String)(using ctx: Context): Frag = ctx.me.foldUse(emptyFrag): me ?=>
@@ -262,8 +236,6 @@ final class ModUi(helpers: Helpers):
         .option(a(cls := itemCls(active, "report"), href := routes.Report.list)("Reports")),
       Granter(_.PublicChatView)
         .option(a(cls := itemCls(active, "public-chat"), href := routes.Mod.publicChat)("Public Chats")),
-      Granter(_.GamifyView)
-        .option(a(cls := itemCls(active, "queues"), href := routes.Mod.queues("month"))("Queues stats")),
       Granter(_.GamifyView)
         .option(a(cls := itemCls(active, "gamify"), href := routes.Mod.gamify)("Hall of fame")),
       Granter(_.GamifyView)

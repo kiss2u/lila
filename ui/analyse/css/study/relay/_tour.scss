@@ -877,10 +877,6 @@
     color: $c-font-dimmer;
   }
 
-  &--pinned::before {
-    color: $c-accent;
-  }
-
   &--current::before,
   &:hover::before {
     color: $c-primary;
@@ -903,6 +899,13 @@
     .mini-game__flag {
       width: 1.1em;
     }
+  }
+
+  .pinned-icon {
+    height: 0.9em;
+    aspect-ratio: 1;
+    transform: rotate(-45deg);
+    margin-inline-start: 0.5ch;
   }
 
   .mini-game__gauge {

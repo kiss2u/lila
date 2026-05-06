@@ -4125,6 +4125,8 @@ interface I18n {
     playX: I18nFormat;
     /** We aim to provide a pleasant chess experience for everyone. */
     pleasantChessExperience: string;
+    /** Please be nice in the forum. */
+    pleaseBeNiceInTheForum: string;
     /** Points */
     points: string;
     /** Popular openings */

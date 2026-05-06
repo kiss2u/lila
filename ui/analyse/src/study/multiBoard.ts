@@ -20,12 +20,13 @@ import { type CloudEval, type MultiCloudEval, renderScore } from './multiCloudEv
 import { playerColoredResult } from './relay/customScoreStatus';
 import type { RelayRound } from './relay/interfaces';
 import type RelayCtrl from './relay/relayCtrl';
+import type RelayPlayerPin from './relay/relayPlayerPin';
 import { type StudyChapters, gameLinkAttrs, gameLinksListener } from './studyChapters';
 import type StudyCtrl from './studyCtrl';
 
 export class MultiBoardCtrl {
   playing: Toggle = toggle(false);
-  pinned: Toggle;
+  pinned: Toggle = toggle(false);
   showResults: Prop<boolean>;
   teamSelect: Prop<string> = prop('');
   page = 1;
@@ -38,7 +39,6 @@ export class MultiBoardCtrl {
     readonly redraw: Redraw,
   ) {
     this.showResults = this.relay ? storedBooleanProp('study.showResults', true) : toggle(true);
-    this.pinned = toggle(this.relay?.players.pins.anyPinned() || false);
   }
 
   gameTeam = (id: ChapterId): string | undefined => this.chapters.get(id)?.players?.white.team;
@@ -53,6 +53,11 @@ export class MultiBoardCtrl {
       (!t || c.players?.white.team === t || c.players?.black.team === t)
     );
   };
+  private readonly chapterSorter = (pins: RelayPlayerPin) => (a: ChapterPreview, b: ChapterPreview) => {
+    const aPinned = pins.isChapterPinned(a);
+    const bPinned = pins.isChapterPinned(b);
+    return aPinned === bPinned ? 0 : aPinned ? -1 : 1;
+  };
 
   setMaxPerPage = (nb: string) => {
     this.maxPerPageStorage.set(nb);
@@ -63,8 +68,11 @@ export class MultiBoardCtrl {
   pager = (): Paginator<ChapterPreview> => {
     const maxPerPage = this.maxPerPage();
     const filteredResults = this.chapters.all().filter(this.chapterFilter);
-    const currentPageResults = filteredResults.slice((this.page - 1) * maxPerPage, this.page * maxPerPage);
-    const nbResults = filteredResults.length;
+    const sortedResults = this.relay?.players.pins.anyPinned()
+      ? filteredResults.sort(this.chapterSorter(this.relay.players.pins))
+      : filteredResults;
+    const currentPageResults = sortedResults.slice((this.page - 1) * maxPerPage, this.page * maxPerPage);
+    const nbResults = sortedResults.length;
     const nbPages = Math.floor((nbResults + maxPerPage - 1) / maxPerPage);
     return {
       currentPage: this.page,
@@ -154,6 +162,7 @@ export function view(ctrl: MultiBoardCtrl, study: StudyCtrl): MaybeVNode {
         cloudEval,
         ctrl.showResults(),
         study.relay?.round,
+        study.relay?.players.pins,
       ),
     ),
     ctrl.pinned()
@@ -232,6 +241,7 @@ const makePreviews = (
   cloudEval?: MultiCloudEval,
   showResults?: boolean,
   round?: RelayRound,
+  pins?: RelayPlayerPin,
 ) =>
   previews.map((preview, index) => {
     const extraCgConfig =
@@ -246,7 +256,7 @@ const makePreviews = (
         class: { active: preview.id === current },
         attrs: gameLinkAttrs(roundPath, preview),
       },
-      previewContent(preview, preview.orientation, cloudEval, showResults, round, extraCgConfig),
+      previewContent(preview, preview.orientation, cloudEval, showResults, round, extraCgConfig, pins),
     );
   });
 
@@ -257,13 +267,14 @@ export const previewContent = (
   showResults?: boolean,
   round?: RelayRound,
   extraCgConfig?: () => Partial<CgConfig>,
+  pins?: RelayPlayerPin,
 ) => {
   const makeCgConfig = () => ({
     ...(showResults ? previewToCgConfig(preview) : { fen: EMPTY_BOARD_FEN }),
     ...(extraCgConfig ? extraCgConfig() : {}),
   });
   return [
-    boardPlayer(preview, cgOpposite(orientation), showResults, round),
+    boardPlayer(preview, cgOpposite(orientation), showResults, round, pins),
     h('span.cg-gauge', [
       showResults ? cloudEval && verticalEvalGauge(preview, orientation, cloudEval) : undefined,
       h(
@@ -291,7 +302,7 @@ export const previewContent = (
         }),
       ),
     ]),
-    boardPlayer(preview, orientation, showResults, round),
+    boardPlayer(preview, orientation, showResults, round, pins),
   ];
 };
 
@@ -337,11 +348,15 @@ export const verticalEvalGauge = (
       );
 };
 
-const renderUser = (player: StudyPlayer): VNode =>
+export const pinIcon = () =>
+  hl('img.pinned-icon', { attrs: { alt: '', src: site.asset.flairSrc('objects.pushpin') } });
+
+const renderUser = (player: StudyPlayer, pinned?: boolean): VNode =>
   h('span.mini-game__user', [
     playerFedFlag(player.fed),
     h('span.name', [userTitle(player), player.name || '?']),
     player.rating ? h('span.rating', player.rating.toString()) : undefined,
+    pinned ? pinIcon() : undefined,
   ]);
 
 export const renderClock = (chapter: ChapterPreview, color: Color) => {
@@ -367,12 +382,18 @@ const computeTimeLeft = (preview: ChapterPreview, color: Color) => {
   } else return undefined;
 };
 
-const boardPlayer = (preview: ChapterPreview, color: Color, showResults?: boolean, round?: RelayRound) => {
+const boardPlayer = (
+  preview: ChapterPreview,
+  color: Color,
+  showResults?: boolean,
+  round?: RelayRound,
+  pins?: RelayPlayerPin,
+) => {
   const player = preview.players?.[color];
   const coloredResult =
     preview.status && preview.status !== '*' && playerColoredResult(preview.status, color, round);
   return h('span.mini-game__player', [
-    player && renderUser(player),
+    player && renderUser(player, pins?.isPlayerPinned(player)),
     showResults
       ? coloredResult
         ? h(`${coloredResult.tag}.mini-game__result`, coloredResult.points)

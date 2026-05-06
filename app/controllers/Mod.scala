@@ -373,11 +373,6 @@ final class Mod(
           views.mod.gamify.period(_, period)
   }
 
-  def queues(period: String) = Secure(_.GamifyView) { ctx ?=> _ ?=>
-    Ok.async:
-      env.mod.queueStats(period).map(views.mod.ui.queueStats(_))
-  }
-
   def search = SecureOrScopedBody(_.UserSearch) { ctx ?=> me ?=>
     negotiate(
       bindForm(ModUserSearch.form)(err => BadRequest.page(views.mod.search(err, none)), searchTerm),
