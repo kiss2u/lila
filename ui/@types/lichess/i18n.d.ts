@@ -3587,8 +3587,6 @@ interface I18n {
     forgotPassword: string;
     /** Forum */
     forum: string;
-    /** Forum etiquette */
-    forumEtiquette: string;
     /** Free Online Chess */
     freeOnlineChess: string;
     /** Friends */

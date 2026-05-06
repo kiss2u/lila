@@ -64,7 +64,7 @@ final class TopicUi(helpers: Helpers, bits: ForumBits, postUi: PostUi)(
                   dataIcon := Icon.InfoCircle,
                   cls := "text",
                   href := routes.Cms.lonePage(CmsPageKey("forum-etiquette"))
-                )(trans.site.forumEtiquette())
+                )(trans.site.theForumEtiquette())
               ).some
             )(bits.postTextarea(_)()),
             renderCaptcha(form("post"), captcha),
@@ -200,7 +200,7 @@ final class TopicUi(helpers: Helpers, bits: ForumBits, postUi: PostUi)(
                   dataIcon := Icon.InfoCircle,
                   cls := "text",
                   href := routes.Cms.lonePage(CmsPageKey("forum-etiquette"))
-                )(trans.site.forumEtiquette())
+                )(trans.site.theForumEtiquette())
               ).some
             ): f =>
               if plaintext then

@@ -2334,7 +2334,6 @@ object I18nKey:
     val `tryTheContactPage`: I18nKey = "tryTheContactPage"
     val `makeSureToRead`: I18nKey = "makeSureToRead"
     val `theForumEtiquette`: I18nKey = "theForumEtiquette"
-    val `forumEtiquette`: I18nKey = "forumEtiquette"
     val `pleaseBeNiceInTheForum`: I18nKey = "pleaseBeNiceInTheForum"
     val `thisTopicIsArchived`: I18nKey = "thisTopicIsArchived"
     val `joinTheTeamXToPost`: I18nKey = "joinTheTeamXToPost"
