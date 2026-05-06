@@ -135,7 +135,7 @@ object StudyPgnImport:
   ): Branches =
     val variations =
       node.take(Node.MAX_PLIES).fold(Nil)(_.variations.flatMap(x => makeBranch(context, x.toNode, annotator)))
-    removeDuplicatedChildrenFirstNode(
+    mergeDuplicateVariations(
       Branches(makeBranch(context, node, annotator).fold(variations)(_ +: variations))
     )
 
@@ -201,7 +201,7 @@ object StudyPgnImport:
    * where 7. c4 appears three times
    */
 
-  private def removeDuplicatedChildrenFirstNode(children: Branches): Branches =
+  private def mergeDuplicateVariations(children: Branches): Branches =
     val list = children.toList
     if list.sizeIs < 2 then children
     else
@@ -212,6 +212,6 @@ object StudyPgnImport:
           val matching = list.filter(_.id == id)
           matching.headOption.map: main =>
             val mergedChildrenList = matching.flatMap(_.children.toList)
-            main.copy(children = removeDuplicatedChildrenFirstNode(Branches(mergedChildrenList)))
+            main.copy(children = mergeDuplicateVariations(Branches(mergedChildrenList)))
 
         Branches(deduplicated)
