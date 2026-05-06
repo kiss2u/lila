@@ -62,7 +62,9 @@ function loginStart() {
 function signupStart() {
   const $form = $('#signup-form'),
     $exists = $form.find('.username-exists'),
+    $serverUsernameError = $exists.siblings('.error'),
     $username = $form.find('input[name="username"]').on('change keyup paste', () => {
+      $serverUsernameError.remove();
       $exists.addClass('none');
       usernameCheck();
     }),
