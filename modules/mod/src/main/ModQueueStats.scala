@@ -80,7 +80,6 @@ final class ModQueueStats(
 object ModQueueStats:
 
   type Score = Int
-  type Nb = Int
 
   val scores = List[Score](20, 40, 60, 80)
 
