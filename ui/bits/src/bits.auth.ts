@@ -62,9 +62,7 @@ function loginStart() {
 function signupStart() {
   const $form = $('#signup-form'),
     $exists = $form.find('.username-exists'),
-    $serverUsernameError = $exists.siblings('.error'),
     $username = $form.find('input[name="username"]').on('change keyup paste', () => {
-      $serverUsernameError.remove();
       $exists.addClass('none');
       usernameCheck();
     }),
@@ -77,6 +75,8 @@ function signupStart() {
     const res = await xhr.jsonAnyResponse(xhr.url('/api/player/autocomplete', { term: name, exists: 1 }));
     const body = await res.json();
     $group.find('.error-validation').remove();
+    $username.parents('.form-group').toggleClass('is-invalid', res.status === 400 || (res.ok && !!body));
+    $exists.siblings('.error').remove(); // server-side validation
     if (res.ok) $exists.toggleClass('none', !body);
     else if (res.status === 400) {
       $exists.addClass('none');
