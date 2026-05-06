@@ -373,18 +373,6 @@ final class Mod(
           views.mod.gamify.period(_, period)
   }
 
-  def activity = activityOf("team", "month")
-
-  def activityOf(who: String, period: String) = Secure(_.GamifyView) { ctx ?=> me ?=>
-    Ok.async:
-      env.mod.activity(who, period)(me.user).map(views.mod.ui.activity(_))
-  }
-
-  def queues(period: String) = Secure(_.GamifyView) { ctx ?=> _ ?=>
-    Ok.async:
-      env.mod.queueStats(period).map(views.mod.ui.queueStats(_))
-  }
-
   def search = SecureOrScopedBody(_.UserSearch) { ctx ?=> me ?=>
     negotiate(
       bindForm(ModUserSearch.form)(err => BadRequest.page(views.mod.search(err, none)), searchTerm),
