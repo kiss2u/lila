@@ -44,11 +44,10 @@ ${trans.common_orPaste.txt()}"""),
         )
     }
 
-  def confirm(token: String): Fu[Option[Me]] =
+  def confirm(token: String): Fu[Option[User]] =
     tokener
       .read(token)
-      .flatMapz(userRepo.me)
-      .map(_.filter(Granter.canFullyLogin))
+      .flatMapz(userRepo.notForeverClosedById)
       .recover:
         case _: reactivemongo.api.bson.exceptions.BSONValueNotFoundException => none
 
