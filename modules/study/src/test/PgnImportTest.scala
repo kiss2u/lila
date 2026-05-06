@@ -164,8 +164,25 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
         assertEquals(gxh3.children.toList.map(_.move.san.value), List("Kf5", "f5", "g5"))
 
         val pgnDump = Helpers.rootToPgn(parsed.root)
-        val pgnExpected =
-          """47. Kg1 Bh3 48. gxh3 Kf5 (48... f5 49. Kf2 Kd6 50. Ke3 Kc5) (48... g5 49. Kf2 gxh4 50. Ke3 Kf5) 49. Kf2 (49. Kf2 Ke4 50. h5 gxh5) 49... Ke4 50. Bxf6 d4 51. Be7 Kd3"""
         // before fix:
-        //   47. Kg1 Bh3 48. gxh3 Kf5 (48... Kf2 49. Ke4 h5 50. gxh5) (48... f5 49. Kf2 Kd6 50. Ke3 Kc5) (48... g5 49 . Kf2 gxh4 50. Ke3 Kf5) 49. Kf2 Ke4 50. Bxf6 d4 51. Be7 Kd3
+        //  47. Kg1 Bh3 48. gxh3 Kf5
+        //    (48... Kf2 49. Ke4 h5 50. gxh5)
+        //    (48... f5 49. Kf2 Kd6 50. Ke3 Kc5)
+        //    (48... g5 49 . Kf2 gxh4 50. Ke3 Kf5)
+        //  49. Kf2 Ke4 50. Bxf6 d4 51. Be7 Kd3
+        // currently:
+        //  47. Kg1 Bh3 48. gxh3 Kf5
+        //    (48... f5 49. Kf2 Kd6 50. Ke3 Kc5)
+        //    (48... g5 49. Kf2 gxh4 50. Ke3 Kf5)
+        //  49. Kf2
+        //    (49. Kf2 Ke4 50. h5 gxh5)
+        //  49... Ke4 50. Bxf6 d4 51. Be7 Kd3
+        val pgnExpected =
+          """47. Kg1 Bh3 48. gxh3 Kf5 
+            |  (48... f5 49. Kf2 Kd6 50. Ke3 Kc5) 
+            |  (48... g5 49. Kf2 gxh4 50. Ke3 Kf5) 
+            |49. Kf2 Ke4 50. Bxf6 
+            |  (50. h5 gxh5) 
+            |50... d4 51. Be7 Kd3
+            |""".stripMargin.replaceAll("\n", "").replaceAll("\\s+", " ")
         assertEquals(pgnDump.value, pgnExpected)
