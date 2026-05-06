@@ -7,7 +7,11 @@ const dryRun = true;
 
 // hardcode translations here
 const translations = {
-  en: "Hey {USERNAME}, here's a survey about your experience with lichess: {URL}. Thanks",
+  en: `Take our 5-minute survey! As Lichess turns 16, we want to learn more about your experience to help us make Lichess better.
+
+Please share your thoughts here: {URL}
+
+Thanks!`,
 };
 
 // <username> <lang> <URL>
@@ -21,7 +25,7 @@ console.log(`Sending surveys to ${usersAndUrls.length} users...`);
 usersAndUrls.forEach(async ([username, lang, url]) => {
   console.log(`${lang} ${username} -> ${url}`);
 
-  const text = makeMessage(username, lang, url);
+  const text = makeMessage(lang, url);
 
   if (dryRun) console.log(text);
   else {
@@ -40,8 +44,8 @@ usersAndUrls.forEach(async ([username, lang, url]) => {
   await new Promise(resolve => setTimeout(resolve, 500)); // Avoid hitting rate limits
 });
 
-function makeMessage(username, langCode, url) {
+function makeMessage(langCode, url) {
   const lang = langCode.slice(0, 2);
   const translated = translations[lang] || translations.en;
-  return translated.replace('{USERNAME}', username).replace('{URL}', url);
+  return translated.replace('{URL}', url);
 }
