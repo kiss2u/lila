@@ -107,7 +107,7 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     assert(x.root.mainlineNodeList(1).clock.contains(Clock(chess.Centis(719900), true.some)))
     assert(x.root.mainlineNodeList(2).clock.contains(Clock(chess.Centis(718000), true.some)))
 
-  test("import a broadcast pgn with missing clock)"):
+  test("import a broadcast pgn with missing clock"):
     val x = StudyPgnImport
       .result(
         """
@@ -138,6 +138,11 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
       .foreach: node =>
         assert(node.clock.isDefined)
 
+  import lila.tree.{ Node, Branch }
+  extension (node: Node)
+    def next: Branch = node.children.first.get
+    def nextSans: List[String] = node.children.toList.map(_.move.san.value)
+
   test("merge duplicated children from engine analysis variations (issue #20342)"):
     val bugPgn = """
     [FEN "8/8/4kpp1/3p1b2/p6P/2B5/6P1/7K w - - 1 47"]
@@ -152,13 +157,11 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     StudyPgnImport
       .result(bugPgn, Nil)
       .assertRight: parsed =>
-        val kg1 = parsed.root.children.first.get
-        val bh3 = kg1.children.first.get
-        val gxh3 = bh3.children.first.get
+        val gxh3 = parsed.root.next.next.next
 
         assertEquals(gxh3.move.san.value, "gxh3")
 
-        assertEquals(gxh3.children.toList.map(_.move.san.value), List("Kf5", "f5", "g5"))
+        assertEquals(gxh3.nextSans, List("Kf5", "f5", "g5"))
 
         val pgnDump = Helpers.rootToPgn(parsed.root)
         val pgnExpected =
@@ -183,14 +186,14 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     StudyPgnImport
       .result(multiDupPgn, Nil)
       .assertRight: parsed =>
-        val e4 = parsed.root.children.first.get
-        val e5 = e4.children.first.get
-        val nf3 = e5.children.first.get
-        val nc6 = nf3.children.first.get
+        val e4 = parsed.root.next
+        val e5 = e4.next
+        val nf3 = e5.next
+        val nc6 = nf3.next
 
         assertEquals(nc6.move.san.value, "Nc6")
-        assertEquals(nf3.children.toList.map(_.move.san.value), List("Nc6", "d6"))
-        assertEquals(nc6.children.toList.map(_.move.san.value), List("d4", "Bb5", "Bc4"))
+        assertEquals(nf3.nextSans, List("Nc6", "d6"))
+        assertEquals(nc6.nextSans, List("d4", "Bb5", "Bc4"))
 
   test("merge duplicate from code comment pattern: same move appearing three times"):
     val threeDupPgn = """
@@ -199,9 +202,9 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     StudyPgnImport
       .result(threeDupPgn, Nil)
       .assertRight: parsed =>
-        assertEquals(parsed.root.children.toList.map(_.move.san.value), List("d4"))
-        val d4 = parsed.root.children.first.get
-        assertEquals(d4.children.toList.map(_.move.san.value), List("e5", "Nf6", "d5"))
+        assertEquals(parsed.root.nextSans, List("d4"))
+        val d4 = parsed.root.next
+        assertEquals(d4.nextSans, List("e5", "Nf6", "d5"))
 
   test("merge sibling variations that duplicate each other but NOT the mainline"):
     val siblingDupPgn = """
@@ -210,14 +213,14 @@ Rad1 {[%clk 1:24:50]} b6 {[%clk 1:09:49]} 18. g4 {[%clk 1:03:52]} *""",
     StudyPgnImport
       .result(siblingDupPgn, Nil)
       .assertRight: parsed =>
-        val e4 = parsed.root.children.first.get
-        val e5 = e4.children.first.get
-        val nf3 = e5.children.first.get
+        val e4 = parsed.root.next
+        val e5 = e4.next
+        val nf3 = e5.next
 
-        assertEquals(nf3.children.toList.map(_.move.san.value), List("Nc6", "d6"))
+        assertEquals(nf3.nextSans, List("Nc6", "d6"))
 
         val d6 = nf3.children.variations.head
-        assertEquals(d6.children.toList.map(_.move.san.value), List("d4", "Bc4"))
+        assertEquals(d6.nextSans, List("d4", "Bc4"))
 
   test("merge duplicated children: sibling clone (Philidor variations)"):
     val pgn = "1. e4 e5 2. Nf3 Nc6 (2... d6 3. d4) (2... d6 3. Bc4)"
