@@ -66,8 +66,7 @@ final class Round(
             for
               data <- env.api.roundApi.player(pov, Preload(users), tour)
               chat <- getPlayerChat(pov.game, none)
-              jsChat <- chat.flatMap(_.game).map(_.chat).traverse(env.chat.json.asyncLines)
-            yield Ok(data.add("chat", jsChat)).noCache
+            yield Ok(data.add("chat", chat.flatMap(_.game).map(_.lines))).noCache
       )
     yield res.enforceCrossSiteIsolation
 
@@ -188,10 +187,9 @@ final class Round(
                   data <- env.api.roundApi.watcher(pov, users, tour, tv = none)
                   analysis <- env.analyse.analyser.get(pov.game)
                   chat <- getWatcherChat(pov.game)
-                  jsChat <- chat.map(_.chat).traverse(env.chat.json.asyncLines)
                 yield Ok:
                   data
-                    .add("chat" -> jsChat)
+                    .add("chat" -> chat.map(_.lines))
                     .add("analysis" -> analysis.map(a => lila.analyse.JsonView.mobile(pov.game, a)))
             ).dmap(_.noCache)
 
