@@ -100,10 +100,6 @@ for x in xs:
       }
       .to(Iterable)
 
-    // cps.zip(weightedAccuracies) foreach { case (eval, ((acc, weight), color)) =>
-    //   println(s"$eval $color ${weight.toInt} ${acc.toInt}")
-    // }
-
     def colorAccuracy(color: Color) = for
       weighted <- Maths.weightedMean:
         weightedAccuracies.collect:
