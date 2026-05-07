@@ -10,6 +10,7 @@ import lila.common.Json.given
 import scalalib.data.Preload
 import lila.core.id.{ GameAnyId, GameFullId }
 import lila.round.RoundGame.*
+import lila.round.UrgentGames
 import lila.tournament.Tournament as Tour
 import lila.ui.Snippet
 
@@ -79,14 +80,13 @@ final class Round(
 
   private def otherPovs(game: GameModel)(using ctx: Context) =
     ctx.me.so: user =>
-      env.round.proxyRepo
-        .urgentGames(user)
-        .map:
-          _.filter: pov =>
-            pov.gameId != game.id && pov.game.isSwitchable && pov.game.isSimul == game.isSimul
+      for urgent <- env.round.proxyRepo.urgentGames(user)
+      yield urgent.map:
+        _.filter: pov =>
+          pov.gameId != game.id && pov.game.isSwitchable && pov.game.isSimul == game.isSimul
 
-  private def getNext(currentGame: GameModel)(povs: List[Pov]) =
-    povs.find: pov =>
+  private def getNext(currentGame: GameModel)(urgent: UrgentGames) =
+    urgent.value.find: pov =>
       pov.isMyTurn && (pov.game.hasClock || !currentGame.hasClock)
 
   def whatsNext(fullId: GameFullId) = Open:

@@ -3,6 +3,7 @@ package lila.api
 import play.api.libs.json.{ Json, JsObject }
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
+import scalalib.data.Preload
 
 import lila.common.Json.given
 import lila.core.i18n.Translate
@@ -40,11 +41,11 @@ final class MobileApi(
     val myUser = me.map(_.value)
     val takex3 = oauth.exists(_.takex3)
     for
+      urgentGames <- myUser.traverse(gameProxy.urgentGames)
+      ongoingGames = urgentGames.map(_.value.take(20).map(lobbyApi.nowPlaying))
       tours <- takex3.not.option(tournaments).sequence
-      account <- myUser.traverse(userApi.mobile)
+      account <- myUser.traverse(userApi.mobile(_, Preload(urgentGames)))
       recentGames <- myUser.traverse(gameApi.mobileRecent)
-      ongoingGames <- myUser.traverse: u =>
-        gameProxy.urgentGames(u).map(_.take(20).map(lobbyApi.nowPlaying))
       inbox <- me.ifFalse(takex3).traverse(unreadCount.mobile)
       challenges <- me.traverse(challengeApi.allFor(_))
     yield Json
@@ -88,7 +89,7 @@ final class MobileApi(
 
   def profile(user: User)(using me: Option[Me])(using Lang): Fu[JsObject] =
     for
-      prof <- userApi.mobile(user)
+      prof <- userApi.mobile(user, Preload.none)
       activities <- activityRead.recentAndPreload(user)
       activity <- activities.sequentially(activityJsonView(_, user))
       games <- gameApi.mobileRecent(user)
