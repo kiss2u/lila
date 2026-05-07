@@ -79,17 +79,12 @@ for x in xs:
   // a mean of volatility-weighted mean and harmonic mean
   def gameAccuracy(startColor: Color, cps: List[Option[Cp]]): Option[ByColor[AccuracyPercent]] =
     val allWinPercents = (Some(Cp.initial) :: cps).map(_.map(WinPercent.fromCentiPawns))
-    val windowSize = (cps.size / 10).atLeast(2).atMost(8)
-    val allWinPercentValues = allWinPercents.map(_.map(_.value))
+    val windowSize = (cps.size / 10).squeeze(2, 8)
 
-    val windows =
-      List
-        .fill(windowSize.atMost(allWinPercentValues.size) - 2)(allWinPercentValues.take(windowSize))
-        ::: allWinPercentValues.sliding(windowSize).toList
-    val weights = windows.map { xs =>
-      if xs.forall(_.isDefined) then Some(Maths.standardDeviation(xs.flatten).orZero.atLeast(0.5).atMost(12))
-      else None
-    }
+    val windows = List.fill(windowSize.atMost(allWinPercents.size) - 2)(allWinPercents.take(windowSize))
+      ::: allWinPercents.sliding(windowSize).toList
+    val weights = windows.map:
+      _.sequence.map(wp => Maths.standardDeviation(WinPercent.raw(wp)).so(_.squeeze(0.5, 12)))
     val weightedAccuracies: Iterable[(Option[(Double, Double)], Color)] = allWinPercents
       .sliding(2)
       .zip(weights)
