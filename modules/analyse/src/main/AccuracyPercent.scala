@@ -91,12 +91,13 @@ for x in xs:
       .zipWithIndex
       .collect { case ((List(prev, next), weight), i) =>
         val color = Color.fromWhite((i % 2 == 0) == startColor.white)
-        if prev.isDefined && next.isDefined && weight.isDefined then
-          val accuracy = AccuracyPercent
-            .fromWinPercents(color.fold(prev.get, next.get), color.fold(next.get, prev.get))
-            .value
-          (Some((accuracy, weight.get)), color)
-        else (None, color)
+        val weighted = for
+          p <- prev
+          n <- next
+          w <- weight
+          accuracy = AccuracyPercent.fromWinPercents(color.fold(p, n), color.fold(n, p))
+        yield (accuracy.value, w)
+        (weighted, color)
       }
       .to(Iterable)
 
