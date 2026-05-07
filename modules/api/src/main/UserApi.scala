@@ -148,7 +148,7 @@ final class UserApi(
                     )
               }.noNull
 
-  def mobile(user: User, urgent: Preload[UrgentGames])(using me: Option[Me])(using Lang) = extended(
+  def mobile(user: UserWithPerfs, urgent: Preload[UrgentGames])(using me: Option[Me])(using Lang) = extended(
     user,
     Opts(
       withTrophies = false,
