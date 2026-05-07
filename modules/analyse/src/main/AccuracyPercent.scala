@@ -85,7 +85,7 @@ for x in xs:
       ::: allWinPercents.sliding(windowSize).toList
     val weights = windows.map:
       _.sequence.map(wp => Maths.standardDeviation(WinPercent.raw(wp)).so(_.squeeze(0.5, 12)))
-    val weightedAccuracies: Iterable[(Option[(Double, Double)], Color)] = allWinPercents
+    val weightedAccuracies: Iterable[(Option[PairOf[AccuracyPercent]], Color)] = allWinPercents
       .sliding(2)
       .zip(weights)
       .zipWithIndex
@@ -96,7 +96,7 @@ for x in xs:
           n <- next
           w <- weight
           accuracy = AccuracyPercent.fromWinPercents(color.fold(p, n), color.fold(n, p))
-        yield (accuracy.value, w)
+        yield (accuracy, w)
         (weighted, color)
       }
       .to(Iterable)
