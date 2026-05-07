@@ -83,7 +83,7 @@ export function userHtml(ctrl: RoundController, player: Player, position: TopOrB
 
 const signalBars = (signal: number) => {
   const bars: VNode[] = [];
-  for (let i = 1; i <= 4; i++) bars.push(hl(i <= signal ? 'i' : 'i.off'));
+  for (let i = 1; i <= 4; i++) bars.push(hl(i <= signal ? 'icon' : 'icon.off'));
   return hl('signal.q' + signal, bars);
 };
 

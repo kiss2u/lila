@@ -170,7 +170,7 @@ export function renderCeval(ctrl: CevalHandler): VNode[] {
     pearl = hl('pearl', '#' + bestEv.mate);
     percent = 100;
   } else {
-    if (!enabled) pearl = hl('pearl', hl('i'));
+    if (!enabled) pearl = hl('pearl', hl('icon'));
     else if (node.outcome() || node.threefold) pearl = hl('pearl', '-');
     else if (ceval.state === CevalState.Failed) pearl = hl('pearl', iconTag(licon.CautionCircle, 'is-red'));
     else pearl = hl('pearl', hl('i.ddloader'));
