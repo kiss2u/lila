@@ -10,6 +10,7 @@ import lila.core.i18n.Translate
 import lila.core.user.KidMode
 import lila.core.net.UserAgent
 import lila.oauth.TokenScopes
+import lila.core.perf.UserWithPerfs
 
 final class MobileApi(
     userApi: UserApi,
@@ -44,7 +45,7 @@ final class MobileApi(
       withPerfs <- myUser.traverse(userApi.withPerfs)
       urgentGames <- myUser.traverse(gameProxy.urgentGames)
       ongoingGames = urgentGames.map(_.value.take(20).map(lobbyApi.nowPlaying))
-      tours <- takex3.not.option(tournaments).sequence
+      tours <- takex3.not.option(tournamentsOf(withPerfs)).sequence
       account <- withPerfs.traverse(userApi.mobile(_, Preload(urgentGames)))
       recentGames <- myUser.traverse(gameApi.mobileRecent)
       inbox <- me.ifFalse(takex3).traverse(unreadCount.mobile)
@@ -58,12 +59,11 @@ final class MobileApi(
       .add("inbox", inbox)
       .add("challenges", challenges.map(challengeJson.all))
 
-  def tournaments(using me: Option[Me])(using Translate): Fu[JsObject] =
+  def tournamentsOf(me: Option[UserWithPerfs])(using Translate): Fu[JsObject] =
     for
-      perfs <- me.so(userApi.withPerfs)
       teamIds <- me.so(teamCached.teamIdsList)
       tours <- tourFeaturing.homepage.get(teamIds)
-      spotlight = lila.tournament.Spotlight.select(tours, 4)(using perfs)
+      spotlight = lila.tournament.Spotlight.select(tours, 4)(using me)
       json <- spotlight.sequentially(tourApiJson.fullJson)
     yield Json.obj("featured" -> json)
 
