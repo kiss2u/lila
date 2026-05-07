@@ -351,7 +351,7 @@ const explorerTitle = (explorer: ExplorerCtrl) => {
               ` ${i18n.site[explorer.config.data.color() === 'white' ? 'asWhite' : 'asBlack']}`,
               explorer.isIndexing() &&
                 !explorer.config.data.open() &&
-                hl('i.ddloader', {
+                hl('icon.ddloader', {
                   attrs: {
                     title: queuePosition
                       ? `Indexing ${queuePosition} other players first ...`

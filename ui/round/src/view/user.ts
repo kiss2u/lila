@@ -34,7 +34,7 @@ export function userHtml(ctrl: RoundController, player: Player, position: TopOrB
         },
       },
       [
-        hl('i.line', {
+        hl('icon.line', {
           class: user.patron
             ? {
                 patron: true,
@@ -71,7 +71,7 @@ export function userHtml(ctrl: RoundController, player: Player, position: TopOrB
     `div.ruser-${position}.ruser.user-link`,
     { class: { online: player.onGame, offline: !player.onGame, connecting } },
     [
-      hl('i.line', {
+      hl('icon.line', {
         attrs: {
           title: connecting ? 'Connecting to the game' : player.onGame ? 'Joined the game' : 'Left the game',
         },
