@@ -5,9 +5,9 @@ import kamon.metric.Timer
 import kamon.tag.TagSet
 import kamon.Kamon.{ timer, gauge, counter, histogram }
 import chess.variant.Variant
+import scalalib.net.UserAgent
 
 import lila.core.id.*
-import lila.core.net.*
 import lila.core.userId.{ UserId, UserName }
 import lila.core.perf.PerfKey
 

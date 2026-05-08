@@ -2,9 +2,9 @@ package lila.oauth
 
 import com.softwaremill.tagging.*
 import play.api.mvc.{ RequestHeader, Result }
+import scalalib.net.{ Bearer, UserAgent }
 
 import lila.common.HTTPRequest
-import lila.core.net.{ Bearer, UserAgent }
 import lila.memo.SettingStore
 
 final class OAuthServer(

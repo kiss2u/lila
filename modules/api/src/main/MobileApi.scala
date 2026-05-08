@@ -4,11 +4,11 @@ import play.api.libs.json.{ Json, JsObject }
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 import scalalib.data.Preload
+import scalalib.net.UserAgent
 
 import lila.common.Json.given
 import lila.core.i18n.Translate
 import lila.core.user.KidMode
-import lila.core.net.UserAgent
 import lila.oauth.TokenScopes
 import lila.core.perf.UserWithPerfs
 

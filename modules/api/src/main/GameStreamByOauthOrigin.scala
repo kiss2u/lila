@@ -4,10 +4,11 @@ import akka.stream.scaladsl.*
 import play.api.libs.json.*
 import play.api.mvc.RequestHeader
 import bloomfilter.mutable.BloomFilter
+import scalalib.net.UserAgent
 
 import lila.common.{ Bus, HTTPRequest }
 import lila.core.game.{ FinishGame, Game, StartGame, WithInitialFen }
-import lila.core.net.{ UserAgent, Origin }
+import lila.core.net.Origin
 import lila.oauth.AccessToken
 
 final class GameStreamByOauthOrigin(
