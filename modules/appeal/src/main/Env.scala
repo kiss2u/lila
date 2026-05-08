@@ -17,5 +17,5 @@ final class Env(
 
   lazy val api: AppealApi = wire[AppealApi]
 
-  scheduler.scheduleWithFixedDelay(55.minutes, 1.day): () =>
+  scheduler.scheduleWithFixedDelay(55.minutes, 1.hour): () =>
     api.countUnread.foreach(lila.mon.mod.queueStatus("appeal", 40).update(_))

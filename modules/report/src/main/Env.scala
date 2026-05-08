@@ -51,7 +51,7 @@ final class Env(
   scheduler.scheduleWithFixedDelay(1.minute, 1.minute): () =>
     api.inquiries.expire
 
-  scheduler.scheduleWithFixedDelay(55.minutes, 1.day): () =>
+  scheduler.scheduleWithFixedDelay(55.minutes, 1.hour): () =>
     ReportQueueMonitor.push(reportColl)
 
   lila.common.Bus.sub[lila.core.playban.Playban]:
