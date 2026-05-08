@@ -67,6 +67,12 @@ final class MobileApi(
       json <- spotlight.sequentially(tourApiJson.fullJson)
     yield Json.obj("featured" -> json)
 
+  def tournaments(using me: Option[Me])(using Translate): Fu[JsObject] =
+    for
+      withPerfs <- me.so(userApi.withPerfs)
+      tours <- tournamentsOf(withPerfs)
+    yield tours
+
   def watch(using Translate): Fu[JsObject] =
     for
       relay <- relayHome.getJson(1)(using lila.relay.RelayJsonView.Config(html = false))
