@@ -236,6 +236,10 @@ final class ModUi(helpers: Helpers):
         .option(a(cls := itemCls(active, "report"), href := routes.Report.list)("Reports")),
       Granter(_.PublicChatView)
         .option(a(cls := itemCls(active, "public-chat"), href := routes.Mod.publicChat)("Public Chats")),
+      Granter(_.SeeReport).option:
+        a(targetBlank, href := "https://monitor.lichess.ovh/d/ad7cldm/mod-queue-and-closed-report-charts"):
+          "Queue charts"
+      ,
       Granter(_.GamifyView)
         .option(a(cls := itemCls(active, "gamify"), href := routes.Mod.gamify)("Hall of fame")),
       Granter(_.GamifyView)
