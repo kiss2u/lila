@@ -462,7 +462,7 @@ export default class StudyCtrl {
   };
 
   wrongChapter = (serverData: WithPosition & { s?: boolean }): boolean => {
-    // #TODO why vm.chapterId when we have data.chapter.id
+    // #TODO why vm.chapterId when we have data.chapter.id?
     if (serverData.p.chapterId !== this.vm.chapterId) {
       // sticky should really be on the same chapter
       if (this.vm.mode.sticky && serverData.s) this.xhrReload();
