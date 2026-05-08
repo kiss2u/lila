@@ -258,7 +258,7 @@ object actor:
 object mod:
   def queueStatus(room: String, score: Int) =
     gauge("mod.queueStatus").withTags:
-      tags("room" -> room, "score" -> score)
+      tags("room" -> room, "threshold" -> score.toString)
   object report:
     val highest = gauge("mod.report.highest").withoutTags()
     def close(mod: UserId, room: String) = counter("mod.report.close").withTags:
