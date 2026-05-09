@@ -55,7 +55,7 @@ final class SelfReport(
                   ))
                 then roundApi.tell(pov.gameId, lila.core.round.Cheat(pov.color))
                 if markUserSetting.get().matches(name) then
-                  val rating = u.perfs.bestRating
+                  val rating = pov.player.rating | u.perfs.bestRating
                   val delayBase =
                     if rating > IntRating(2500) then 2
                     else if rating > IntRating(2300) then 10
@@ -64,6 +64,5 @@ final class SelfReport(
                     else 120
                   val delay = delayBase.minutes + ThreadLocalRandom.nextInt(delayBase * 60).seconds
                   scheduler.scheduleOnce(delay):
-                    lila.common.Bus
-                      .pub(lila.core.mod.SelfReportMark(u.id, name, fullId))
+                    lila.common.Bus.pub(lila.core.mod.SelfReportMark(u.id, name, fullId))
     }
