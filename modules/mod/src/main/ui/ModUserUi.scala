@@ -50,7 +50,7 @@ final class ModUserUi(helpers: Helpers, modUi: ModUi, mailerEventsUrl: Url):
       div(cls := "btn-rack")(
         Granter(_.ModMessage).option:
           postForm(action := routes.Mod.spontaneousInquiry(u.username), title := "Start an inquiry"):
-            submitButton(cls := "btn-rack__btn inquiry", title := "Hotkey: i")(icon)
+            submitButton(cls := "btn-rack__btn inquiry", title := "Hotkey: i")(iconTag)
         ,
         Granter(_.UserEvaluate).option:
           postForm(
