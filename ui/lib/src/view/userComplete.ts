@@ -67,10 +67,10 @@ export const renderUserEntry = (o: LightUserOnline, tag = 'a'): string => {
     'href="/@/' +
     o.name +
     '">' +
-    '<i class="line' +
+    '<icon class="line' +
     (o.patron ? ' patron' : '') +
     patronClass +
-    '"></i>' +
+    '"></icon>' +
     (o.title
       ? '<span class="utitle"' +
         (o.title === 'BOT' ? ' data-bot="data-bot" ' : '') +
