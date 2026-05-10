@@ -49,6 +49,7 @@ final class Env(
     securityApi: lila.core.security.SecurityApi,
     simulApiCircularDep: => lila.core.simul.SimulApi,
     tourApiCircularDep: => lila.core.tournament.TournamentApi,
+    userNoteApi: lila.core.user.NoteApi,
     settingStore: lila.memo.SettingStore.Builder,
     shutdown: akka.actor.CoordinatedShutdown
 )(using system: ActorSystem, scheduler: Scheduler)(using
@@ -96,9 +97,8 @@ final class Env(
   Bus.sub[lila.core.game.GameStart]: game =>
     onStart.exec(game.id)
 
-  Bus.sub[RoundSocket.Protocol.In.SelfReport]:
-    case RoundSocket.Protocol.In.SelfReport(fullId, ip, userId, name) =>
-      selfReport(userId, ip, fullId, name)
+  Bus.sub[RoundSocket.Protocol.In.SelfReport]: r =>
+    selfReport(r.userId, r.ip, r.fullId, r.name)
 
   Bus.sub[lila.core.mod.MarkCheater]:
     case lila.core.mod.MarkCheater(userId, true) =>
