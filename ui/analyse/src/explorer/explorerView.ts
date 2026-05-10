@@ -141,11 +141,7 @@ function showGameTable(ctrl: AnalyseCtrl, fen: FEN, title: string, games: Openin
               hl('td', showResult(game.winner)),
               hl('td', game.month || game.year),
               !isMasters &&
-                hl(
-                  'td',
-                  game.speed &&
-                    hl('icon', { attrs: { title: ucfirst(game.speed), ...dataIcon(perfIcons[game.speed]) } }),
-                ),
+                hl('td', game.speed && iconTag(perfIcons[game.speed], { title: ucfirst(game.speed) })),
             ]);
       }),
     ),

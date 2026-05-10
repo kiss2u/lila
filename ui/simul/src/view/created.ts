@@ -35,7 +35,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode | false) {
                 : hl(
                     'a.button.text' + (canJoin ? '' : '.disabled'),
                     {
-                      attrs: { disabled: !canJoin, 'data-icon': licon.PlayTriangle },
+                      attrs: { disabled: !canJoin, ...dataIcon(licon.PlayTriangle) },
                       hook: canJoin
                         ? bind('click', () => {
                             if (ctrl.data.variants.length === 1)
@@ -60,7 +60,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode | false) {
                 'a.button.text',
                 {
                   attrs: {
-                    'data-icon': licon.PlayTriangle,
+                    ...dataIcon(licon.PlayTriangle),
                     href: '/login?referrer=' + window.location.pathname,
                   },
                 },
@@ -105,7 +105,7 @@ export default function (showText: (ctrl: SimulCtrl) => VNode | false) {
                         'td.action',
                         isHost &&
                           hl('a.button', {
-                            attrs: { 'data-icon': licon.Checkmark, title: 'Accept' },
+                            attrs: { ...dataIcon(licon.Checkmark), title: 'Accept' },
                             hook: bind('click', () => xhr.accept(applicant.player.id)(ctrl.data.id)),
                           }),
                       ),
