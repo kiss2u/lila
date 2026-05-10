@@ -2,7 +2,7 @@ package lila.web
 
 import play.api.i18n.Lang
 import play.api.mvc.*
-import scalalib.net.{ Crawler, UserAgent }
+import scalalib.net.UserAgent
 
 import lila.common.HTTPRequest
 import lila.core.config.BaseUrl
