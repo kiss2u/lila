@@ -3,7 +3,7 @@ import { h, type Hooks, type VNode } from 'snabbdom';
 import { setClockWidget } from 'lib/game/clock/clockWidget';
 import perfIcons from 'lib/game/perfIcons';
 import * as licon from 'lib/licon';
-import { dataIcon, iconCls } from 'lib/view';
+import { dataIcon, iconCls, iconTag } from 'lib/view';
 import { userTitle } from 'lib/view/userLink';
 
 import type TournamentController from '../ctrl';
@@ -57,7 +57,7 @@ function image(d: TournamentData): VNode | undefined {
 
 function title(ctrl: TournamentController) {
   const d = ctrl.data;
-  if (hasFreq('marathon', d)) return h('h1', [h('icon.fire-trophy', licon.Globe), d.fullName]);
+  if (hasFreq('marathon', d)) return h('h1', [iconTag(licon.Globe, { cls: 'fire-trophy' }), d.fullName]);
   if (hasFreq('shield', d))
     return h('h1', [
       h('a.shield-trophy', { attrs: { href: '/tournament/shields' } }, perfIcons[d.perf.key]),

@@ -745,7 +745,7 @@ export default class RoundController implements MoveRootCtrl {
     this.goneBerserk[color] = true;
     if (color !== this.data.player.color) site.sound.play('berserk');
     this.redraw();
-    $(`<i data-icon="${licon.Berserk}">`).appendTo($(`.game__meta .player.${color} .user-link`));
+    $(`<icon data-icon="${licon.Berserk}">`).appendTo($(`.game__meta .player.${color} .user-link`));
   };
 
   setLoading = (v: boolean, duration = 1500): void => {

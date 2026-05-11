@@ -2,7 +2,7 @@ import { defined } from 'lib';
 import type { Player, TopOrBottom } from 'lib/game';
 import * as licon from 'lib/licon';
 import { wsAverageLag } from 'lib/socket';
-import { hl, type VNode } from 'lib/view';
+import { dataIcon, hl, type VNode } from 'lib/view';
 import { ratingDiff, userLink } from 'lib/view/userLink';
 
 import type RoundController from '../ctrl';
@@ -61,7 +61,7 @@ export function userHtml(ctrl: RoundController, player: Player, position: TopOrB
         !!rating && ratingDiff(player),
         player.engine &&
           hl('span', {
-            attrs: { 'data-icon': licon.CautionCircle, title: i18n.site.thisAccountViolatedTos },
+            attrs: { ...dataIcon(licon.CautionCircle), title: i18n.site.thisAccountViolatedTos },
           }),
       ],
     );
