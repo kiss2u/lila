@@ -119,7 +119,7 @@ export default class StudyChaptersCtrl {
 
 export const convertPlayerFromServer = <A extends StudyPlayerFromServer>(player: A) => {
   const i18nName = player.fed && localizedName(player.fed);
-  const fedName = player.fed && federations?.[player.fed][0];
+  const fedName = player.fed && federations?.[player.fed]?.[0];
   return {
     ...player,
     fed: player.fed && fedName ? { id: player.fed, name: fedName, i18nName } : undefined,
