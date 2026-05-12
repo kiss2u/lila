@@ -47,6 +47,10 @@
         font-weight: bold;
         box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2) inset !important;
 
+        @include if-light {
+          text-shadow: 0 1px 0 $c-font !important;
+        }
+
         &:hover {
           background: $m-secondary--lighten-5;
         }
