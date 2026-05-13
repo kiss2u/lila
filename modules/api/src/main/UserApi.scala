@@ -26,6 +26,8 @@ final class UserApi(
     streamerApi: lila.streamer.StreamerApi,
     liveStreamApi: lila.streamer.LiveApi,
     gameProxyRepo: lila.round.GameProxyRepo,
+    playingUsers: lila.round.PlayingUsers,
+    isOnline: lila.core.socket.IsOnline,
     trophyApi: lila.user.TrophyApi,
     shieldApi: lila.tournament.TournamentShieldApi,
     revolutionApi: lila.tournament.RevolutionApi,
@@ -163,6 +165,13 @@ final class UserApi(
       (trophies, shields, revols) =>
         val roleTrophies = trophyApi.roleBasedTrophies(u)
         UserApi.TrophiesAndAwards(userCache.rankingsOf(u.id), trophies ::: roleTrophies, shields, revols)
+
+  def recentlySeen(u: LightUser, seenAt: Option[Instant]): JsObject =
+    lila.common.Json.lightUser
+      .writeNoId(u)
+      .add("seenAt", seenAt)
+      .add("online", isOnline.exec(u.id))
+      .add("playing", playingUsers(u.id))
 
   private def trophiesJson(all: UserApi.TrophiesAndAwards)(using Lang): JsArray =
     JsArray:

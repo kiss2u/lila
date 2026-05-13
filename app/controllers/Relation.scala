@@ -10,7 +10,6 @@ import lila.core.LightUser
 import lila.core.perf.UserWithPerfs
 import lila.rating.UserPerfsExt.bestRatedPerf
 import lila.relation.Related
-import lila.relation.RelationStream.Direction
 
 final class Relation(env: Env, apiC: => Api) extends LilaController(env):
 
@@ -101,14 +100,21 @@ final class Relation(env: Env, apiC: => Api) extends LilaController(env):
           )
         yield res
 
-  def apiFollowing = Scoped(_.Follow.Read, _.Web.Mobile) { ctx ?=> me ?=>
+  def apiFollowing = Scoped(_.Follow.Read, _.Web.Mobile) { ctx ?=> _ ?=>
     apiC.jsonDownload:
-      env.relation.stream
-        .follow(me, Direction.Following, MaxPerSecond(30))
-        .mapAsync(1): ids =>
-          env.user.api.listWithPerfs(ids.toList, includeClosed = false)
-        .mapConcat(identity)
-        .map(env.api.userApi.one(_, None))
+      getInt("recentlySeen").map(_.squeeze(1, 100)) match
+        case None =>
+          env.relation.stream
+            .follow(MaxPerSecond(30))
+            .mapAsync(1): ids =>
+              env.user.api.listWithPerfs(ids.toList, includeClosed = false)
+            .mapConcat(identity)
+            .map(env.api.userApi.one(_, None))
+        case Some(nb) =>
+          import env.user.lightUserApi.reader
+          env.relation.stream
+            .recentlySeen(nb, env.user.lightUserApi.projection)
+            .map(env.api.userApi.recentlySeen)
   }
 
   // for lichobile, remove at some point
