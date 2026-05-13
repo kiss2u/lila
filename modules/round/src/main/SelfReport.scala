@@ -28,7 +28,7 @@ final class SelfReport(
     (name != "err").so:
       val gameUrl = s"https://lichess.org/$fullId"
       if name != "ceval" && logOnceEvery(ip.str) then
-        logger.info(s"$ip $gameUrl ${userId | "anon"} $name")
+        logger.info(s"$ip $gameUrl ${userId | "-"} $name")
         lila.mon.cheat.selfReport(name, userId.isDefined).increment()
       userId.so(userApi.withPerfs).flatMapz { u =>
         proxyRepo
