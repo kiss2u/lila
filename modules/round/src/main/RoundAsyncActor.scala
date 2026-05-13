@@ -45,9 +45,10 @@ final private class RoundAsyncActor(
     def isOnline = offlineSince.isEmpty || botConnected
 
     def setOnline(on: Boolean): Unit =
-      isLongGone.mapz:
-        proxy.withGameOptionSync: g =>
+      proxy.withGameOptionSync: g =>
+        isLongGone.mapz:
           if g.forceResignableNow then notifyGone(g.pov(color), gone = !on)
+        if on && !isOnline then publishBoardBotGone(g.pov(color), none)
       offlineSince = if on then None else offlineSince.orElse(nowMillis.some)
       bye = bye && !on
     def setBye(): Unit =
@@ -365,9 +366,13 @@ final private class RoundAsyncActor(
               players(c).showMillisToGone.foreach {
                 _.so: millis =>
                   val pov = g.pov(c)
-                  if millis <= 0 then notifyGone(pov, gone = true)
+                  if millis <= 0 then
+                    notifyGone(pov, gone = true)
+                    publishBoardBotGone(pov, 0L.some)
                   else if g.clock.exists(_.remainingTime(c).millis > millis + 3000)
-                  then notifyGoneIn(pov, millis)
+                  then
+                    notifyGoneIn(pov, millis)
+                    publishBoardBotGone(pov, millis.some)
               })
       } | funit
 
@@ -395,14 +400,13 @@ final private class RoundAsyncActor(
 
   private def notifyGone(pov: Pov, gone: Boolean): Unit =
     socketSend.exec(Protocol.Out.gone(pov.fullId, gone))
-    publishBoardBotGone(pov, gone.option(0L))
 
   private def notifyGoneIn(pov: Pov, millis: Long): Unit =
     socketSend.exec(Protocol.Out.goneIn(pov.fullId, millis))
-    publishBoardBotGone(pov, millis.some)
 
   private def publishBoardBotGone(pov: Pov, millis: Option[Long]) =
-    if lila.game.Game.mightBeBoardOrBotCompatible(pov.game) then
+    if lila.game.Game.mightBeBoardOrBotCompatible(pov.game)
+    then
       lila.common.Bus.publishDyn(
         lila.game.actorApi.BoardGone(pov, millis.map(m => (m.atLeast(0) / 1000).toInt)),
         lila.game.actorApi.BoardGone.makeChan(gameId)
