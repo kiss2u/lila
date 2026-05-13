@@ -29,6 +29,12 @@ final class RelationStream(colls: Colls, userRepo: UserRepo, isOnline: IsOnline)
       .map(_.flatMap(_.getAsOpt[UserId](F.to)))
       .throttle(1, 1.second)
 
+  def recentlySeenList(nb: Int, projection: Bdoc, isPlaying: UserId => Boolean)(using
+      reader: BSONDocumentReader[LightUser],
+      me: Me
+  ): Fu[Seq[JsObject]] =
+    recentlySeen(nb, projection, isPlaying).runWith(Sink.seq)
+
   def recentlySeen(nb: Int, projection: Bdoc, isPlaying: UserId => Boolean)(using
       reader: BSONDocumentReader[LightUser],
       me: Me
