@@ -7,8 +7,12 @@ import lila.db.dsl.{ *, given }
 import lila.core.user.UserRepo
 import reactivemongo.api.bson.BSONDocumentReader
 import lila.core.LightUser
+import lila.core.socket.IsOnline
+import play.api.libs.json.JsObject
 
-final class RelationStream(colls: Colls, userRepo: UserRepo)(using akka.stream.Materializer):
+final class RelationStream(colls: Colls, userRepo: UserRepo, isOnline: IsOnline)(using
+    akka.stream.Materializer
+):
 
   private val coll = colls.relation
 
@@ -25,10 +29,11 @@ final class RelationStream(colls: Colls, userRepo: UserRepo)(using akka.stream.M
       .map(_.flatMap(_.getAsOpt[UserId](F.to)))
       .throttle(1, 1.second)
 
-  def recentlySeen(nb: Int, projection: Bdoc)(using
+  def recentlySeen(nb: Int, projection: Bdoc, isPlaying: UserId => Boolean)(using
       reader: BSONDocumentReader[LightUser],
       me: Me
-  ): Source[(LightUser, Option[Instant]), ?] =
+  ): Source[JsObject, ?] =
+    val canBeOnlineSince = nowInstant.minusMinutes(60)
     coll
       .aggregateWith[Bdoc](readPreference = ReadPref.sec): framework =>
         import framework.*
@@ -42,20 +47,28 @@ final class RelationStream(colls: Colls, userRepo: UserRepo)(using akka.stream.M
               foreign = "_id",
               pipe = List(
                 $doc("$match" -> $doc("enabled" -> true)),
-                $doc("$sort" -> $doc("seenAt" -> -1)),
                 $doc("$project" -> (projection ++ $doc("seenAt" -> true))),
+                $doc("$sort" -> $doc("seenAt" -> -1)),
                 $doc("$limit" -> nb)
               )
             )
           ),
-          ReplaceRootField("user.0")
+          Project($doc("user" -> true, "_id" -> false)),
+          UnwindField("user"),
+          ReplaceRootField("user")
         )
       .documentSource()
       .mapConcat: doc =>
         for
           user <- doc.asOpt[LightUser]
           seenAt = doc.getAsOpt[Instant]("seenAt")
-        yield (user, seenAt)
+          online = seenAt.exists(_.isAfter(canBeOnlineSince)) && isOnline.exec(user.id)
+          playing = online && isPlaying(user.id)
+        yield lila.common.Json.lightUser
+          .writeNoId(user)
+          .add("seenAt", seenAt)
+          .add("online", online)
+          .add("playing", playing)
 
   private object F:
     val from = "u1"

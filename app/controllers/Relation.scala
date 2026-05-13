@@ -102,19 +102,19 @@ final class Relation(env: Env, apiC: => Api) extends LilaController(env):
 
   def apiFollowing = Scoped(_.Follow.Read, _.Web.Mobile) { ctx ?=> _ ?=>
     apiC.jsonDownload:
-      getInt("recentlySeen").map(_.squeeze(1, 100)) match
-        case None =>
-          env.relation.stream
-            .follow(MaxPerSecond(30))
-            .mapAsync(1): ids =>
-              env.user.api.listWithPerfs(ids.toList, includeClosed = false)
-            .mapConcat(identity)
-            .map(env.api.userApi.one(_, None))
-        case Some(nb) =>
-          import env.user.lightUserApi.reader
-          env.relation.stream
-            .recentlySeen(nb, env.user.lightUserApi.projection)
-            .map(env.api.userApi.recentlySeen)
+      env.relation.stream
+        .follow(MaxPerSecond(30))
+        .mapAsync(1): ids =>
+          env.user.api.listWithPerfs(ids.toList, includeClosed = false)
+        .mapConcat(identity)
+        .map(env.api.userApi.one(_, None))
+  }
+
+  def apiMobileFollowing = Scoped(_.Web.Mobile) { ctx ?=> _ ?=>
+    import env.user.lightUserApi.reader
+    val nb = getInt("nb").fold(10)(_.squeeze(1, 100))
+    jsToNdJson:
+      env.relation.stream.recentlySeen(nb, env.user.lightUserApi.projection, env.round.playing.apply)
   }
 
   // for lichobile, remove at some point
